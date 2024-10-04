@@ -1,0 +1,5 @@
+package v1.model;
+
+public enum Day {
+	MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
+}
