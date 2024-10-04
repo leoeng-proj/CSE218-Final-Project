@@ -173,7 +173,7 @@ public class AVLTree <T extends Comparable<T>>{
 				isBalanced(root.left) &&
 				isBalanced(root.right);
 	}
-	protected class Node{
+	private class Node{
 		T item;
 		int height;
 		Node left;
