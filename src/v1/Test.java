@@ -11,7 +11,7 @@ public class Test {
 	public static void main(String[] args) {
 
 		Student leo = new Student(new Name("Leo", "Eng"), Major.CSE, 4.0);
-
+		System.out.println("hi");
 		AVLTree<Student> students = new AVLTree<>();
 		for(int i = 0; i < 10; i++) {
 			students.add(Emitter.emitStudent());
