@@ -16,7 +16,7 @@ public class Professor extends Person{
 		super(name);
 		id = generateUUID();
 		numSections = 0;
-		sections = null;
+		sections = new LinkedList<>();
 	}
 	public int getId() {
 		return id;
@@ -34,7 +34,11 @@ public class Professor extends Person{
 		return sections;
 	}
 	public void addSection(Section section) {
+		if(sections.contains(section)) {
+			return;
+		}
 		sections.add(section);
+		section.setInstructor(this);
 		numSections++;
 	}
 	public void removeSection(Section section) {

@@ -43,4 +43,7 @@ public class Course {
 	public void setReqMajors(Major[] reqMajors) {
 		this.reqMajors = reqMajors;
 	}
+	public String toString() {
+		return courseNum;
+	}
 }

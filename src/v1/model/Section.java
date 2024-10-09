@@ -76,4 +76,7 @@ public class Section {
 	public void setTime(Hours time) {
 		this.time = time;
 	}
+	public String toString() {
+		return course + " | " + sectionNum;
+	}
 }
