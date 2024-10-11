@@ -1,5 +1,8 @@
 package v1;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
@@ -10,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import v1.model.Major;
-import v1.model.Name;
 
 public class CreationPage {
 	
@@ -27,66 +29,33 @@ public class CreationPage {
 		GridPane root = initPage(300, 400, "Course Creation");
 		Button close = defaultClose(root);
 		
-		TextField courseName = new TextField();
-		courseName.setPromptText("Course Name");
-		courseName.getStyleClass().add("textfield-stlye");
-		root.add(courseName, 0, 0);
-		
-		TextField description = new TextField();
-		description.setPromptText("Description");
-		description.getStyleClass().add("textfield-stlye");
-		root.add(description, 0, 1);
+		TextField courseName = defaultTextField("Course Name", root, 0, 0, 2, 1);
+		TextField description = defaultTextField("Description", root, 0, 1, 2, 1);
+		TextField courseNum = defaultTextField("Course Number", root, 0, 2, 2, 1);		
 
-		TextField courseNum = new TextField();
-		courseNum.setPromptText("Course Number");
-		courseNum.getStyleClass().add("textfield-stlye");
-		root.add(courseNum, 0, 2);
-		
-
-		ComboBox<Integer> credits = new ComboBox<>();
-		credits.setPromptText("Select Credit Value");
-		credits.getStyleClass().add("textfield-style");		
-		credits.getItems().addAll(new Integer[] {1, 2, 3, 4, 5});
-		root.add(credits, 0, 3, 3, 1);
-		
-		ComboBox<Major> majors = new ComboBox<>();
-		majors.setPromptText("Select Major");
-		majors.getStyleClass().add("textfield-style");		
-		majors.getItems().addAll(Major.values());
-		root.add(majors, 0, 4, 3, 1);
+		ComboBox<Integer> credits = defaultComboBox(Arrays.asList(new Integer[] {1, 2, 3, 4, 5}), "Select Credit Value", root, 0, 3, 2, 1);
+		ComboBox<Major> majors = defaultComboBox(Arrays.asList(Major.values()), "Select Major", root, 0, 4, 2, 1);
 		
 		Button submit = new Button("Submit");
 		submit.getStyleClass().add("button-style");
-		root.add(submit, 0, 5);
+		root.add(submit, 0, 5, 1, 1);
 		
-		root.add(close, 1, 5);
+		root.add(close, 1, 5, 1, 1);
 	}
 	public void studentCreationPage() {
 		// Student(Name name, Major major, double gpa)
 		GridPane root = initPage(300, 400, "Student Creation");
 		Button close = defaultClose(root);
+		root.add(close, 1, 3);
+		
+		TextField firstname = defaultTextField("First Name", root, 0, 0, 2, 1);
+		TextField lastname = defaultTextField("Last Name", root, 0, 1, 2, 1);
+		
+		ComboBox<Major> majors = defaultComboBox(Arrays.asList(Major.values()), "Select Major", root, 0, 2, 2, 1);
 		
 		Button submit = new Button("Submit");
 		submit.getStyleClass().add("button-style");
 		root.add(submit, 0, 3);
-		
-		root.add(close, 1, 3);
-		
-		TextField firstname = new TextField();
-		firstname.setPromptText("First Name");
-		firstname.getStyleClass().add("textfield-style");
-		root.add(firstname, 0, 0, 3, 1);
-		
-		TextField lastname = new TextField();
-		lastname.setPromptText("Last Name");
-		lastname.getStyleClass().add("textfield-style");
-		root.add(lastname, 0, 1, 3, 1);
-		
-		ComboBox<Major> majors = new ComboBox<>();
-		majors.setPromptText("Select Major");
-		majors.getStyleClass().add("textfield-style");		
-		majors.getItems().addAll(Major.values());
-		root.add(majors, 0, 2, 3, 1);
 	}
 	private GridPane initPage(int width, int height, String title) {
 		isOpen.set(true);
@@ -118,6 +87,21 @@ public class CreationPage {
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 		return scene;
+	}
+	private <T> ComboBox<T> defaultComboBox(Collection<T> col, String promptText, GridPane root, int x, int y, int w, int h){
+		ComboBox<T> cmb = new ComboBox<>();
+		cmb.setPromptText(promptText);
+		cmb.getStyleClass().add("textfield-style");
+		cmb.getItems().addAll(col);
+		root.add(cmb, x, y, w, h);
+		return cmb;
+	}
+	private TextField defaultTextField(String promptText, GridPane root, int x, int y, int w, int h) {
+		TextField tf = new TextField();
+		tf.setPromptText(promptText);
+		tf.getStyleClass().add("textfield-style");
+		root.add(tf, x, y, w, h);
+		return tf;
 	}
 	private Button defaultClose(GridPane root) {
 		Button close = new Button("Close");
