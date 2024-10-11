@@ -1,0 +1,13 @@
+.button-style {
+    -fx-pref-width: 70;
+    -fx-pref-height: 20;
+}
+.pane-style{
+	-fx-alignment:center;
+	-fx-vgap:5;
+	-fx-hgap:5;
+}
+.textfield-style{
+	-fx-pref-width: 200;
+    -fx-pref-height: 20;
+}
