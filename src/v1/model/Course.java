@@ -1,7 +1,8 @@
 package v1.model;
 
+import java.io.Serializable;
 
-public class Course implements Comparable<Course>{
+public class Course implements Comparable<Course>, Serializable{
 
 	private double credits;
 	private String name;

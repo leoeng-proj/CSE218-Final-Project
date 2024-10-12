@@ -6,15 +6,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import v1.structs.CourseContainer;
 
-public class DataCenter {
+public class DataCenter implements Serializable{
 	
 	private static final File laptop = new File("C:\\2023-24\\cse148\\workspace\\Projects\\src\\project2\\user.dat");
-	private static final File home = new File("C:\\Users\\apoll\\Desktop\\cse218\\workspace\\final-project\\src\\v1");
+	private static final File home = new File("N:\\java\\cse218 final project");
+	private static final File file = new File("data.dat");
+
 	
 	private CourseContainer courses;
+	
 	private static DataCenter instance;
 	
 	private DataCenter() {
@@ -33,7 +37,7 @@ public class DataCenter {
 		return courses;
 	}
 	public boolean save() {
-		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(home))){
+		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
 			oos.writeObject(instance);
 			return true;
 		}
@@ -43,7 +47,7 @@ public class DataCenter {
 		return false;
 	}
 	private static DataCenter load() {
-		try(FileInputStream fis = new FileInputStream(home)){
+		try(FileInputStream fis = new FileInputStream(file)){
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			while(fis.available() > 0) {
 				return (DataCenter)ois.readObject();

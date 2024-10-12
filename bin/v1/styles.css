@@ -2,6 +2,10 @@
     -fx-pref-width: 70;
     -fx-pref-height: 20;
 }
+.large-button-style {
+    -fx-pref-width: 120;
+    -fx-pref-height: 20;
+}
 .pane-style{
 	-fx-alignment:center;
 	-fx-vgap:5;

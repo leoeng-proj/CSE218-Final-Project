@@ -1,10 +1,11 @@
 package v1.structs;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import v1.model.Course;
 
-public class CourseContainer{
+public class CourseContainer implements Serializable{
 
 	private LinkedList<Course> courses;
 	

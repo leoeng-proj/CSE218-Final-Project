@@ -1,7 +1,5 @@
 package v1;
 
-import java.util.Arrays;
-import java.util.Collection;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,10 +20,23 @@ public class CreationPage {
 	private BooleanProperty isOpen;
 	
 	public CreationPage() {
-			this.isOpen = new SimpleBooleanProperty(false);
+		this.isOpen = new SimpleBooleanProperty(false);
 	}
 	public BooleanProperty getIsOpen() {
 		return isOpen;
+	}
+	public void professorCreationPage() {
+		//Professor(Name name)
+		GridPane root = initPage(300, 400, "Professor Creation");
+		Button close = defaultClose(root);
+		
+		TextField firstname = defaultTextField("First Name", root, 0, 0, 2, 1);
+		TextField lastname = defaultTextField("Last Name", root, 0, 1, 2, 1);
+		
+		Button submit = new Button("Submit");
+		submit.getStyleClass().add("button-syle");
+		root.add(submit, 0, 2, 1, 1);
+		root.add(close, 1, 2, 1, 1);
 	}
 	public void sectionCreationPage() {
 		//Section(int sectionNum, boolean isOnline, Classroom room, Course course,
@@ -34,23 +45,24 @@ public class CreationPage {
 		Button close = defaultClose(root);
 		
 		CheckBox isOnline = new CheckBox("Online?");
-		root.add(isOnline, 0, 0, 1, 1);
+		root.add(isOnline, 0, 3);
 		
-		int count = 0;
+		int count = 4;
 		for(Day d : Day.values()) {
 			CheckBox dayCheckBox = new CheckBox(d + "");
-			root.add(dayCheckBox, count++, 1, 1, 1);
+			root.add(dayCheckBox, 0, count++, 1, 1);
 		}
 		
-		TextField sectionNum = defaultTextField("Section Number", root, 0, 2, 2, 1);
+		TextField sectionNum = defaultTextField("Section Number", root, 0, 1, 2, 1);
 		
-		ComboBox<Course> courses = defaultComboBox((Course[])DataCenter.getInstance().getCourseContainer().toArray(), "Select Course", root, 0, 3, 2, 1);
+		ComboBox<Course> courses = defaultComboBox((Course[])DataCenter.getInstance().getCourseContainer().toArray(), 
+				"Select Course", root, 0, 2, 2, 1);
 		
 		Button submit = new Button("Submit");
 		submit.getStyleClass().add("button-style");
-		root.add(submit, 0, 5, 2, 1);
+		root.add(submit, 0, 11, 2, 1);
 		
-		root.add(close, 1, 5, 2, 1);
+		root.add(close, 1, 11, 2, 1);
 	}
 	public void courseCreationPage() {
 		// Course(double credits, String name, String description, String courseNum, Major[] reqMajors)
