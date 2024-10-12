@@ -73,19 +73,25 @@ public class CreationPage {
 		TextField description = defaultTextField("Description", root, 0, 1, 2, 1);
 		TextField courseNum = defaultTextField("Course Number", root, 0, 2, 2, 1);		
 
-		ComboBox<Double> credits = defaultComboBox(new Double[] {1.0, 2.0, 3.0, 4.0, 5.0}, "Select Credit Value", root, 0, 3, 2, 1);
+		ComboBox<Double> credits = defaultComboBox(new Double[] {1.0, 2.0, 3.0, 4.0, 5.0}, 
+				"Select Credit Value", root, 0, 3, 2, 1);
 		ComboBox<Major> majors = defaultComboBox(Major.values(), "Select Major", root, 0, 4, 2, 1);
 		
 		Button submit = new Button("Submit");
 		submit.getStyleClass().add("button-style");
+		submit.setDisable(true);
 		submit.setOnAction(e -> {
 			Course course = new Course(credits.getValue(), courseName.getText(),
 					description.getText(), courseNum.getText(), majors.getValue());
 			DataCenter.getInstance().getCourseContainer().addCourse(course);
-			System.out.println("course added");
+		});
+		root.setOnMouseMoved(e ->{
+			if(courseName.getLength() > 0 && description.getLength() > 0 && courseNum.getLength() > 0 &&
+					credits.getValue() != null && majors.getValue() != null) {
+				submit.setDisable(false);
+			}
 		});
 		root.add(submit, 0, 5, 1, 1);
-		
 		root.add(close, 1, 5, 1, 1);
 	}
 	public void studentCreationPage() {
