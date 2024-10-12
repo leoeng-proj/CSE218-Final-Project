@@ -4,11 +4,8 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import v1.model.Major;
 
 public class Main extends Application {
 
@@ -30,6 +27,12 @@ public class Main extends Application {
 		GridPane root = new GridPane();
 		
 		root.disableProperty().bind(creator.getIsOpen());
+		
+		Button createSection = new Button("Create Section");
+		createSection.setOnAction(e -> {
+			creator.sectionCreationPage();
+		});	
+		root.add(createSection, 0, 2);
 		
 		Button createCourse = new Button("Create Course");
 		createCourse.setOnAction(e -> {

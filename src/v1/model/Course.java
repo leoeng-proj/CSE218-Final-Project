@@ -1,15 +1,15 @@
 package v1.model;
 
 
-public class Course {
+public class Course implements Comparable<Course>{
 
 	private double credits;
 	private String name;
 	private String description;
 	private String courseNum;
-	private Major[] reqMajors;
+	private Major reqMajors;
 	
-	public Course(double credits, String name, String description, String courseNum, Major[] reqMajors) {
+	public Course(double credits, String name, String description, String courseNum, Major reqMajors) {
 		this.credits = credits;
 		this.name = name;
 		this.description = description;
@@ -37,13 +37,16 @@ public class Course {
 	public String getCourseNum() {
 		return courseNum;
 	}
-	public Major[] getReqMajors() {
+	public Major getReqMajors() {
 		return reqMajors;
 	}
-	public void setReqMajors(Major[] reqMajors) {
+	public void setReqMajors(Major reqMajors) {
 		this.reqMajors = reqMajors;
 	}
 	public String toString() {
 		return courseNum;
+	}
+	public int compareTo(Course o) {
+		return this.getName().compareTo(o.getName());
 	}
 }

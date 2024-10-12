@@ -45,8 +45,8 @@ public abstract class Emitter {
 		return Hours.values()[(int)(Math.random()*Hours.values().length)];
 	}
 	private static Day[] emitDays() {
-		Day[] mw = {Day.MONDAY, Day.WEDNESDAY};
-		Day[] tth = {Day.TUESDAY, Day.THURSDAY};
+		Day[] mw = {Day.Mon, Day.Wed};
+		Day[] tth = {Day.Tue, Day.Thu};
 		Day[][] combinations = {mw, tth};
 		return combinations[(int)(Math.random()*combinations.length)];
 	}

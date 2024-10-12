@@ -18,9 +18,9 @@ public class Test {
 		for(int i = 0; i < 10; i++) {
 			students.add(Emitter.emitStudent());
 		}
-		Course dsa = new Course(3, "Data Structures and Algorithms", "", "CSE218", new Major[]{Major.CSE});
+	//	Course dsa = new Course(3, "Data Structures and Algorithms", "", "CSE218", new Major[]{Major.CSE});
 		Classroom room = new Classroom("RI215", true);
-		Section section = Emitter.emitSection(room, dsa);
+	//	Section section = Emitter.emitSection(room, dsa);
 		Professor prof = Emitter.emitProfessor();
 		section.setInstructor(prof);
 		System.out.println(section);
