@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -44,8 +45,17 @@ public class CreationPage {
 		GridPane root = initPage(400, 500, "Section Creation");
 		Button close = defaultClose(root);
 		
+		TextField sectionNum = defaultTextField("Section Number", root, 0, 0, 2, 1);
+		
+		ComboBox<Course> courses = defaultComboBox((Course[])DataCenter.getInstance().getCourseContainer().toArray(), 
+				"Select Course", root, 0, 1, 2, 1);
+		
 		CheckBox isOnline = new CheckBox("Online?");
-		root.add(isOnline, 0, 3);
+		root.add(isOnline, 0, 2);
+		
+		Label lbl = new Label("Select the Day(s) For This Section:");
+		lbl.getStyleClass().add("textfield-style");
+		root.add(lbl, 0, 3, 2, 1);
 		
 		int count = 4;
 		for(Day d : Day.values()) {
@@ -53,16 +63,11 @@ public class CreationPage {
 			root.add(dayCheckBox, 0, count++, 1, 1);
 		}
 		
-		TextField sectionNum = defaultTextField("Section Number", root, 0, 1, 2, 1);
-		
-		ComboBox<Course> courses = defaultComboBox((Course[])DataCenter.getInstance().getCourseContainer().toArray(), 
-				"Select Course", root, 0, 2, 2, 1);
-		
 		Button submit = new Button("Submit");
 		submit.getStyleClass().add("button-style");
-		root.add(submit, 0, 11, 2, 1);
+		root.add(submit, 0, count, 1, 1);
 		
-		root.add(close, 1, 11, 2, 1);
+		root.add(close, 1, count, 1, 1);
 	}
 	public void courseCreationPage() {
 		// Course(double credits, String name, String description, String courseNum, Major[] reqMajors)
