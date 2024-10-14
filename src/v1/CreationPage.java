@@ -1,6 +1,9 @@
 package v1;
 
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;
@@ -15,6 +18,7 @@ import javafx.stage.Stage;
 import v1.model.Course;
 import v1.model.Day;
 import v1.model.Major;
+import v1.model.Section;
 
 public class CreationPage {
 	
@@ -44,8 +48,11 @@ public class CreationPage {
 					//ListBag<String> textbooks, Day[] daysOffered, Hours time)
 		GridPane root = initPage(400, 500, "Section Creation");
 		Button close = defaultClose(root);
+		Button submit = new Button("Submit");
+		submit.getStyleClass().add("button-style");
 		
-		TextField sectionNum = defaultTextField("Section Number", root, 0, 0, 2, 1);
+		TextField sectionNum = defaultTextField("Section Number (5 digits)", root, 0, 0, 2, 1);
+		//make a button to make a random num
 		
 		ComboBox<Course> courses = defaultComboBox((Course[])DataCenter.getInstance().getCourseContainer().toArray(), 
 				"Select Course", root, 0, 1, 2, 1);
@@ -58,43 +65,78 @@ public class CreationPage {
 		root.add(lbl, 0, 3, 2, 1);
 		
 		int count = 4;
+		ArrayList<Day> daysSelected = new ArrayList<>(); 
 		for(Day d : Day.values()) {
 			CheckBox dayCheckBox = new CheckBox(d + "");
 			root.add(dayCheckBox, 0, count++, 1, 1);
+			dayCheckBox.setUserData(d);
+		    dayCheckBox.setOnAction(e -> {
+		        CheckBox cb = (CheckBox) e.getSource();
+		        Day day = (Day) cb.getUserData();  
+		        if(cb.isSelected()) {
+		            daysSelected.add(day);
+		            System.out.println("added: " + day);
+			        checkSectionConditions(sectionNum, courses, daysSelected, submit);
+		        } else {
+		            daysSelected.remove(day);
+		            System.out.println("removed: " + day);
+			        checkSectionConditions(sectionNum, courses, daysSelected, submit);
+		        }
+		    });
 		}
+
+		sectionNum.textProperty().addListener((obs, oldText, newText) -> {
+	        checkSectionConditions(sectionNum, courses, daysSelected, submit);
+		});
+		courses.valueProperty().addListener((obs, oldCourse, newCourse) -> {
+	        checkSectionConditions(sectionNum, courses, daysSelected, submit);
+		});
 		
-		Button submit = new Button("Submit");
-		submit.getStyleClass().add("button-style");
 		root.add(submit, 0, count, 1, 1);
-		
+		submit.setDisable(true);
+		submit.setOnAction(e -> {
+			Section section = new Section(Integer.parseInt(sectionNum.getText()), isOnline.isSelected(), null, 
+					courses.getValue(), null, daysSelected.toArray(new Day[0]), null);
+			System.out.println(section);
+		//	DataCenter.getInstance().getCourseContainer().addCourse(section);
+		});
 		root.add(close, 1, count, 1, 1);
 	}
 	public void courseCreationPage() {
 		// Course(double credits, String name, String description, String courseNum, Major[] reqMajors)
 		GridPane root = initPage(300, 400, "Course Creation");
 		Button close = defaultClose(root);
+		Button submit = new Button("Submit");
+		submit.getStyleClass().add("button-style");
 		
 		TextField courseName = defaultTextField("Course Name", root, 0, 0, 2, 1);
 		TextField description = defaultTextField("Description", root, 0, 1, 2, 1);
-		TextField courseNum = defaultTextField("Course Number", root, 0, 2, 2, 1);		
+		TextField courseNum = defaultTextField("Course Number", root, 0, 2, 2, 1);	
 
 		ComboBox<Double> credits = defaultComboBox(new Double[] {1.0, 2.0, 3.0, 4.0, 5.0}, 
 				"Select Credit Value", root, 0, 3, 2, 1);
 		ComboBox<Major> majors = defaultComboBox(Major.values(), "Select Major", root, 0, 4, 2, 1);
 		
-		Button submit = new Button("Submit");
-		submit.getStyleClass().add("button-style");
 		submit.setDisable(true);
 		submit.setOnAction(e -> {
 			Course course = new Course(credits.getValue(), courseName.getText(),
 					description.getText(), courseNum.getText(), majors.getValue());
 			DataCenter.getInstance().getCourseContainer().addCourse(course);
 		});
-		root.setOnMouseMoved(e ->{
-			if(courseName.getLength() > 0 && description.getLength() > 0 && courseNum.getLength() > 0 &&
-					credits.getValue() != null && majors.getValue() != null) {
-				submit.setDisable(false);
-			}
+		courseName.textProperty().addListener((obs, oldText, newText) -> {
+	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
+		});
+		description.textProperty().addListener((obs, oldText, newText) -> {
+	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
+		});
+		courseNum.textProperty().addListener((obs, oldText, newText) -> {
+	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
+		});
+		credits.valueProperty().addListener((obs, oldCourse, newCourse) -> {
+	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
+		});
+		majors.valueProperty().addListener((obs, oldCourse, newCourse) -> {
+	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
 		});
 		root.add(submit, 0, 5, 1, 1);
 		root.add(close, 1, 5, 1, 1);
@@ -169,5 +211,22 @@ public class CreationPage {
 			stage.close();
 		});
 		return close;
+	}
+	private void checkSectionConditions(TextField sectionNum, ComboBox<Course> courses, ArrayList<Day> daysSelected, Button submit) {
+	    if(sectionNum.getLength() == 5 && courses.getValue() != null && daysSelected.size() > 0) {
+	        submit.setDisable(false);
+	    } else {
+	        submit.setDisable(true);
+	    }
+	}
+	private void checkCourseConditions(TextField courseName, TextField description, TextField courseNum,
+			ComboBox<Double> credits, ComboBox<Major> majors, Button submit) {
+		if(courseName.getLength() > 0 && description.getLength() > 0 && courseNum.getLength() > 0 &&
+				credits.getValue() != null && majors.getValue() != null) {
+			submit.setDisable(false);
+		}
+		else { 
+			submit.setDisable(true);
+		}
 	}
 }
