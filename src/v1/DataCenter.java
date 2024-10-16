@@ -9,6 +9,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import v1.structs.CourseContainer;
+import v1.structs.SectionContainer;
+import v1.structs.StudentContainer;
 
 public class DataCenter implements Serializable{
 	
@@ -18,11 +20,15 @@ public class DataCenter implements Serializable{
 
 	
 	private CourseContainer courses;
+	private StudentContainer students;
+	private SectionContainer sections;
 	
 	private static DataCenter instance;
 	
 	private DataCenter() {
 		courses = new CourseContainer();
+		students = new StudentContainer();
+		sections = new SectionContainer();
 	}
 	public static DataCenter getInstance() {
 		if(instance == null) {
@@ -35,6 +41,12 @@ public class DataCenter implements Serializable{
 	}
 	public CourseContainer getCourseContainer() {
 		return courses;
+	}
+	public StudentContainer getStudentContainer() {
+		return students;
+	}
+	public SectionContainer getSectionContainer() {
+		return sections;
 	}
 	public boolean save() {
 		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){

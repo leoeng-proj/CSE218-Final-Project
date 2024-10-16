@@ -1,7 +1,8 @@
 package v1.structs;
 
+import java.io.Serializable;
 
-public class AVLTree <T extends Comparable<T>>{
+public class AVLTree <T extends Comparable<T>> implements Serializable{
 	private Node root;
 	public AVLTree() {
 		this.setRoot(null);

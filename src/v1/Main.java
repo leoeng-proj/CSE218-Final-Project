@@ -58,8 +58,6 @@ public class Main extends Application {
 		createCourse.getStyleClass().add("large-button-style");
 		root.add(createCourse, 1, 1);
 		
-		
-		
 		root.setAlignment(Pos.CENTER);
 		return root;
 	}

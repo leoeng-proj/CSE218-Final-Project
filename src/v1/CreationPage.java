@@ -1,7 +1,6 @@
 package v1;
 
 
-import java.util.Collection;
 import java.util.LinkedList;
 
 import javafx.beans.property.BooleanProperty;
@@ -20,7 +19,9 @@ import javafx.stage.Stage;
 import v1.model.Course;
 import v1.model.Day;
 import v1.model.Major;
+import v1.model.Name;
 import v1.model.Section;
+import v1.model.Student;
 
 public class CreationPage {
 	
@@ -109,8 +110,8 @@ public class CreationPage {
 		submit.setOnAction(e -> {
 			Section section = new Section(Integer.parseInt(sectionNum.getText()), isOnline.isSelected(), null, 
 					courses.getValue(), null, daysSelected.toArray(new Day[0]), null);
-			System.out.println(section);
-		//	DataCenter.getInstance().getCourseContainer().addCourse(section);
+			DataCenter.getInstance().getSectionContainer().addSection(section);
+			closeWindow(root);
 		});
 		root.add(close, 1, count, 1, 1);
 	}
@@ -151,6 +152,7 @@ public class CreationPage {
 			Course course = new Course(credits.getValue(), courseName.getText(),
 					description.getText(), courseNum.getText(), majors.getValue());
 			DataCenter.getInstance().getCourseContainer().addCourse(course);
+			closeWindow(root);
 		});
 		
 		root.add(submit, 0, 5, 1, 1);
@@ -161,15 +163,34 @@ public class CreationPage {
 		GridPane root = initPage(300, 400, "Student Creation");
 		Button close = defaultClose(root);
 		root.add(close, 1, 3);
+		Button submit = new Button("Submit");
+		submit.getStyleClass().add("button-style");
+		root.add(submit, 0, 3);
 		
 		TextField firstname = defaultTextField("First Name", root, 0, 0, 2, 1);
 		TextField lastname = defaultTextField("Last Name", root, 0, 1, 2, 1);
 		
 		ComboBox<Major> majors = defaultComboBox(Major.values(), "Select Major", root, 0, 2, 2, 1);
 		
-		Button submit = new Button("Submit");
-		submit.getStyleClass().add("button-style");
-		root.add(submit, 0, 3);
+		ChangeListener<Object> listener = new ChangeListener<>() {
+			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
+				if(firstname.getLength() > 0 && lastname.getLength() > 0 &&  majors.getValue() != null) {
+					submit.setDisable(false);
+				}
+				else { 
+					submit.setDisable(true);
+				}
+			}
+		};
+		firstname.textProperty().addListener(listener);
+		lastname.textProperty().addListener(listener);
+		majors.valueProperty().addListener(listener);
+		submit.setDisable(true);
+		submit.setOnAction(e -> {
+			Student student = new Student(new Name(firstname.getText(), lastname.getText()), majors.getValue(), 0.0);
+			DataCenter.getInstance().getStudentContainer().addStudent(student);
+			closeWindow(root);
+		});
 	}
 	private GridPane initPage(int width, int height, String title) {
 		isOpen.set(true);
@@ -221,10 +242,13 @@ public class CreationPage {
 		Button close = new Button("Close");
 		close.getStyleClass().add("button-style");
 		close.setOnAction(e -> {
-			isOpen.set(false);
-			Stage stage = (Stage)root.getScene().getWindow();
-			stage.close();
+			closeWindow(root);
 		});
 		return close;
+	}
+	private void closeWindow(GridPane root) {
+		isOpen.set(false);
+		Stage stage = (Stage)root.getScene().getWindow();
+		stage.close();
 	}
 }

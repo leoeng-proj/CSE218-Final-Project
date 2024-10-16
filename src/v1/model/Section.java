@@ -1,20 +1,21 @@
 package v1.model;
 
-import v1.structs.ListBag;
+import java.io.Serializable;
+import java.util.LinkedList;
 
-public class Section {
+public class Section implements Serializable{
 	
 	private int sectionNum;
 	private boolean isOnline;
 	private Professor instructor;
 	private Classroom room;
 	private Course course;
-	private ListBag<String> textbooks;
-	private ListBag<Integer> studentIDs;
+	private LinkedList<String> textbooks;
+	private LinkedList<Integer> studentIDs;
 	private Day[] daysOffered;
 	private Hours time;
 	
-	public Section(int sectionNum, boolean isOnline, Classroom room, Course course, ListBag<String> textbooks, Day[] daysOffered, Hours time) {
+	public Section(int sectionNum, boolean isOnline, Classroom room, Course course, LinkedList<String> textbooks, Day[] daysOffered, Hours time) {
 		this.sectionNum = sectionNum;
 		this.isOnline = isOnline;
 		this.instructor = null;
@@ -52,16 +53,16 @@ public class Section {
 	public Course getCourse() {
 		return course;
 	}
-	public ListBag<String> getTextbooks() {
+	public LinkedList<String> getTextbooks() {
 		return textbooks;
 	}
-	public void setTextbooks(ListBag<String> textbooks) {
+	public void setTextbooks(LinkedList<String> textbooks) {
 		this.textbooks = textbooks;
 	}
-	public ListBag<Integer> getStudentIDs() {
+	public LinkedList<Integer> getStudentIDs() {
 		return studentIDs;
 	}
-	public void setStudentIDs(ListBag<Integer> studentIDs) {
+	public void setStudentIDs(LinkedList<Integer> studentIDs) {
 		this.studentIDs = studentIDs;
 	}
 	public Day[] getDaysOffered() {
