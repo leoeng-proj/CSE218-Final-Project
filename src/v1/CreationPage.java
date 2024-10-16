@@ -87,7 +87,6 @@ public class CreationPage {
 			CheckBox dayCheckBox = new CheckBox(d + "");
 			root.add(dayCheckBox, 0, count++, 1, 1);
 			dayCheckBox.setUserData(d);
-//		    dayCheckBox.selectedProperty().addListener(listener);
 		    dayCheckBox.setOnAction(e -> {
 		        CheckBox cb = (CheckBox) e.getSource();
 		        Day day = (Day) cb.getUserData();  
