@@ -3,6 +3,8 @@ package v1;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -52,7 +54,12 @@ public class CreationPage {
 		submit.getStyleClass().add("button-style");
 		
 		TextField sectionNum = defaultTextField("Section Number (5 digits)", root, 0, 0, 2, 1);
-		//make a button to make a random num
+		Button randomSectionNum = new Button("Random");
+		randomSectionNum.setOnAction(e -> {
+			sectionNum.setText((int)(Math.random() * 90000) + 10000 + "");
+		});
+		randomSectionNum.getStyleClass().add("button-style");
+		root.add(randomSectionNum, 3, 0, 1, 1);
 		
 		ComboBox<Course> courses = defaultComboBox((Course[])DataCenter.getInstance().getCourseContainer().toArray(), 
 				"Select Course", root, 0, 1, 2, 1);
@@ -65,7 +72,7 @@ public class CreationPage {
 		root.add(lbl, 0, 3, 2, 1);
 		
 		int count = 4;
-		ArrayList<Day> daysSelected = new ArrayList<>(); 
+		LinkedList<Day> daysSelected = new LinkedList<>(); 
 		for(Day d : Day.values()) {
 			CheckBox dayCheckBox = new CheckBox(d + "");
 			root.add(dayCheckBox, 0, count++, 1, 1);
@@ -75,13 +82,10 @@ public class CreationPage {
 		        Day day = (Day) cb.getUserData();  
 		        if(cb.isSelected()) {
 		            daysSelected.add(day);
-		            System.out.println("added: " + day);
-			        checkSectionConditions(sectionNum, courses, daysSelected, submit);
 		        } else {
 		            daysSelected.remove(day);
-		            System.out.println("removed: " + day);
-			        checkSectionConditions(sectionNum, courses, daysSelected, submit);
 		        }
+		        checkSectionConditions(sectionNum, courses, daysSelected, submit);
 		    });
 		}
 
@@ -212,7 +216,7 @@ public class CreationPage {
 		});
 		return close;
 	}
-	private void checkSectionConditions(TextField sectionNum, ComboBox<Course> courses, ArrayList<Day> daysSelected, Button submit) {
+	private void checkSectionConditions(TextField sectionNum, ComboBox<Course> courses, Collection<Day> daysSelected, Button submit) {
 	    if(sectionNum.getLength() == 5 && courses.getValue() != null && daysSelected.size() > 0) {
 	        submit.setDisable(false);
 	    } else {
