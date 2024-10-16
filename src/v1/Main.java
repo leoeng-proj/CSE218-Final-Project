@@ -1,11 +1,17 @@
 package v1;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import v1.model.Course;
+import v1.model.Professor;
+import v1.model.Section;
+import v1.model.Student;
 
 public class Main extends Application {
 
@@ -30,6 +36,34 @@ public class Main extends Application {
 		GridPane root = new GridPane();
 		root.getStyleClass().add("pane-style");
 		root.disableProperty().bind(creator.getIsOpen());
+
+		root.add(creationButtons(creator), 0, 0);
+		root.add(displayContainers(), 0, 1);
+		
+		return root;
+	}
+	public GridPane displayContainers() {
+		GridPane root = new GridPane();
+		root.getStyleClass().add("pane-style");
+		
+		ListView<Student> studentView = new ListView<>();
+		studentView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getStudentContainer().toArray()));
+		root.add(studentView, 0, 0);
+		ListView<Section> sectionView = new ListView<>();
+		sectionView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getSectionContainer().toArray()));
+		root.add(sectionView, 1, 0);
+		ListView<Course> courseView = new ListView<>();
+		courseView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getCourseContainer().toArray()));
+		root.add(courseView, 2, 0);
+//		ListView<Professor> professorView = new ListView<>();
+		
+		
+		
+		return root;
+	}
+	public GridPane creationButtons(CreationPage creator) {
+		GridPane root = new GridPane();
+		root.getStyleClass().add("pane-style");
 		
 		Button createStudent = new Button("Create Student");
 		createStudent.setOnAction(e -> {
