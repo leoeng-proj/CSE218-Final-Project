@@ -7,20 +7,20 @@ import v1.model.Name;
 import v1.model.Professor;
 import v1.model.Section;
 import v1.model.Student;
-import v1.structs.AVLTree;
+import v1.structs.StudentContainer;
 
 public class Test {
 
 	public static void main(String[] args) {
 
 		Student leo = new Student(new Name("Leo", "Eng"), Major.CSE, 4.0);
-		AVLTree<Student> students = new AVLTree<>();
+		StudentContainer students = new StudentContainer();
 		for(int i = 0; i < 10; i++) {
-			students.add(Emitter.emitStudent());
+			students.addStudent(Emitter.emitStudent());
 		}
-	//	Course dsa = new Course(3, "Data Structures and Algorithms", "", "CSE218", new Major[]{Major.CSE});
+		Course dsa = new Course(3, "Data Structures and Algorithms", "", "CSE218", Major.CSE);
 		Classroom room = new Classroom("RI215", true);
-	//	Section section = Emitter.emitSection(room, dsa);
+		Section section = Emitter.emitSection(room, dsa);
 		Professor prof = Emitter.emitProfessor();
 		section.setInstructor(prof);
 		System.out.println(section);

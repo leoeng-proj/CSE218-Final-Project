@@ -14,11 +14,7 @@ import v1.structs.StudentContainer;
 
 public class DataCenter implements Serializable{
 	
-	private static final File laptop = new File("C:\\2023-24\\cse148\\workspace\\Projects\\src\\project2\\user.dat");
-	private static final File home = new File("N:\\java\\cse218 final project");
 	private static final File file = new File("data.dat");
-
-	
 	private CourseContainer courses;
 	private StudentContainer students;
 	private SectionContainer sections;
