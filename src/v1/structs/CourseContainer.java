@@ -17,7 +17,6 @@ public class CourseContainer implements Serializable{
 	public void addCourse(Course course) {
 		courses.add(course);
 	}
-	
 	public Course[] toArray() {
 		return courses.toArray(new Course[0]);
 	}

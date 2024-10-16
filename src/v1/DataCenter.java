@@ -8,6 +8,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import v1.model.Course;
+import v1.model.Section;
+import v1.model.Student;
 import v1.structs.CourseContainer;
 import v1.structs.SectionContainer;
 import v1.structs.StudentContainer;
@@ -43,6 +48,15 @@ public class DataCenter implements Serializable{
 	}
 	public SectionContainer getSectionContainer() {
 		return sections;
+	}
+	public ObservableList<Course> getObservableCourseContainer() {
+		return FXCollections.observableArrayList(DataCenter.getInstance().getCourseContainer().toArray());
+	}
+	public ObservableList<Student> getObservableStudentContainer() {
+		return FXCollections.observableArrayList(DataCenter.getInstance().getStudentContainer().toArray());
+	}
+	public ObservableList<Section> getObservableSectionContainer() {
+		return FXCollections.observableArrayList(DataCenter.getInstance().getSectionContainer().toArray());
 	}
 	public boolean save() {
 		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){

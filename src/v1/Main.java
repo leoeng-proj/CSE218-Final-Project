@@ -1,15 +1,18 @@
 package v1;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import v1.model.Course;
-import v1.model.Professor;
 import v1.model.Section;
 import v1.model.Student;
 
@@ -26,40 +29,67 @@ public class Main extends Application {
 		});
 		
 		stage.setResizable(false);
-		stage.setWidth(500);
-		stage.setHeight(600);
+		stage.setWidth(700);
+		stage.setHeight(800);
 		stage.setScene(scene);
 		stage.setTitle("College Manager");
 		stage.show();
 	}
-	public GridPane homepage(CreationPage creator) {
-		GridPane root = new GridPane();
-		root.getStyleClass().add("pane-style");
+	public Pane homepage(CreationPage creator) {
+		BorderPane root = new BorderPane();
+//		root.getStyleClass().add("pane-style");
+		root.setPadding(new Insets(5, 5, 5, 5));
 		root.disableProperty().bind(creator.getIsOpen());
-
-		root.add(creationButtons(creator), 0, 0);
-		root.add(displayContainers(), 0, 1);
+		root.setLeft(displayContainers(root));
+		root.setRight(creationButtons(creator));
+//		root.add(creationButtons(creator), 0, 0);
+//		root.add(displayContainers(root), 0, 1);
+		
 		
 		return root;
 	}
-	public GridPane displayContainers() {
+	public GridPane displayContainers(Pane parent) {
 		GridPane root = new GridPane();
 		root.getStyleClass().add("pane-style");
 		
 		ListView<Student> studentView = new ListView<>();
-		studentView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getStudentContainer().toArray()));
-		root.add(studentView, 0, 0);
+		studentView.getStyleClass().add("listview-style");
+		root.add(studentView, 0, 1, 2, 1);
 		ListView<Section> sectionView = new ListView<>();
-		sectionView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getSectionContainer().toArray()));
-		root.add(sectionView, 1, 0);
+		sectionView.getStyleClass().add("listview-style");
+		root.add(sectionView, 0, 1, 2, 1);
 		ListView<Course> courseView = new ListView<>();
-		courseView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getCourseContainer().toArray()));
-		root.add(courseView, 2, 0);
+		courseView.getStyleClass().add("listview-style");
+		root.add(courseView, 0, 1);
 //		ListView<Professor> professorView = new ListView<>();
 		
+		String[] titles = {"Students:", "Sections:", "Courses:"};
+		Label titleOfView = new Label(titles[2]);
+		root.add(titleOfView, 1, 0, 1, 1);
 		
-		
+		Node[] views = {studentView, sectionView, courseView};
+		Button cycle = new Button("Cycle Views");
+		cycle.getStyleClass().add("large-button-style");
+		ClickCounter counter = new ClickCounter();
+		cycle.setOnAction(e -> {
+			views[counter.getCount()].toFront();
+			titleOfView.setText(titles[counter.getCount()]);
+			counter.click();
+			if(counter.getCount() == views.length) {
+				counter.reset();
+			}
+		});
+		root.add(cycle, 0, 0, 1, 1);
+		refreshViews(studentView, sectionView, courseView);
+		parent.disableProperty().addListener(e -> {
+			refreshViews(studentView, sectionView, courseView);
+		});
 		return root;
+	}
+	public void refreshViews(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView) {
+		studentView.setItems(DataCenter.getInstance().getObservableStudentContainer());
+		sectionView.setItems(DataCenter.getInstance().getObservableSectionContainer());
+		courseView.setItems(DataCenter.getInstance().getObservableCourseContainer());
 	}
 	public GridPane creationButtons(CreationPage creator) {
 		GridPane root = new GridPane();
@@ -98,5 +128,16 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
-
+	private class ClickCounter {
+		int count = 0;
+		void click() {
+			count++;
+		}
+		void reset() {
+			count = 0;
+		}
+		int getCount() {
+			return count;
+		}
+	}
 }

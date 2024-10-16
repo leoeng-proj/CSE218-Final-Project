@@ -15,3 +15,7 @@
 	-fx-pref-width: 200;
     -fx-pref-height: 20;
 }
+.listview-style{
+	-fx-pref-width: 200;
+    -fx-pref-height: 200;
+}

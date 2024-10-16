@@ -93,11 +93,9 @@ public class CreationPage {
 		        Day day = (Day) cb.getUserData();  
 		        if(cb.isSelected()) {
 		            daysSelected.add(day);
-		            System.out.println("added: " + day);
 		        } 
 		        else {
 		            daysSelected.remove(day);
-		            System.out.println("removed: " + day);
 		        }
 		        listener.changed(null, null, null);
 		    });

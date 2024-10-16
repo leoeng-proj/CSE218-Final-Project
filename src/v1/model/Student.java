@@ -44,7 +44,7 @@ public class Student extends Person implements Comparable<Student> {
 				this.gpa == o.getGpa();
 	}
 	public String toString() {
-		return super.toString() + " ID: " + id;
+		return super.toString();
 	}
 	private static int generateUUID() {
 		int id = 0;
