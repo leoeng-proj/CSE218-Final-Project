@@ -1,13 +1,13 @@
 package v1;
 
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -73,28 +73,37 @@ public class CreationPage {
 		
 		int count = 4;
 		LinkedList<Day> daysSelected = new LinkedList<>(); 
+		ChangeListener<Object> listener = new ChangeListener<>() {
+			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
+				if(sectionNum.getLength() == 5 && courses.getValue() != null && !daysSelected.isEmpty()) {
+			        submit.setDisable(false);
+			    } 
+				else {
+			        submit.setDisable(true);
+			    }
+			}
+		};
 		for(Day d : Day.values()) {
 			CheckBox dayCheckBox = new CheckBox(d + "");
 			root.add(dayCheckBox, 0, count++, 1, 1);
 			dayCheckBox.setUserData(d);
+//		    dayCheckBox.selectedProperty().addListener(listener);
 		    dayCheckBox.setOnAction(e -> {
 		        CheckBox cb = (CheckBox) e.getSource();
 		        Day day = (Day) cb.getUserData();  
 		        if(cb.isSelected()) {
 		            daysSelected.add(day);
-		        } else {
+		            System.out.println("added: " + day);
+		        } 
+		        else {
 		            daysSelected.remove(day);
+		            System.out.println("removed: " + day);
 		        }
-		        checkSectionConditions(sectionNum, courses, daysSelected, submit);
+		        listener.changed(null, null, null);
 		    });
 		}
-
-		sectionNum.textProperty().addListener((obs, oldText, newText) -> {
-	        checkSectionConditions(sectionNum, courses, daysSelected, submit);
-		});
-		courses.valueProperty().addListener((obs, oldCourse, newCourse) -> {
-	        checkSectionConditions(sectionNum, courses, daysSelected, submit);
-		});
+		sectionNum.textProperty().addListener(listener);
+		courses.valueProperty().addListener(listener);
 		
 		root.add(submit, 0, count, 1, 1);
 		submit.setDisable(true);
@@ -121,27 +130,30 @@ public class CreationPage {
 				"Select Credit Value", root, 0, 3, 2, 1);
 		ComboBox<Major> majors = defaultComboBox(Major.values(), "Select Major", root, 0, 4, 2, 1);
 		
+		ChangeListener<Object> listener = new ChangeListener<>() {
+			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
+				if(courseName.getLength() > 0 && description.getLength() > 0 && courseNum.getLength() > 0 &&
+						credits.getValue() != null && majors.getValue() != null) {
+					submit.setDisable(false);
+				}
+				else { 
+					submit.setDisable(true);
+				}
+			}
+		};
+		courseName.textProperty().addListener(listener);
+		description.textProperty().addListener(listener);
+		courseNum.textProperty().addListener(listener);
+		credits.valueProperty().addListener(listener);
+		majors.valueProperty().addListener(listener);
+		
 		submit.setDisable(true);
 		submit.setOnAction(e -> {
 			Course course = new Course(credits.getValue(), courseName.getText(),
 					description.getText(), courseNum.getText(), majors.getValue());
 			DataCenter.getInstance().getCourseContainer().addCourse(course);
 		});
-		courseName.textProperty().addListener((obs, oldText, newText) -> {
-	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
-		});
-		description.textProperty().addListener((obs, oldText, newText) -> {
-	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
-		});
-		courseNum.textProperty().addListener((obs, oldText, newText) -> {
-	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
-		});
-		credits.valueProperty().addListener((obs, oldCourse, newCourse) -> {
-	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
-		});
-		majors.valueProperty().addListener((obs, oldCourse, newCourse) -> {
-	        checkCourseConditions(courseName, description, courseNum, credits, majors, submit);
-		});
+		
 		root.add(submit, 0, 5, 1, 1);
 		root.add(close, 1, 5, 1, 1);
 	}
@@ -215,22 +227,5 @@ public class CreationPage {
 			stage.close();
 		});
 		return close;
-	}
-	private void checkSectionConditions(TextField sectionNum, ComboBox<Course> courses, Collection<Day> daysSelected, Button submit) {
-	    if(sectionNum.getLength() == 5 && courses.getValue() != null && daysSelected.size() > 0) {
-	        submit.setDisable(false);
-	    } else {
-	        submit.setDisable(true);
-	    }
-	}
-	private void checkCourseConditions(TextField courseName, TextField description, TextField courseNum,
-			ComboBox<Double> credits, ComboBox<Major> majors, Button submit) {
-		if(courseName.getLength() > 0 && description.getLength() > 0 && courseNum.getLength() > 0 &&
-				credits.getValue() != null && majors.getValue() != null) {
-			submit.setDisable(false);
-		}
-		else { 
-			submit.setDisable(true);
-		}
 	}
 }
