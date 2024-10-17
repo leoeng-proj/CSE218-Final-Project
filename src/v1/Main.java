@@ -44,8 +44,6 @@ public class Main extends Application {
 		root.setRight(creationButtons(creator));
 //		root.add(creationButtons(creator), 0, 0);
 //		root.add(displayContainers(root), 0, 1);
-		
-		
 		return root;
 	}
 	public GridPane displayContainers(Pane parent) {
