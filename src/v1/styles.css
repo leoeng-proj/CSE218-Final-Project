@@ -16,6 +16,10 @@
     -fx-pref-height: 20;
 }
 .listview-style{
-	-fx-pref-width: 200;
+	-fx-pref-width: 240;
     -fx-pref-height: 200;
+}
+.label-style{
+    -fx-pref-width: 120;
+    -fx-pref-height: 20;
 }

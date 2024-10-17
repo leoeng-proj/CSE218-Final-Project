@@ -38,7 +38,7 @@ public class Main extends Application {
 	public Pane homepage(CreationPage creator) {
 		BorderPane root = new BorderPane();
 //		root.getStyleClass().add("pane-style");
-		root.setPadding(new Insets(5, 5, 5, 5));
+		root.setPadding(new Insets(10, 10, 10, 10));
 		root.disableProperty().bind(creator.getIsOpen());
 		root.setLeft(displayContainers(root));
 		root.setRight(creationButtons(creator));
@@ -54,18 +54,21 @@ public class Main extends Application {
 		
 		ListView<Student> studentView = new ListView<>();
 		studentView.getStyleClass().add("listview-style");
+		studentView.setUserData("Students");
 		root.add(studentView, 0, 1, 2, 1);
 		ListView<Section> sectionView = new ListView<>();
+		sectionView.setUserData("Sections");
 		sectionView.getStyleClass().add("listview-style");
 		root.add(sectionView, 0, 1, 2, 1);
 		ListView<Course> courseView = new ListView<>();
+		courseView.setUserData("Courses");
 		courseView.getStyleClass().add("listview-style");
-		root.add(courseView, 0, 1);
+		root.add(courseView, 0, 1, 2, 1);
 //		ListView<Professor> professorView = new ListView<>();
 		
-		String[] titles = {"Students:", "Sections:", "Courses:"};
-		Label titleOfView = new Label(titles[2]);
-		root.add(titleOfView, 1, 0, 1, 1);
+		Label titleOfView = new Label(courseView.getUserData().toString());
+		titleOfView.getStyleClass().add("label-style");
+		root.add(titleOfView, 0, 0, 1, 1);
 		
 		Node[] views = {studentView, sectionView, courseView};
 		Button cycle = new Button("Cycle Views");
@@ -73,13 +76,13 @@ public class Main extends Application {
 		ClickCounter counter = new ClickCounter();
 		cycle.setOnAction(e -> {
 			views[counter.getCount()].toFront();
-			titleOfView.setText(titles[counter.getCount()]);
+			titleOfView.setText(views[counter.getCount()].getUserData().toString());
 			counter.click();
 			if(counter.getCount() == views.length) {
 				counter.reset();
 			}
 		});
-		root.add(cycle, 0, 0, 1, 1);
+		root.add(cycle, 1, 0, 1, 1);
 		refreshViews(studentView, sectionView, courseView);
 		parent.disableProperty().addListener(e -> {
 			refreshViews(studentView, sectionView, courseView);
