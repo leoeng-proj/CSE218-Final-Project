@@ -17,9 +17,10 @@
 }
 .listview-style{
 	-fx-pref-width: 240;
-    -fx-pref-height: 200;
+    -fx-pref-height: 600;
 }
 .label-style{
     -fx-pref-width: 120;
     -fx-pref-height: 20;
+    -fx-alignment: center;
 }

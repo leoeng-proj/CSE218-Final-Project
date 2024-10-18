@@ -40,15 +40,19 @@ public class Main extends Application {
 //		root.getStyleClass().add("pane-style");
 		root.setPadding(new Insets(10, 10, 10, 10));
 		root.disableProperty().bind(creator.getIsOpen());
-		root.setLeft(displayContainers(root));
-		root.setRight(creationButtons(creator));
-//		root.add(creationButtons(creator), 0, 0);
-//		root.add(displayContainers(root), 0, 1);
+
+		GridPane controls = new GridPane();
+		controls.getStyleClass().add("pane-style");
+		controls.add(creationButtons(creator), 0, 0);
+		controls.add(displayContainers(root), 0, 1);
+		
+		root.setLeft(controls);
 		return root;
 	}
 	public GridPane displayContainers(Pane parent) {
 		GridPane root = new GridPane();
 		root.getStyleClass().add("pane-style");
+
 		
 		ListView<Student> studentView = new ListView<>();
 		studentView.getStyleClass().add("listview-style");
@@ -64,33 +68,46 @@ public class Main extends Application {
 		root.add(courseView, 0, 1, 2, 1);
 //		ListView<Professor> professorView = new ListView<>();
 		
-		Label titleOfView = new Label(courseView.getUserData().toString());
-		titleOfView.getStyleClass().add("label-style");
-		root.add(titleOfView, 0, 0, 1, 1);
-		
-		Node[] views = {studentView, sectionView, courseView};
+		Node[] views = {sectionView, studentView, courseView};
 		Button cycle = new Button("Cycle Views");
 		cycle.getStyleClass().add("large-button-style");
 		ClickCounter counter = new ClickCounter();
+		Label titleOfView = new Label(views[counter.getCount()].getUserData().toString());
+		titleOfView.getStyleClass().add("label-style");
+		root.add(titleOfView, 0, 0, 1, 1);
+		views[counter.getCount()].toFront();
 		cycle.setOnAction(e -> {
-			views[counter.getCount()].toFront();
-			titleOfView.setText(views[counter.getCount()].getUserData().toString());
 			counter.click();
 			if(counter.getCount() == views.length) {
 				counter.reset();
 			}
+			views[counter.getCount()].toFront();
+			titleOfView.setText(views[counter.getCount()].getUserData().toString());
 		});
 		root.add(cycle, 1, 0, 1, 1);
 		refreshViews(studentView, sectionView, courseView);
 		parent.disableProperty().addListener(e -> {
 			refreshViews(studentView, sectionView, courseView);
 		});
+
+		Button remove = new Button("Remove");
+		remove.getStyleClass().add("large-button-style");
+		remove.setOnAction(e -> {
+			ListView<?> lv = (ListView<?>)views[counter.getCount()];
+			Object obj = lv.getFocusModel().getFocusedItem();
+			if(obj == null) {
+				return;
+			}
+			System.out.println(obj.getClass());
+		});
+		root.add(remove, 0, 2);
 		return root;
 	}
 	public void refreshViews(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView) {
 		studentView.setItems(DataCenter.getInstance().getObservableStudentContainer());
 		sectionView.setItems(DataCenter.getInstance().getObservableSectionContainer());
 		courseView.setItems(DataCenter.getInstance().getObservableCourseContainer());
+		
 	}
 	public GridPane creationButtons(CreationPage creator) {
 		GridPane root = new GridPane();
