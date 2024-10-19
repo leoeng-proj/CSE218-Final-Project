@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 import v1.model.Course;
 
-public class CourseContainer implements Serializable{
+public class CourseContainer implements Serializable, Removal{
 
 	private LinkedList<Course> courses;
 	
@@ -19,5 +19,8 @@ public class CourseContainer implements Serializable{
 	}
 	public Course[] toArray() {
 		return courses.toArray(new Course[0]);
+	}
+	public boolean remove(Object obj) {	
+		return courses.remove(obj);
 	}
 }

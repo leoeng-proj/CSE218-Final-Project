@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import v1.model.Course;
 import v1.model.Section;
 import v1.model.Student;
+import v1.structs.Removal;
 
 public class Main extends Application {
 
@@ -56,15 +57,15 @@ public class Main extends Application {
 		root.getStyleClass().add("pane-style");
 
 		ListView<Student> studentView = new ListView<>();
+		studentView.setUserData(DataCenter.getInstance().getContainers().getStudentContainer());
 		studentView.getStyleClass().add("listview-style");
-		studentView.setUserData("Students");
 		root.add(studentView, 0, 1, 2, 1);
 		ListView<Section> sectionView = new ListView<>();
-		sectionView.setUserData("Sections");
+		sectionView.setUserData(DataCenter.getInstance().getContainers().getSectionContainer());
 		sectionView.getStyleClass().add("listview-style");
 		root.add(sectionView, 0, 1, 2, 1);
 		ListView<Course> courseView = new ListView<>();
-		courseView.setUserData("Courses");
+		courseView.setUserData(DataCenter.getInstance().getContainers().getCourseContainer());
 		courseView.getStyleClass().add("listview-style");
 		root.add(courseView, 0, 1, 2, 1);
 //		ListView<Professor> professorView = new ListView<>();
@@ -83,9 +84,11 @@ public class Main extends Application {
 			Object obj = lv.getFocusModel().getFocusedItem();
 			if(obj == null) {
 				return;
-			}
-			//remove
-			System.out.println(obj.getClass());
+			} 
+			Removal container = (Removal)lv.getUserData();
+			container.remove(obj);
+			refreshViews(studentView, sectionView, courseView);
+			checkRemoveButton(remove, views, counter);
 		});
 		checkRemoveButton(remove, views, counter);
 		root.add(remove, 0, 2);
@@ -106,8 +109,8 @@ public class Main extends Application {
 		
 		refreshViews(studentView, sectionView, courseView);
 		parent.disableProperty().addListener(e -> {
-			checkRemoveButton(remove, views, counter);
 			refreshViews(studentView, sectionView, courseView);
+			checkRemoveButton(remove, views, counter);
 		});
 		return root;
 	}
