@@ -62,7 +62,7 @@ public class CreationPage {
 		randomSectionNum.getStyleClass().add("button-style");
 		root.add(randomSectionNum, 3, 0, 1, 1);
 		
-		ComboBox<Course> courses = defaultComboBox((Course[])DataCenter.getInstance().getCourseContainer().toArray(), 
+		ComboBox<Course> courses = defaultComboBox((Course[])DataCenter.getInstance().getContainers().getCourseContainer().toArray(), 
 				"Select Course", root, 0, 1, 2, 1);
 		
 		CheckBox isOnline = new CheckBox("Online?");
@@ -108,7 +108,7 @@ public class CreationPage {
 		submit.setOnAction(e -> {
 			Section section = new Section(Integer.parseInt(sectionNum.getText()), isOnline.isSelected(), null, 
 					courses.getValue(), null, daysSelected.toArray(new Day[0]), null);
-			DataCenter.getInstance().getSectionContainer().addSection(section);
+			DataCenter.getInstance().getContainers().getSectionContainer().addSection(section);
 			closeWindow(root);
 		});
 		root.add(close, 1, count, 1, 1);
@@ -149,7 +149,7 @@ public class CreationPage {
 		submit.setOnAction(e -> {
 			Course course = new Course(credits.getValue(), courseName.getText(),
 					description.getText(), courseNum.getText(), majors.getValue());
-			DataCenter.getInstance().getCourseContainer().addCourse(course);
+			DataCenter.getInstance().getContainers().getCourseContainer().addCourse(course);
 			closeWindow(root);
 		});
 		
@@ -186,7 +186,7 @@ public class CreationPage {
 		submit.setDisable(true);
 		submit.setOnAction(e -> {
 			Student student = new Student(new Name(firstname.getText(), lastname.getText()), majors.getValue(), 0.0);
-			DataCenter.getInstance().getStudentContainer().addStudent(student);
+			DataCenter.getInstance().getContainers().getStudentContainer().addStudent(student);
 			closeWindow(root);
 		});
 	}

@@ -8,28 +8,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import v1.model.Course;
-import v1.model.Section;
-import v1.model.Student;
-import v1.structs.CourseContainer;
-import v1.structs.SectionContainer;
-import v1.structs.StudentContainer;
+import v1.structs.MasterContainer;
 
 public class DataCenter implements Serializable{
-	
 	private static final File file = new File("data.dat");
-	private CourseContainer courses;
-	private StudentContainer students;
-	private SectionContainer sections;
-	
+	private MasterContainer containers;
 	private static DataCenter instance;
-	
 	private DataCenter() {
-		courses = new CourseContainer();
-		students = new StudentContainer();
-		sections = new SectionContainer();
+		containers = new MasterContainer();
 	}
 	public static DataCenter getInstance() {
 		if(instance == null) {
@@ -40,23 +26,8 @@ public class DataCenter implements Serializable{
 		}
 		return instance;
 	}
-	public CourseContainer getCourseContainer() {
-		return courses;
-	}
-	public StudentContainer getStudentContainer() {
-		return students;
-	}
-	public SectionContainer getSectionContainer() {
-		return sections;
-	}
-	public ObservableList<Course> getObservableCourseContainer() {
-		return FXCollections.observableArrayList(DataCenter.getInstance().getCourseContainer().toArray());
-	}
-	public ObservableList<Student> getObservableStudentContainer() {
-		return FXCollections.observableArrayList(DataCenter.getInstance().getStudentContainer().toArray());
-	}
-	public ObservableList<Section> getObservableSectionContainer() {
-		return FXCollections.observableArrayList(DataCenter.getInstance().getSectionContainer().toArray());
+	public MasterContainer getContainers() {
+		return containers;
 	}
 	public boolean save() {
 		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){

@@ -1,6 +1,8 @@
 package v1;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -53,7 +55,6 @@ public class Main extends Application {
 		GridPane root = new GridPane();
 		root.getStyleClass().add("pane-style");
 
-		
 		ListView<Student> studentView = new ListView<>();
 		studentView.getStyleClass().add("listview-style");
 		studentView.setUserData("Students");
@@ -69,27 +70,12 @@ public class Main extends Application {
 //		ListView<Professor> professorView = new ListView<>();
 		
 		Node[] views = {sectionView, studentView, courseView};
-		Button cycle = new Button("Cycle Views");
-		cycle.getStyleClass().add("large-button-style");
 		ClickCounter counter = new ClickCounter();
+		
 		Label titleOfView = new Label(views[counter.getCount()].getUserData().toString());
 		titleOfView.getStyleClass().add("label-style");
 		root.add(titleOfView, 0, 0, 1, 1);
-		views[counter.getCount()].toFront();
-		cycle.setOnAction(e -> {
-			counter.click();
-			if(counter.getCount() == views.length) {
-				counter.reset();
-			}
-			views[counter.getCount()].toFront();
-			titleOfView.setText(views[counter.getCount()].getUserData().toString());
-		});
-		root.add(cycle, 1, 0, 1, 1);
-		refreshViews(studentView, sectionView, courseView);
-		parent.disableProperty().addListener(e -> {
-			refreshViews(studentView, sectionView, courseView);
-		});
-
+		
 		Button remove = new Button("Remove");
 		remove.getStyleClass().add("large-button-style");
 		remove.setOnAction(e -> {
@@ -98,16 +84,45 @@ public class Main extends Application {
 			if(obj == null) {
 				return;
 			}
+			//remove
 			System.out.println(obj.getClass());
 		});
+		checkRemoveButton(remove, views, counter);
 		root.add(remove, 0, 2);
+		
+		Button cycle = new Button("Cycle Views");
+		cycle.getStyleClass().add("large-button-style");
+		views[counter.getCount()].toFront();
+		cycle.setOnAction(e -> {
+			counter.click();
+			if(counter.getCount() == views.length) {
+				counter.reset();
+			}
+			views[counter.getCount()].toFront();
+			checkRemoveButton(remove, views, counter);
+			titleOfView.setText(views[counter.getCount()].getUserData().toString());
+		});
+		root.add(cycle, 1, 0, 1, 1);
+		
+		refreshViews(studentView, sectionView, courseView);
+		parent.disableProperty().addListener(e -> {
+			checkRemoveButton(remove, views, counter);
+			refreshViews(studentView, sectionView, courseView);
+		});
 		return root;
 	}
 	public void refreshViews(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView) {
-		studentView.setItems(DataCenter.getInstance().getObservableStudentContainer());
-		sectionView.setItems(DataCenter.getInstance().getObservableSectionContainer());
-		courseView.setItems(DataCenter.getInstance().getObservableCourseContainer());
-		
+		studentView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getStudentContainer().toArray()));
+		sectionView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getSectionContainer().toArray()));
+		courseView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getCourseContainer().toArray()));
+	}
+	public void checkRemoveButton(Button remove, Node[] views, ClickCounter counter) {
+		if(((ListView<?>)(views[counter.getCount()])).getItems().isEmpty()) {
+			remove.setDisable(true);
+		}
+		else {
+			remove.setDisable(false);
+		}
 	}
 	public GridPane creationButtons(CreationPage creator) {
 		GridPane root = new GridPane();
