@@ -1,15 +1,22 @@
 package v1;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -38,7 +45,7 @@ public class Main extends Application {
 		stage.setTitle("College Manager");
 		stage.show();
 	}
-	public Pane homepage(CreationPage creator) {
+	public Pane homepage(CreationPage creator) throws IOException {
 		BorderPane root = new BorderPane();
 //		root.getStyleClass().add("pane-style");
 		root.setPadding(new Insets(10, 10, 10, 10));
@@ -48,10 +55,16 @@ public class Main extends Application {
 		controls.getStyleClass().add("pane-style");
 		controls.add(creationButtons(creator), 0, 0);
 		controls.add(displayContainers(root), 0, 1);
-		
 		root.setLeft(controls);
+		
+//		FileInputStream fis = new FileInputStream(new File("school-map.png"));
+//		Image map = new Image(fis);
+//		ImageView iv = new ImageView(map);
+		Parent classroomManager = FXMLLoader.load(getClass().getResource("/ClassroomManager.fxml"));
+		root.setRight(classroomManager);
+		
 		return root;
-	}
+}
 	public GridPane displayContainers(Pane parent) {
 		GridPane root = new GridPane();
 		root.getStyleClass().add("pane-style");
@@ -73,7 +86,8 @@ public class Main extends Application {
 		Node[] views = {sectionView, studentView, courseView};
 		ClickCounter counter = new ClickCounter();
 		
-		Label titleOfView = new Label(views[counter.getCount()].getUserData().toString());
+		String[] titles = {"Sections", "Students", "Courses"};
+		Label titleOfView = new Label(titles[counter.getCount()]);
 		titleOfView.getStyleClass().add("label-style");
 		root.add(titleOfView, 0, 0, 1, 1);
 		
@@ -103,7 +117,7 @@ public class Main extends Application {
 			}
 			views[counter.getCount()].toFront();
 			checkRemoveButton(remove, views, counter);
-			titleOfView.setText(views[counter.getCount()].getUserData().toString());
+			titleOfView.setText(titles[counter.getCount()]);
 		});
 		root.add(cycle, 1, 0, 1, 1);
 		

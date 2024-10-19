@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="410.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane prefHeight="478.0" prefWidth="410.0">
+         <children>
+            <ImageView fitHeight="477.0" fitWidth="410.0">
+               <image>
+                  <Image url="@../school-map.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="42.0" layoutY="76.0" mnemonicParsing="false" text="CL01" />
+            <Button layoutX="42.0" layoutY="239.0" mnemonicParsing="false" text="CL02" />
+            <Button layoutX="42.0" layoutY="380.0" mnemonicParsing="false" text="CL03" />
+            <Button layoutX="318.0" layoutY="57.0" mnemonicParsing="false" text="CL04" />
+            <Button layoutX="318.0" layoutY="177.0" mnemonicParsing="false" text="CL05" />
+            <Button layoutX="318.0" layoutY="317.0" mnemonicParsing="false" text="CL06" />
+            <Button layoutX="318.0" layoutY="420.0" mnemonicParsing="false" text="CL07" />
+         </children>
+      </Pane>
+      <ListView layoutX="14.0" layoutY="505.0" prefHeight="200.0" prefWidth="383.0" />
+   </children>
+</AnchorPane>
