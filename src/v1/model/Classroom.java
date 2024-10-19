@@ -1,27 +1,26 @@
 package v1.model;
 
+import v1.structs.SectionContainer;
+
 public class Classroom {
 	
 	private String roomID;
-	private boolean hasProjector;
+	private int maxCapacity;
+	private SectionContainer sections;
 	
-	public Classroom(String roomID, boolean hasProjector) {
+	public Classroom(String roomID, int maxCapacity) {
+		super();
 		this.roomID = roomID;
-		this.hasProjector = hasProjector;
-	}
-	public boolean hasProjector() {
-		return hasProjector;
-	}
-	public void setHasProjector(boolean hasProjector) {
-		this.hasProjector = hasProjector;
+		this.maxCapacity = maxCapacity;
+		this.sections = new SectionContainer();
 	}
 	public String getRoomID() {
 		return roomID;
 	}
-	public void setRoomID(String roomID) {
-		this.roomID = roomID;
+	public int getMaxCapacity() {
+		return maxCapacity;
 	}
-	public String toString() {
-		return roomID + "\tProjector: " + hasProjector;
+	public SectionContainer getSections() {
+		return sections;
 	}
 }

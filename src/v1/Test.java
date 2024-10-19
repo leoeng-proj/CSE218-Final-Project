@@ -19,10 +19,6 @@ public class Test {
 			students.addStudent(Emitter.emitStudent());
 		}
 		Course dsa = new Course(3, "Data Structures and Algorithms", "", "CSE218", Major.CSE);
-		Classroom room = new Classroom("RI215", true);
-		Section section = Emitter.emitSection(room, dsa);
 		Professor prof = Emitter.emitProfessor();
-		section.setInstructor(prof);
-		System.out.println(section);
 	}
 }
