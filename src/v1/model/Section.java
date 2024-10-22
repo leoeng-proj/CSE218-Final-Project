@@ -3,6 +3,8 @@ package v1.model;
 import java.io.Serializable;
 import java.util.LinkedList;
 
+import v1.structs.StudentContainer;
+
 public class Section implements Serializable{
 	
 	private int sectionNum;
@@ -11,7 +13,7 @@ public class Section implements Serializable{
 	private Classroom room;
 	private Course course;
 	private LinkedList<String> textbooks;
-	private LinkedList<Integer> studentIDs;
+	private StudentContainer students;
 	private Day[] daysOffered;
 	private Hours time;
 	
@@ -24,6 +26,7 @@ public class Section implements Serializable{
 		this.textbooks = textbooks;
 		this.daysOffered = daysOffered;
 		this.time = time;
+		setStudents(new StudentContainer());
 	}
 	public int getSectionNum() {
 		return sectionNum;
@@ -59,11 +62,11 @@ public class Section implements Serializable{
 	public void setTextbooks(LinkedList<String> textbooks) {
 		this.textbooks = textbooks;
 	}
-	public LinkedList<Integer> getStudentIDs() {
-		return studentIDs;
+	public StudentContainer getStudents() {
+		return students;
 	}
-	public void setStudentIDs(LinkedList<Integer> studentIDs) {
-		this.studentIDs = studentIDs;
+	public void setStudents(StudentContainer students) {
+		this.students = students;
 	}
 	public Day[] getDaysOffered() {
 		return daysOffered;

@@ -23,7 +23,7 @@ public class TimeRange {
 		this.endTime = endTime;
 	}
 	public String toString() {
-		return "TimeRange [startTime=" + startTime + ", endTime=" + endTime + "]";
+		return startTime + "-" + endTime;
 	}
 	
 		

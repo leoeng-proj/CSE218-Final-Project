@@ -1,12 +1,18 @@
 package v1;
 
 
+import java.util.Arrays;
+
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.MouseEvent;
 import v1.model.Classroom;
 import v1.model.Section;
+import v1.model.Student;
 
 public class ClassroomManager {
 
@@ -21,23 +27,43 @@ public class ClassroomManager {
 		new Classroom("CL07", 20),
 	};
 	@FXML
-	Button clOne;
+	private Button clOne;
 	@FXML
-	Button clTwo;
+	private Button clTwo;
 	@FXML
-	Button clThree;
+	private Button clThree;
 	@FXML
-	Button clFour;
+	private Button clFour;
 	@FXML
-	Button clFive;
+	private Button clFive;
 	@FXML
-	Button clSix;
+	private Button clSix;
 	@FXML
-	Button clSeven;
+	private Button clSeven;
 	@FXML
-	ListView<Section> listOfSections;
+	private ListView<Section> listOfSections;
 	@FXML
-	ListView<Section> sectionPeople;
+	private ListView<Student> sectionPeople;
 	@FXML
-	TextArea sectionInfo;
+	private TextArea sectionInfo;
+	
+	public void showSections(ActionEvent e) {
+		Button b = (Button)e.getSource();
+		int idx = Integer.parseInt((String)b.getUserData());
+		rooms[idx].getSections().addSection(Emitter.emitSection(rooms[0], null));
+		listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+	}
+	public void sectionSelected(MouseEvent e) {
+		ListView<Section> list = (ListView<Section>) e.getSource();
+		Section section = list.getFocusModel().getFocusedItem();
+		
+		section.getStudents().addStudent(Emitter.emitStudent());
+		sectionPeople.setItems(FXCollections.observableArrayList(section.getStudents().toArray()));
+		
+		sectionInfo.setText("Course: " + section.getCourse() +
+				"\nInstructor: " + section.getInstructor() + 
+				"\nDays Offered:\n" + Arrays.toString(section.getDaysOffered()) +
+				"\nTime:\n" + section.getTime() + 
+				"\nTextbooks:\n" + section.getTextbooks());
+	}
 }

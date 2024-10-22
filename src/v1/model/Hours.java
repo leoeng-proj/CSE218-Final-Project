@@ -13,12 +13,13 @@ public enum Hours {
 	Hours(TimeRange timeRange) {
 		this.timeRange = timeRange;
 	}
-	
 	public TimeRange getTimeRange() {
 		return timeRange;
 	}
-	
 	public void setTimeRange(TimeRange timeRange) {
 		this.timeRange = timeRange;
+	}
+	public String toString() {
+		return timeRange.toString();
 	}
 }
