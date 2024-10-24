@@ -1,7 +1,5 @@
 package v1;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -15,8 +13,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -24,7 +20,10 @@ import javafx.stage.Stage;
 import v1.model.Course;
 import v1.model.Section;
 import v1.model.Student;
+import v1.structs.CourseContainer;
 import v1.structs.Removal;
+import v1.structs.SectionContainer;
+import v1.structs.StudentContainer;
 
 public class Main extends Application {
 
@@ -126,6 +125,26 @@ public class Main extends Application {
 			refreshViews(studentView, sectionView, courseView);
 			checkRemoveButton(remove, views, counter);
 		});
+		
+		Button emit = new Button("Emit");
+		emit.getStyleClass().add("large-button-style");
+		emit.setOnAction(e -> {
+			Object data = views[counter.getCount()].getUserData();
+			if (data instanceof StudentContainer) {
+				StudentContainer studentData = (StudentContainer) data;
+				studentData.addStudent(Emitter.emitStudent());
+			} 
+			else if (data instanceof SectionContainer) {
+				SectionContainer sectionData = (SectionContainer) data;
+				sectionData.addSection(Emitter.emitSection(null, ((CourseContainer)(courseView.getUserData())).getRandomCourse()));
+			} 
+			else if (data instanceof CourseContainer) {
+				CourseContainer courseData = (CourseContainer) data;
+				courseData.addCourse(Emitter.emitCourse());
+			}
+			refreshViews(studentView, sectionView, courseView);
+		});
+		root.add(emit, 1, 2);
 		return root;
 	}
 	public void refreshViews(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView) {

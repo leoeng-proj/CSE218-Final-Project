@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="410.0" stylesheets="@v1/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="v1.ClassroomManager">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="742.0" prefWidth="420.0" stylesheets="@v1/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="v1.ClassroomManager">
    <children>
       <Pane prefHeight="478.0" prefWidth="410.0">
          <children>
-            <ImageView fitHeight="477.0" fitWidth="410.0">
+            <ImageView fitHeight="477.0" fitWidth="420.0">
                <image>
                   <Image url="@../school-map.png" />
                </image>
@@ -26,11 +26,15 @@
             <Button fx:id="clSeven" layoutX="307.0" layoutY="420.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL07" userData="6" />
          </children>
       </Pane>
-      <Pane layoutY="485.0" prefHeight="215.0" prefWidth="410.0">
+      <Pane layoutY="492.0" prefHeight="252.0" prefWidth="420.0">
          <children>
-            <ListView fx:id="listOfSections" onMouseClicked="#sectionSelected" prefHeight="215.0" prefWidth="123.0" />
-            <ListView fx:id="sectionPeople" layoutX="144.0" prefHeight="215.0" prefWidth="123.0" />
-            <TextArea fx:id="sectionInfo" layoutX="287.0" prefHeight="215.0" prefWidth="123.0" />
+            <ListView fx:id="listOfSections" onMouseClicked="#sectionSelected" prefHeight="215.0" prefWidth="140.0" />
+            <ListView fx:id="sectionPeople" layoutX="140.0" prefHeight="215.0" prefWidth="140.0" />
+            <TextArea fx:id="sectionInfo" layoutX="280.0" prefHeight="215.0" prefWidth="140.0" />
+            <Button fx:id="sectionAdd" disable="true" layoutY="214.0" mnemonicParsing="false" onAction="#addSection" styleClass="button-style" text="Add" />
+            <Button fx:id="sectionRemove" disable="true" layoutX="70.0" layoutY="214.0" mnemonicParsing="false" onAction="#removeSection" styleClass="button-style" text="Remove" />
+            <Button fx:id="studentAdd" disable="true" layoutX="140.0" layoutY="215.0" mnemonicParsing="false" onAction="#addStudent" styleClass="button-style" text="Add" />
+            <Button fx:id="studentRemove" disable="true" layoutX="210.0" layoutY="215.0" mnemonicParsing="false" onAction="#removeStudent" styleClass="button-style" text="Remove" />
          </children>
       </Pane>
    </children>

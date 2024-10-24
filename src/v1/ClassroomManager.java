@@ -6,10 +6,13 @@ import java.util.Arrays;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import v1.model.Classroom;
 import v1.model.Section;
 import v1.model.Student;
@@ -27,37 +30,81 @@ public class ClassroomManager {
 		new Classroom("CL07", 20),
 	};
 	@FXML
-	private Button clOne;
+	private Button sectionAdd;
 	@FXML
-	private Button clTwo;
+	private Button sectionRemove;
 	@FXML
-	private Button clThree;
+	private Button studentAdd;
 	@FXML
-	private Button clFour;
-	@FXML
-	private Button clFive;
-	@FXML
-	private Button clSix;
-	@FXML
-	private Button clSeven;
+	private Button studentRemove;
 	@FXML
 	private ListView<Section> listOfSections;
 	@FXML
 	private ListView<Student> sectionPeople;
 	@FXML
 	private TextArea sectionInfo;
+	private int idx = 0;
 	
+	public void addSection() {
+		Stage stage = new Stage();
+		stage.setTitle("Select a Section");
+		stage.setHeight(400);
+		stage.setWidth(300);
+		stage.setResizable(false);
+		GridPane root = new GridPane();
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		
+		ListView<Section> sections = new ListView<>();
+		sections.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getSectionContainer().toArray()));
+		sections.setOnMouseClicked(e -> {
+			rooms[idx].getSections().addSection(sections.getFocusModel().getFocusedItem());
+			listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+			stage.close();
+		});
+		root.add(sections, 0, 0);
+	}
+	public void removeSection() {
+		rooms[idx].getSections().remove(listOfSections.getFocusModel().getFocusedItem());
+		listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+		sectionPeople.getItems().clear();
+		sectionInfo.clear();
+	}
+	public void addStudent() {
+		Stage stage = new Stage();
+		stage.setTitle("Select a Student");
+		stage.setHeight(400);
+		stage.setWidth(300);
+		stage.setResizable(false);
+		GridPane root = new GridPane();
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		
+		ListView<Student> students = new ListView<>();
+		students.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getStudentContainer().toArray()));
+		students.setOnMouseClicked(e -> {
+			Student student = students.getFocusModel().getFocusedItem();
+			System.out.println(student);
+			listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+			stage.close();
+		});
+		root.add(students, 0, 0);
+	}
+	public void removeStudent(ActionEvent e) {
+		
+	}
 	public void showSections(ActionEvent e) {
 		Button b = (Button)e.getSource();
-		int idx = Integer.parseInt((String)b.getUserData());
-		rooms[idx].getSections().addSection(Emitter.emitSection(rooms[0], null));
+		idx = Integer.parseInt((String)b.getUserData());
 		listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+		studentAdd.disableProperty().bind(listOfSections.focusedProperty());
 	}
 	public void sectionSelected(MouseEvent e) {
 		ListView<Section> list = (ListView<Section>) e.getSource();
 		Section section = list.getFocusModel().getFocusedItem();
 		
-		section.getStudents().addStudent(Emitter.emitStudent());
 		sectionPeople.setItems(FXCollections.observableArrayList(section.getStudents().toArray()));
 		
 		sectionInfo.setText("Course: " + section.getCourse() +

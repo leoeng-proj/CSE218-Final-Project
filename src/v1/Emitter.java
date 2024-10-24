@@ -23,6 +23,9 @@ public abstract class Emitter {
 		    "Patterson", "Quinn", "Reed", "Stevens", "Taylor", 
 		    "Underwood", "Vance", "Walker", "Xavier", "Young", 
 		    "Zimmerman", "Coleman", "Daniels", "Ellis", "Foster"};
+	private static String[] courseNumBank = {
+			"cse118", "cse148", "cse218", "cse222", "cse248", "mat141", "mat142"
+	};
 	public static Student emitStudent() {
 		return new Student(emitName(), 
 				Major.values()[(int)(Math.random()*Major.values().length)],
@@ -36,6 +39,11 @@ public abstract class Emitter {
 		return new Section((int)(Math.random() * 90000) + 10000, 
 				(Math.random()*10 > 5), room, course,
 				null, emitDays(), emitTime());
+	}
+	public static Course emitCourse() {
+//		Course(double credits, String name, String description, String courseNum, Major reqMajors) {
+		return new Course(Math.random()*5, "", "", courseNumBank[(int)(Math.random()*courseNumBank.length)],
+				Major.values()[(int)(Math.random()*Major.values().length)]);
 	}
 	private static Name emitName() {
 		return new Name(firstNameBank[(int)(Math.random()*firstNameBank.length)],

@@ -48,6 +48,16 @@ public class Course implements Comparable<Course>, Serializable{
 		return courseNum;
 	}
 	public int compareTo(Course o) {
-		return this.getName().compareTo(o.getName());
+		return this.getCourseNum().compareTo(o.getCourseNum());
+	}
+	public boolean equals(Object o) {
+		if(this == o) {
+			return true;
+		}
+		if(!(o instanceof Course)) {
+			return false;
+		}
+		Course c = (Course)o;
+		return this.getCourseNum().equals(c.getCourseNum());
 	}
 }
