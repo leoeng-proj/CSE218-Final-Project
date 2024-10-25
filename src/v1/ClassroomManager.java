@@ -19,16 +19,6 @@ import v1.model.Student;
 
 public class ClassroomManager {
 
-	private static final Classroom[] rooms = {
-		//Classroom(String roomID, boolean hasProjector, int maxCapacity) {
-		new Classroom("CL01", 40),
-		new Classroom("CL02", 25),
-		new Classroom("CL03", 30),
-		new Classroom("CL04", 30),
-		new Classroom("CL05", 30),
-		new Classroom("CL06", 30),
-		new Classroom("CL07", 20),
-	};
 	@FXML
 	private Button sectionAdd;
 	@FXML
@@ -43,6 +33,16 @@ public class ClassroomManager {
 	private ListView<Student> sectionPeople;
 	@FXML
 	private TextArea sectionInfo;
+	private static final Classroom[] rooms = {
+		//Classroom(String roomID, boolean hasProjector, int maxCapacity) {
+		new Classroom("CL01", 40),
+		new Classroom("CL02", 25),
+		new Classroom("CL03", 30),
+		new Classroom("CL04", 30),
+		new Classroom("CL05", 30),
+		new Classroom("CL06", 30),
+		new Classroom("CL07", 20),
+	};
 	private int idx = 0;
 	
 	public void addSection() {
@@ -97,6 +97,7 @@ public class ClassroomManager {
 			Section s = listOfSections.getFocusModel().getFocusedItem();
 			s.getStudents().addStudent(student);
 			sectionPeople.setItems(FXCollections.observableArrayList(s.getStudents().toArray()));
+			updateSectionInfo(s);
 			if(studentRemove.isDisabled()) {
 				studentRemove.setDisable(false);
 			}
@@ -108,6 +109,7 @@ public class ClassroomManager {
 		Section section = listOfSections.getFocusModel().getFocusedItem();
 		section.getStudents().remove(sectionPeople.getFocusModel().getFocusedItem());
 		sectionPeople.setItems(FXCollections.observableArrayList(section.getStudents().toArray()));
+		updateSectionInfo(section);
 		if(sectionPeople.getItems().isEmpty()) {
 			studentRemove.setDisable(true);
 		}
@@ -128,10 +130,15 @@ public class ClassroomManager {
 		if(!sectionPeople.getItems().isEmpty()) {
 			studentRemove.setDisable(false);
 		}
+		updateSectionInfo(section);
+	}
+	private void updateSectionInfo(Section section) {
 		sectionInfo.setText("Course: " + section.getCourse() +
 				"\nInstructor: " + section.getInstructor() + 
 				"\nDays Offered:\n" + Arrays.toString(section.getDaysOffered()) +
+				"\nCapacity: " + sectionPeople.getItems().size() + "/" + rooms[idx].getMaxCapacity() +
 				"\nTime:\n" + section.getTime() + 
 				"\nTextbooks:\n" + section.getTextbooks());
+	
 	}
 }
