@@ -61,6 +61,9 @@ public class ClassroomManager {
 		sections.setOnMouseClicked(e -> {
 			rooms[idx].getSections().addSection(sections.getFocusModel().getFocusedItem());
 			listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+			if(sectionRemove.isDisabled()) {
+				sectionRemove.setDisable(false);
+			}
 			stage.close();
 		});
 		root.add(sections, 0, 0);
@@ -70,6 +73,11 @@ public class ClassroomManager {
 		listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
 		sectionPeople.getItems().clear();
 		sectionInfo.clear();
+		studentAdd.setDisable(true);
+		studentRemove.setDisable(true);
+		if(listOfSections.getItems().isEmpty()) {
+			sectionRemove.setDisable(true);
+		}
 	}
 	public void addStudent() {
 		Stage stage = new Stage();
@@ -86,27 +94,40 @@ public class ClassroomManager {
 		students.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getStudentContainer().toArray()));
 		students.setOnMouseClicked(e -> {
 			Student student = students.getFocusModel().getFocusedItem();
-			System.out.println(student);
-			listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+			Section s = listOfSections.getFocusModel().getFocusedItem();
+			s.getStudents().addStudent(student);
+			sectionPeople.setItems(FXCollections.observableArrayList(s.getStudents().toArray()));
+			if(studentRemove.isDisabled()) {
+				studentRemove.setDisable(false);
+			}
 			stage.close();
 		});
 		root.add(students, 0, 0);
 	}
 	public void removeStudent(ActionEvent e) {
-		
+		Section section = listOfSections.getFocusModel().getFocusedItem();
+		section.getStudents().remove(sectionPeople.getFocusModel().getFocusedItem());
+		sectionPeople.setItems(FXCollections.observableArrayList(section.getStudents().toArray()));
+		if(sectionPeople.getItems().isEmpty()) {
+			studentRemove.setDisable(true);
+		}
 	}
 	public void showSections(ActionEvent e) {
 		Button b = (Button)e.getSource();
 		idx = Integer.parseInt((String)b.getUserData());
+		sectionAdd.setDisable(false);
 		listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
-		studentAdd.disableProperty().bind(listOfSections.focusedProperty());
 	}
 	public void sectionSelected(MouseEvent e) {
-		ListView<Section> list = (ListView<Section>) e.getSource();
-		Section section = list.getFocusModel().getFocusedItem();
-		
+		Section section = listOfSections.getFocusModel().getFocusedItem();
+		if(section == null) {
+			return;
+		}
+		studentAdd.setDisable(false);
 		sectionPeople.setItems(FXCollections.observableArrayList(section.getStudents().toArray()));
-		
+		if(!sectionPeople.getItems().isEmpty()) {
+			studentRemove.setDisable(false);
+		}
 		sectionInfo.setText("Course: " + section.getCourse() +
 				"\nInstructor: " + section.getInstructor() + 
 				"\nDays Offered:\n" + Arrays.toString(section.getDaysOffered()) +
