@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="742.0" prefWidth="420.0" stylesheets="@v1/styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="v1.ClassroomManager">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="420.0" stylesheets="@v1/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="v1.ClassroomManager">
    <children>
       <Pane prefHeight="478.0" prefWidth="410.0">
          <children>
@@ -20,10 +20,10 @@
             <Button fx:id="clOne" layoutX="31.0" layoutY="75.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL01" userData="0" />
             <Button fx:id="clTwo" layoutX="31.0" layoutY="238.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL02" userData="1" />
             <Button fx:id="clThree" layoutX="31.0" layoutY="388.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL03" userData="2" />
-            <Button fx:id="clFour" layoutX="307.0" layoutY="50.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL04" userData="3" />
-            <Button fx:id="clFive" layoutX="307.0" layoutY="187.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL05" userData="4" />
-            <Button fx:id="clSix" layoutX="307.0" layoutY="307.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL06" userData="5" />
-            <Button fx:id="clSeven" layoutX="307.0" layoutY="420.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL07" userData="6" />
+            <Button fx:id="clFour" layoutX="316.0" layoutY="53.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL04" userData="3" />
+            <Button fx:id="clFive" layoutX="316.0" layoutY="190.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL05" userData="4" />
+            <Button fx:id="clSix" layoutX="316.0" layoutY="310.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL06" userData="5" />
+            <Button fx:id="clSeven" layoutX="316.0" layoutY="423.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@v1/styles.css" text="CL07" userData="6" />
          </children>
       </Pane>
       <Pane layoutY="492.0" prefHeight="252.0" prefWidth="420.0">

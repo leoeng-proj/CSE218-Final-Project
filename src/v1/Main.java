@@ -15,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -58,7 +59,7 @@ public class Main extends Application {
 		controls.add(displayContainers(root), 0, 1);
 		root.setLeft(controls);
 		
-		Parent classroomManager = FXMLLoader.load(getClass().getResource("/ClassroomManager.fxml"));
+		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("/ClassroomManager.fxml"));
 		root.setRight(classroomManager);
 		
 		return root;
@@ -99,11 +100,14 @@ public class Main extends Application {
 			} 
 			Removal container = (Removal)lv.getUserData();
 			container.remove(obj);
-			refreshViews(studentView, sectionView, courseView);
-			checkRemoveButton(remove, views, counter);
+			refresh(studentView, sectionView, courseView, remove, views, counter);
 		});
-		checkRemoveButton(remove, views, counter);
 		root.add(remove, 0, 2);
+
+		refresh(studentView, sectionView, courseView, remove, views, counter);
+		parent.disableProperty().addListener(e -> {
+			refresh(studentView, sectionView, courseView, remove, views, counter);
+		});
 		
 		Button cycle = new Button("Cycle Views");
 		cycle.getStyleClass().add("large-button-style");
@@ -114,16 +118,10 @@ public class Main extends Application {
 				counter.reset();
 			}
 			views[counter.getCount()].toFront();
-			checkRemoveButton(remove, views, counter);
+			refresh(studentView, sectionView, courseView, remove, views, counter);
 			titleOfView.setText(titles[counter.getCount()]);
 		});
 		root.add(cycle, 1, 0, 1, 1);
-		
-		refreshViews(studentView, sectionView, courseView);
-		parent.disableProperty().addListener(e -> {
-			refreshViews(studentView, sectionView, courseView);
-			checkRemoveButton(remove, views, counter);
-		});
 		
 		Button emit = new Button("Emit");
 		emit.getStyleClass().add("large-button-style");
@@ -147,18 +145,17 @@ public class Main extends Application {
 				CourseContainer courseData = (CourseContainer) data;
 				courseData.addCourse(Emitter.emitCourse());
 			}
-			refreshViews(studentView, sectionView, courseView);
+			refresh(studentView, sectionView, courseView, remove, views, counter);
 		});
 		root.add(emit, 1, 2);
 		return root;
 	}
-	public void refreshViews(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView) {
+	public void refresh(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView, Button remove, Node[] views, ClickCounter counter) {
 		studentView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getStudentContainer().toArray()));
 		sectionView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getSectionContainer().toArray()));
 		courseView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getCourseContainer().toArray()));
-	}
-	public void checkRemoveButton(Button remove, Node[] views, ClickCounter counter) {
 		if(((ListView<?>)(views[counter.getCount()])).getItems().isEmpty()) {
+			System.out.println();
 			remove.setDisable(true);
 		}
 		else {
@@ -196,7 +193,6 @@ public class Main extends Application {
 		createCourse.getStyleClass().add("large-button-style");
 		root.add(createCourse, 1, 1);
 		
-		root.setAlignment(Pos.CENTER);
 		return root;
 	}
 	public static void main(String[] args) {
