@@ -13,11 +13,16 @@ public class MasterContainer implements Serializable{
 	private CourseContainer courses;
 	private StudentContainer students;
 	private SectionContainer sections;
+	private ClassroomContainer classrooms;
 	
 	public MasterContainer() {
 		courses = new CourseContainer();
 		students = new StudentContainer();
 		sections = new SectionContainer();
+		classrooms = new ClassroomContainer();
+	}
+	public ClassroomContainer getClassroomContainer() {
+		return classrooms;
 	}
 	public CourseContainer getCourseContainer() {
 		return courses;

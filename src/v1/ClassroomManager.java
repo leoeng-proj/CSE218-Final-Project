@@ -33,17 +33,8 @@ public class ClassroomManager {
 	private ListView<Student> sectionPeople;
 	@FXML
 	private TextArea sectionInfo;
-	private static final Classroom[] rooms = {
-		//Classroom(String roomID, boolean hasProjector, int maxCapacity) {
-		new Classroom("CL01", 40),
-		new Classroom("CL02", 25),
-		new Classroom("CL03", 30),
-		new Classroom("CL04", 30),
-		new Classroom("CL05", 30),
-		new Classroom("CL06", 30),
-		new Classroom("CL07", 20),
-	};
-	private int idx = 0;
+
+	private Classroom selectedClassroom;
 	
 	public void addSection() {
 		Stage stage = new Stage();
@@ -59,8 +50,8 @@ public class ClassroomManager {
 		ListView<Section> sections = new ListView<>();
 		sections.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getSectionContainer().toArray()));
 		sections.setOnMouseClicked(e -> {
-			rooms[idx].getSections().addSection(sections.getFocusModel().getFocusedItem());
-			listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+			selectedClassroom.getSections().addSection(sections.getFocusModel().getFocusedItem());
+			listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
 			if(sectionRemove.isDisabled()) {
 				sectionRemove.setDisable(false);
 			}
@@ -69,8 +60,8 @@ public class ClassroomManager {
 		root.add(sections, 0, 0);
 	}
 	public void removeSection() {
-		rooms[idx].getSections().remove(listOfSections.getFocusModel().getFocusedItem());
-		listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+		selectedClassroom.getSections().remove(listOfSections.getFocusModel().getFocusedItem());
+		listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
 		sectionPeople.getItems().clear();
 		sectionInfo.clear();
 		studentAdd.setDisable(true);
@@ -116,9 +107,13 @@ public class ClassroomManager {
 	}
 	public void showSections(ActionEvent e) {
 		Button b = (Button)e.getSource();
-		idx = Integer.parseInt((String)b.getUserData());
+		int idx = Integer.parseInt((String)b.getUserData());
+		selectedClassroom = DataCenter.getInstance().getContainers().getClassroomContainer().toArray()[idx];
 		sectionAdd.setDisable(false);
-		listOfSections.setItems(FXCollections.observableArrayList(rooms[idx].getSections().toArray()));
+		if(!selectedClassroom.getSections().isEmpty()) {
+			sectionRemove.setDisable(false);
+		}
+		listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
 	}
 	public void sectionSelected(MouseEvent e) {
 		Section section = listOfSections.getFocusModel().getFocusedItem();
@@ -136,7 +131,7 @@ public class ClassroomManager {
 		sectionInfo.setText("Course: " + section.getCourse() +
 				"\nInstructor: " + section.getInstructor() + 
 				"\nDays Offered:\n" + Arrays.toString(section.getDaysOffered()) +
-				"\nCapacity: " + sectionPeople.getItems().size() + "/" + rooms[idx].getMaxCapacity() +
+				"\nCapacity: " + sectionPeople.getItems().size() + "/" + selectedClassroom.getMaxCapacity() +
 				"\nTime:\n" + section.getTime() + 
 				"\nTextbooks:\n" + section.getTextbooks());
 	

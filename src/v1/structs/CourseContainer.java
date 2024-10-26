@@ -30,4 +30,7 @@ public class CourseContainer implements Serializable, Removal{
 	public Course getRandomCourse() {
 		return courses.get((int)(Math.random()*courses.size()));
 	}
+	public boolean isEmpty() {
+		return courses.isEmpty();
+	}
 }

@@ -1,8 +1,10 @@
 package v1.model;
 
+import java.io.Serializable;
+
 import v1.structs.SectionContainer;
 
-public class Classroom {
+public class Classroom implements Serializable{
 	
 	private String roomID;
 	private int maxCapacity;

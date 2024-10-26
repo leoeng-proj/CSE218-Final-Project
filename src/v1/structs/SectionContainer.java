@@ -23,4 +23,7 @@ public class SectionContainer implements Serializable, Removal{
 	public boolean remove(Object obj) {
 		return sections.remove(obj);
 	}
+	public boolean isEmpty() {
+		return sections.isEmpty();
+	}
 }

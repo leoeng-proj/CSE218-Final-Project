@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -56,9 +58,6 @@ public class Main extends Application {
 		controls.add(displayContainers(root), 0, 1);
 		root.setLeft(controls);
 		
-//		FileInputStream fis = new FileInputStream(new File("school-map.png"));
-//		Image map = new Image(fis);
-//		ImageView iv = new ImageView(map);
 		Parent classroomManager = FXMLLoader.load(getClass().getResource("/ClassroomManager.fxml"));
 		root.setRight(classroomManager);
 		
@@ -136,6 +135,12 @@ public class Main extends Application {
 			} 
 			else if (data instanceof SectionContainer) {
 				SectionContainer sectionData = (SectionContainer) data;
+				if(((CourseContainer)(courseView.getUserData())).isEmpty()) {
+					Alert noCourses = new Alert(AlertType.WARNING);
+					noCourses.setHeaderText("No Courses");
+					noCourses.show();
+					return;
+				}
 				sectionData.addSection(Emitter.emitSection(null, ((CourseContainer)(courseView.getUserData())).getRandomCourse()));
 			} 
 			else if (data instanceof CourseContainer) {
