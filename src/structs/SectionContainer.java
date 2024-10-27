@@ -1,9 +1,11 @@
 package structs;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-import model.Course;
 import model.Section;
 
 public class SectionContainer implements Serializable, Removal{
@@ -13,6 +15,10 @@ public class SectionContainer implements Serializable, Removal{
 	public SectionContainer() {
 		super();
 		sections = new LinkedList<>();
+	}
+	public SectionContainer(SectionContainer other) {
+		super();
+		sections = (LinkedList<Section>)other.sections.clone();
 	}
 	public void addSection(Section section) {
 		sections.add(section);
@@ -25,5 +31,14 @@ public class SectionContainer implements Serializable, Removal{
 	}
 	public boolean isEmpty() {
 		return sections.isEmpty();
+	}
+	public void trim(Predicate<Section> pred) {
+		Iterator<Section> iter = sections.iterator();
+		while(iter.hasNext()) {
+			Section s = iter.next();
+			if(pred.test(s)) {
+				iter.remove();
+			}
+		}
 	}
 }

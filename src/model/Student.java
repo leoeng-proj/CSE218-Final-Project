@@ -46,6 +46,12 @@ public class Student extends Person implements Comparable<Student> {
 	public String toString() {
 		return super.toString();
 	}
+	public String getInfo() {
+		return "Name: \t\t" + toString() + 
+				"\nID: \t\t\t" + id +
+				"\nMajor: \t\t" + major +
+				"\nGPA: \t\t" + String.format("%.1f", gpa);
+	}
 	private static int generateUUID() {
 		int id = 0;
 		do{

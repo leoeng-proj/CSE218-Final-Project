@@ -17,7 +17,7 @@
 }
 .listview-style{
 	-fx-pref-width: 240;
-    -fx-pref-height: 600;
+    -fx-pref-height: 300;
 }
 .label-style{
     -fx-pref-width: 120;

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Course implements Comparable<Course>, Serializable{
 
@@ -46,6 +47,13 @@ public class Course implements Comparable<Course>, Serializable{
 	}
 	public String toString() {
 		return courseNum;
+	}
+	public String getInfo() {
+		return "Course Name:\t\t" + name +
+				"\nCourse Number:\t" + courseNum +
+				"\nRequired Majors:\t" + reqMajors +
+				"\nCredits:\t\t\t" + String.format("%.1f", credits) +
+				"\nDescription:\n" + description;
 	}
 	public int compareTo(Course o) {
 		return this.getCourseNum().compareTo(o.getCourseNum());

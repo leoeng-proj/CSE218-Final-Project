@@ -6,15 +6,14 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -68,19 +67,35 @@ public class Main extends Application {
 		GridPane root = new GridPane();
 		root.getStyleClass().add("pane-style");
 
+		TextArea info = new TextArea("Select an Item");
+		info.setEditable(false);
+		info.getStyleClass().add("listview-style");
+		root.add(info, 0, 2, 2, 1);
+		
 		ListView<Student> studentView = new ListView<>();
 		studentView.setUserData(DataCenter.getInstance().getContainers().getStudentContainer());
 		studentView.getStyleClass().add("listview-style");
+		studentView.setOnMouseClicked(e -> {
+			info.setText(studentView.getFocusModel().getFocusedItem().getInfo());
+		});
 		root.add(studentView, 0, 1, 2, 1);
 		ListView<Section> sectionView = new ListView<>();
 		sectionView.setUserData(DataCenter.getInstance().getContainers().getSectionContainer());
 		sectionView.getStyleClass().add("listview-style");
+		sectionView.setOnMouseClicked(e -> {
+			info.setText(sectionView.getFocusModel().getFocusedItem().getInfo());
+		});
 		root.add(sectionView, 0, 1, 2, 1);
 		ListView<Course> courseView = new ListView<>();
 		courseView.setUserData(DataCenter.getInstance().getContainers().getCourseContainer());
 		courseView.getStyleClass().add("listview-style");
+		courseView.setOnMouseClicked(e -> {
+			info.setText(courseView.getFocusModel().getFocusedItem().getInfo());
+		});
 		root.add(courseView, 0, 1, 2, 1);
 //		ListView<Professor> professorView = new ListView<>();
+		
+		
 		
 		Node[] views = {sectionView, studentView, courseView};
 		ClickCounter counter = new ClickCounter();
@@ -102,7 +117,7 @@ public class Main extends Application {
 			container.remove(obj);
 			refresh(studentView, sectionView, courseView, remove, views, counter);
 		});
-		root.add(remove, 0, 2);
+		root.add(remove, 0, 3);
 
 		refresh(studentView, sectionView, courseView, remove, views, counter);
 		parent.disableProperty().addListener(e -> {
@@ -147,7 +162,7 @@ public class Main extends Application {
 			}
 			refresh(studentView, sectionView, courseView, remove, views, counter);
 		});
-		root.add(emit, 1, 2);
+		root.add(emit, 1, 3);
 		return root;
 	}
 	public void refresh(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView, Button remove, Node[] views, ClickCounter counter) {

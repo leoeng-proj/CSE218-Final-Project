@@ -42,7 +42,7 @@ public abstract class Emitter {
 	}
 	public static Course emitCourse() {
 //		Course(double credits, String name, String description, String courseNum, Major reqMajors) {
-		return new Course(Math.random()*5, "", "", courseNumBank[(int)(Math.random()*courseNumBank.length)],
+		return new Course(Math.random()*5, "Name", "", courseNumBank[(int)(Math.random()*courseNumBank.length)],
 				Major.values()[(int)(Math.random()*Major.values().length)]);
 	}
 	private static Name emitName() {

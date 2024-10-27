@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import structs.StudentContainer;
@@ -82,5 +83,13 @@ public class Section implements Serializable{
 	}
 	public String toString() {
 		return course + " | " + sectionNum;
+	}
+	public String getInfo() {
+		return "Course:\t\t" + getCourse() +
+				"\nInstructor:\t" + getInstructor() + 
+				"\nDays Offered:\t" + Arrays.toString(getDaysOffered()) +
+				"\nTime:\t\t" + getTime() + 
+				"\nClassroom:\t" + room + 
+				"\nTextbook(s):\t" + getTextbooks();
 	}
 }
