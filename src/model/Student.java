@@ -37,6 +37,9 @@ public class Student extends Person implements Comparable<Student> {
 	public void addSection(Section s) {
 		sections.addSection(s);
 	}
+	public void unenroll(Section sec) {
+		this.sections.remove(sec);
+	}
 	public int compareTo(Student o) {
 		return this.getName().compareTo(o.getName());
 	}
@@ -70,4 +73,5 @@ public class Student extends Person implements Comparable<Student> {
 		UUIDLIST.add(id);
 		return id;
 	}
+	
 }

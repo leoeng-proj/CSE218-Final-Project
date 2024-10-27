@@ -90,9 +90,11 @@ public class Section implements Serializable{
 				"\nDays Offered:\t" + Arrays.toString(getDaysOffered()) +
 				"\nTime:\t\t" + getTime() + 
 				"\nClassroom:\t" + room + 
-				"\nTextbook(s):\t" + getTextbooks();
+				"\nTextbook(s):\t" + getTextbooks() +
+				"\nStudents:\t" + students.toString();
 	}
 	public void clear() {
+		students.unenrollAll(this);
 		students.clear();
 	}
 }

@@ -51,7 +51,6 @@ public class ClassroomManager {
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
-		
 		ListView<Section> sections = new ListView<>();
 		sections.getStyleClass().add("listview-style");
 		SectionContainer validSections = new SectionContainer(DataCenter.getInstance().getContainers().getSectionContainer());
@@ -64,9 +63,9 @@ public class ClassroomManager {
 		sections.setOnMouseClicked(e -> {
 			Section s = sections.getFocusModel().getFocusedItem();
 			if(selectedClassroom.getSections().checkTimeConflicts(s)) {
-				Alert noCourses = new Alert(AlertType.WARNING);
-				noCourses.setHeaderText("Time Confliction");
-				noCourses.show();
+				Alert timeConfliction = new Alert(AlertType.WARNING);
+				timeConfliction.setHeaderText("Time Confliction");
+				timeConfliction.show();
 				return;
 			}
 			s.setRoom(selectedClassroom);
@@ -80,9 +79,14 @@ public class ClassroomManager {
 		root.add(sections, 0, 0);
 	}
 	public void removeSection() {
-		Section s = listOfSections.getFocusModel().getFocusedItem();
-		s.setRoom(null);
-		selectedClassroom.getSections().remove(s);
+		if(selectedSection == null) {
+			Alert noSections = new Alert(AlertType.WARNING);
+			noSections.setHeaderText("Select a Section");
+			noSections.show();
+			return;
+		}
+		selectedSection.setRoom(null);
+		selectedClassroom.getSections().remove(selectedSection);
 		listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
 		sectionPeople.getItems().clear();
 		sectionInfo.clear();
@@ -103,14 +107,13 @@ public class ClassroomManager {
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
-		
 		ListView<Student> students = new ListView<>();
 		students.getStyleClass().add("listview-style");
 		StudentContainer validStudents = new StudentContainer(DataCenter.getInstance().getContainers().getStudentContainer());
 		validStudents.trim(new Predicate<Student>() {
-			public boolean test(Student stu) {
-				return stu.getSections().checkTimeConflicts(selectedSection) 
-						&& !stu.getMajor().equals(selectedSection.getCourse().getReqMajors());
+			public boolean test(Student student) {
+				return student.getSections().checkTimeConflicts(selectedSection) ||
+						!student.getMajor().equals(selectedSection.getCourse().getReqMajors());
 			}
 		});
 		students.setItems(FXCollections.observableArrayList(validStudents.toArray()));
@@ -128,7 +131,9 @@ public class ClassroomManager {
 		root.add(students, 0, 0);
 	}
 	public void removeStudent(ActionEvent e) {
-		selectedSection.getStudents().remove(sectionPeople.getFocusModel().getFocusedItem());
+		Student stu = sectionPeople.getFocusModel().getFocusedItem();
+		selectedSection.getStudents().remove(stu);
+		stu.unenroll(selectedSection);
 		updateSectionPeople();
 		updateSectionInfo();
 		if(sectionPeople.getItems().isEmpty()) {

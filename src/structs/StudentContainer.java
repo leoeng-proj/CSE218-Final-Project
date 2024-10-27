@@ -37,7 +37,17 @@ public class StudentContainer implements Serializable, Removal{
 			}
 		}
 	}
+	public void unenrollAll(Section sec) {
+		Iterator<Student> iter = students.iterator();
+		while(iter.hasNext()) {
+			Student s = iter.next();
+			s.unenroll(sec);
+		}
+	}
 	public void clear() {
 		students.clear();
+	}
+	public String toString() {
+		return students.toString();
 	}
 }
