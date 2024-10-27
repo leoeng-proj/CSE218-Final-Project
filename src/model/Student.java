@@ -1,12 +1,14 @@
 package model;
 
 import structs.AVLTree;
+import structs.SectionContainer;
 
 public class Student extends Person implements Comparable<Student> {
 	
 	private int id;
 	private double gpa;
 	private Major major;
+	private SectionContainer sections;
 	
 	private static final AVLTree<Integer> UUIDLIST = new AVLTree<>();
 	
@@ -14,6 +16,7 @@ public class Student extends Person implements Comparable<Student> {
 		super(name);
 		this.major = major;
 		this.gpa = gpa;
+		this.sections = new SectionContainer();
 		id = generateUUID();
 	}
 	public Major getMajor() {
@@ -27,6 +30,12 @@ public class Student extends Person implements Comparable<Student> {
 	}
 	public void setGpa(double gpa) {
 		this.gpa = gpa;
+	}
+	public SectionContainer getSections() {
+		return sections;
+	}
+	public void addSection(Section s) {
+		sections.addSection(s);
 	}
 	public int compareTo(Student o) {
 		return this.getName().compareTo(o.getName());
@@ -50,7 +59,8 @@ public class Student extends Person implements Comparable<Student> {
 		return "Name: \t\t" + toString() + 
 				"\nID: \t\t\t" + id +
 				"\nMajor: \t\t" + major +
-				"\nGPA: \t\t" + String.format("%.1f", gpa);
+				"\nGPA: \t\t" + String.format("%.1f", gpa) +
+				"\nEnrolled Classes:\n" + sections.toString();
 	}
 	private static int generateUUID() {
 		int id = 0;

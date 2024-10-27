@@ -9,7 +9,6 @@ import java.util.function.Predicate;
 import model.Section;
 
 public class SectionContainer implements Serializable, Removal{
-	
 	private LinkedList<Section> sections;
 	
 	public SectionContainer() {
@@ -40,5 +39,18 @@ public class SectionContainer implements Serializable, Removal{
 				iter.remove();
 			}
 		}
+	}
+	public boolean checkTimeConflicts(Section sec) {
+		Iterator<Section> iter = sections.iterator();
+		while(iter.hasNext()) {
+			Section s = iter.next();
+			if(s.getTime().equals(sec.getTime())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	public String toString() {
+		return sections.toString();
 	}
 }

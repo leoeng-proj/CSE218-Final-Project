@@ -7,9 +7,11 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -17,6 +19,7 @@ import model.Classroom;
 import model.Section;
 import model.Student;
 import structs.SectionContainer;
+import structs.StudentContainer;
 
 public class ClassroomManager {
 
@@ -52,7 +55,7 @@ public class ClassroomManager {
 		ListView<Section> sections = new ListView<>();
 		sections.getStyleClass().add("listview-style");
 		SectionContainer validSections = new SectionContainer(DataCenter.getInstance().getContainers().getSectionContainer());
-		validSections.trim(new Predicate<>() {
+		validSections.trim(new Predicate<Section>() {
 			public boolean test(Section sec) {
 				return sec.getRoom() != null;
 			}
@@ -60,6 +63,12 @@ public class ClassroomManager {
 		sections.setItems(FXCollections.observableArrayList(validSections.toArray()));
 		sections.setOnMouseClicked(e -> {
 			Section s = sections.getFocusModel().getFocusedItem();
+			if(selectedClassroom.getSections().checkTimeConflicts(s)) {
+				Alert noCourses = new Alert(AlertType.WARNING);
+				noCourses.setHeaderText("Time Confliction");
+				noCourses.show();
+				return;
+			}
 			s.setRoom(selectedClassroom);
 			selectedClassroom.getSections().addSection(s);
 			listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
@@ -77,6 +86,7 @@ public class ClassroomManager {
 		listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
 		sectionPeople.getItems().clear();
 		sectionInfo.clear();
+		selectedSection.clear();
 		studentAdd.setDisable(true);
 		studentRemove.setDisable(true);
 		if(listOfSections.getItems().isEmpty()) {
@@ -96,9 +106,17 @@ public class ClassroomManager {
 		
 		ListView<Student> students = new ListView<>();
 		students.getStyleClass().add("listview-style");
-		students.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getStudentContainer().toArray()));
+		StudentContainer validStudents = new StudentContainer(DataCenter.getInstance().getContainers().getStudentContainer());
+		validStudents.trim(new Predicate<Student>() {
+			public boolean test(Student stu) {
+				return stu.getSections().checkTimeConflicts(selectedSection) 
+						&& !stu.getMajor().equals(selectedSection.getCourse().getReqMajors());
+			}
+		});
+		students.setItems(FXCollections.observableArrayList(validStudents.toArray()));
 		students.setOnMouseClicked(e -> {
 			Student student = students.getFocusModel().getFocusedItem();
+			student.addSection(selectedSection);
 			selectedSection.getStudents().addStudent(student);
 			updateSectionPeople();
 			updateSectionInfo();

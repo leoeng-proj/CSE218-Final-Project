@@ -92,4 +92,7 @@ public class Section implements Serializable{
 				"\nClassroom:\t" + room + 
 				"\nTextbook(s):\t" + getTextbooks();
 	}
+	public void clear() {
+		students.clear();
+	}
 }
