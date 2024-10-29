@@ -8,21 +8,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Classroom;
+import model.Professor;
 import model.Section;
 import model.Student;
+import structs.ProfessorContainer;
 import structs.SectionContainer;
 import structs.StudentContainer;
 
 public class ClassroomManager {
 
+	@FXML
+	private Button assignProf;
 	@FXML
 	private Button sectionAdd;
 	@FXML
@@ -41,6 +45,31 @@ public class ClassroomManager {
 	private Classroom selectedClassroom;
 	private Section selectedSection;
 	
+	public void assignProfessor() {
+		Stage stage = new Stage();
+		stage.setTitle("Select a Professor");
+		stage.setHeight(300);
+		stage.setWidth(240);
+		stage.setResizable(false);
+		GridPane root = new GridPane();
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		ListView<Professor> profs = new ListView<>();
+		profs.getStyleClass().add("listview-style");
+		ProfessorContainer validProfessors = new ProfessorContainer(DataCenter.getInstance().getContainers().getProfessorContainer());
+		validProfessors.trim(new Predicate<Professor>() {
+			public boolean test(Professor prof) {
+				return prof.getSections().checkTimeConflicts(selectedSection);
+			}
+		});
+		profs.setItems(FXCollections.observableArrayList(validProfessors.toArray()));
+		profs.setOnMouseClicked(e -> {
+			Professor p = profs.getFocusModel().getFocusedItem();
+			stage.close();
+		});
+		root.add(profs, 0, 0);
+	}
 	public void addSection() {
 		Stage stage = new Stage();
 		stage.setTitle("Select a Section");
@@ -150,6 +179,7 @@ public class ClassroomManager {
 		}
 		listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
 		sectionPeople.getItems().clear();
+		assignProf.setDisable(true);
 		studentAdd.setDisable(true);
 		studentRemove.setDisable(true);
 		sectionInfo.clear();
@@ -159,6 +189,7 @@ public class ClassroomManager {
 		if(selectedSection == null) {
 			return;
 		}
+		assignProf.setDisable(false);
 		studentAdd.setDisable(false);
 		updateSectionPeople();
 		if(!sectionPeople.getItems().isEmpty()) {

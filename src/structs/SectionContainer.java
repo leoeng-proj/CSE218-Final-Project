@@ -1,6 +1,7 @@
 package structs;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.function.Consumer;
@@ -44,7 +45,8 @@ public class SectionContainer implements Serializable, Removal{
 		Iterator<Section> iter = sections.iterator();
 		while(iter.hasNext()) {
 			Section s = iter.next();
-			if(s.getTime().equals(sec.getTime())) {
+			if(Arrays.equals(sec.getDaysOffered(), s.getDaysOffered()) 
+					&& s.getTime().equals(sec.getTime())){
 				return true;
 			}
 		}

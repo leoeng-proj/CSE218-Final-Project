@@ -3,12 +3,13 @@ package model;
 import java.util.LinkedList;
 
 import structs.AVLTree;
+import structs.SectionContainer;
 
 public class Professor extends Person{
 
 	private int id;
 	private int numSections;
-	private LinkedList<Section> sections;
+	private SectionContainer sections;
 	
 	private static final AVLTree<Integer> UUIDLIST = new AVLTree<>();
 	
@@ -16,7 +17,7 @@ public class Professor extends Person{
 		super(name);
 		id = generateUUID();
 		numSections = 0;
-		sections = new LinkedList<>();
+		sections = new SectionContainer();
 	}
 	public int getId() {
 		return id;
@@ -30,16 +31,11 @@ public class Professor extends Person{
 	public void setNumSections(int numSections) {
 		this.numSections = numSections;
 	}
-	public LinkedList<Section> getSections() {
+	public SectionContainer getSections() {
 		return sections;
 	}
 	public void addSection(Section section) {
-		if(sections.contains(section)) {
-			return;
-		}
-		sections.add(section);
-		section.setInstructor(this);
-		numSections++;
+		sections.addSection(section);
 	}
 	public void removeSection(Section section) {
 		sections.remove(section);
