@@ -25,4 +25,7 @@ public class Classroom implements Serializable{
 	public SectionContainer getSections() {
 		return sections;
 	}
+	public String toString() {
+		return roomID;
+	}
 }

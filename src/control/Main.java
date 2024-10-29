@@ -67,7 +67,7 @@ public class Main extends Application {
 		GridPane root = new GridPane();
 		root.getStyleClass().add("pane-style");
 
-		TextArea info = new TextArea("Select an Item");
+		TextArea info = new TextArea("Select An Item To View Information");
 		info.setEditable(false);
 		info.getStyleClass().add("listview-style");
 		root.add(info, 0, 2, 2, 1);

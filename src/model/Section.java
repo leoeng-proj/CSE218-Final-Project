@@ -91,7 +91,7 @@ public class Section implements Serializable{
 				"\nTime:\t\t" + getTime() + 
 				"\nClassroom:\t" + room + 
 				"\nTextbook(s):\t" + getTextbooks() +
-				"\nStudents:\t" + students.toString();
+				"\nStudents:\t" + students;
 	}
 	public void clear() {
 		students.unenrollAll(this);
