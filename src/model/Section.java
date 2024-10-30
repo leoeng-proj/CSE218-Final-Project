@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import structs.Information;
 import structs.StudentContainer;
 
-public class Section implements Serializable{
+public class Section implements Serializable, Information{
 	
 	private int sectionNum;
 	private boolean isOnline;
@@ -46,7 +47,6 @@ public class Section implements Serializable{
 	}
 	public void setInstructor(Professor instructor) {
 		this.instructor = instructor;
-		instructor.addSection(this);
 	}
 	public Classroom getRoom() {
 		return room;
@@ -96,5 +96,7 @@ public class Section implements Serializable{
 	public void clear() {
 		students.unenrollAll(this);
 		students.clear();
+		instructor.removeSection(this);
+		setInstructor(null);
 	}
 }

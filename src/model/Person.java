@@ -2,7 +2,9 @@ package model;
 
 import java.io.Serializable;
 
-public abstract class Person implements Serializable{
+import structs.Information;
+
+public abstract class Person implements Serializable, Information{
 	
 	private Name name;
 	

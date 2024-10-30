@@ -20,8 +20,8 @@ public class ProfessorContainer implements Serializable, Removal{
 		super();
 		professors = (LinkedList<Professor>)other.professors.clone();
 	}
-	public void addSection(Professor section) {
-		professors.add(section);
+	public void addProfessor(Professor professor) {
+		professors.add(professor);
 	}
 	public Professor[] toArray() {
 		return professors.toArray(new Professor[0]);

@@ -3,7 +3,9 @@ package model;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class Course implements Comparable<Course>, Serializable{
+import structs.Information;
+
+public class Course implements Comparable<Course>, Serializable, Information{
 
 	private double credits;
 	private String name;

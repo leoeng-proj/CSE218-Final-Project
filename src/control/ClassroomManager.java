@@ -66,6 +66,15 @@ public class ClassroomManager {
 		profs.setItems(FXCollections.observableArrayList(validProfessors.toArray()));
 		profs.setOnMouseClicked(e -> {
 			Professor p = profs.getFocusModel().getFocusedItem();
+			if(p == null) {
+				return;
+			}
+			p.getSections().addSection(selectedSection);
+			if(selectedSection.getInstructor() != null) {
+				selectedSection.getInstructor().removeSection(selectedSection);
+			}
+			selectedSection.setInstructor(p);
+			updateSectionInfo();
 			stage.close();
 		});
 		root.add(profs, 0, 0);
@@ -91,6 +100,9 @@ public class ClassroomManager {
 		sections.setItems(FXCollections.observableArrayList(validSections.toArray()));
 		sections.setOnMouseClicked(e -> {
 			Section s = sections.getFocusModel().getFocusedItem();
+			if(s == null) {
+				return;
+			}
 			if(selectedClassroom.getSections().checkTimeConflicts(s)) {
 				Alert timeConfliction = new Alert(AlertType.WARNING);
 				timeConfliction.setHeaderText("Time Confliction");
@@ -148,6 +160,9 @@ public class ClassroomManager {
 		students.setItems(FXCollections.observableArrayList(validStudents.toArray()));
 		students.setOnMouseClicked(e -> {
 			Student student = students.getFocusModel().getFocusedItem();
+			if(student == null) {
+				return;
+			}
 			student.addSection(selectedSection);
 			selectedSection.getStudents().addStudent(student);
 			updateSectionPeople();

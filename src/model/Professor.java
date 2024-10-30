@@ -41,6 +41,11 @@ public class Professor extends Person{
 		sections.remove(section);
 		numSections--;
 	}
+	public String getInfo() {
+		return "Name: \t\t" + toString() + 
+				"\nID: \t\t\t" + id +
+				"\nClasses:\n" + sections.toString();
+	}
 	private static int generateUUID() {
 		int id = 0;
 		do{
