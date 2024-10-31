@@ -1,35 +1,30 @@
 package model;
 
-import java.util.LinkedList;
-
 import structs.AVLTree;
 import structs.SectionContainer;
 
 public class Professor extends Person{
 
 	private int id;
-	private int numSections;
 	private SectionContainer sections;
+	private Hours prefTime;
 	
 	private static final AVLTree<Integer> UUIDLIST = new AVLTree<>();
 	
-	public Professor(Name name) {
+	public Professor(Name name, Hours prefTime) {
 		super(name);
 		id = generateUUID();
-		numSections = 0;
+		this.prefTime = prefTime;
 		sections = new SectionContainer();
+	}
+	public Hours getPrefTime() {
+		return prefTime;
+	}
+	public void setPrefTime(Hours prefTime) {
+		this.prefTime = prefTime;
 	}
 	public int getId() {
 		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getNumSections() {
-		return numSections;
-	}
-	public void setNumSections(int numSections) {
-		this.numSections = numSections;
 	}
 	public SectionContainer getSections() {
 		return sections;
@@ -39,11 +34,11 @@ public class Professor extends Person{
 	}
 	public void removeSection(Section section) {
 		sections.remove(section);
-		numSections--;
 	}
 	public String getInfo() {
 		return "Name: \t\t" + toString() + 
 				"\nID: \t\t\t" + id +
+				"\nPreferred Hours: " + prefTime +
 				"\nClasses:\n" + sections.toString();
 	}
 	private static int generateUUID() {

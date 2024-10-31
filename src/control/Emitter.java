@@ -32,7 +32,7 @@ public abstract class Emitter {
 				Math.random() * 4);
 	}
 	public static Professor emitProfessor() {
-		return new Professor(emitName());
+		return new Professor(emitName(), Hours.values()[(int)(Math.random()*Hours.values().length)]);
 	}
 	public static Section emitSection(Classroom room, Course course) {
 //	Section(int sectionNum, boolean isOnline, Classroom room, Course course, ListBag<String> textbooks, Day[] daysOffered, Hours time) {

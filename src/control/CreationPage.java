@@ -18,8 +18,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Course;
 import model.Day;
+import model.Hours;
 import model.Major;
 import model.Name;
+import model.Professor;
 import model.Section;
 import model.Student;
 
@@ -37,14 +39,35 @@ public class CreationPage {
 		//Professor(Name name)
 		GridPane root = initPage(300, 400, "Professor Creation");
 		Button close = defaultClose(root);
+		Button submit = new Button("Submit");
+		submit.getStyleClass().add("button-syle");
 		
 		TextField firstname = defaultTextField("First Name", root, 0, 0, 2, 1);
 		TextField lastname = defaultTextField("Last Name", root, 0, 1, 2, 1);
+		ComboBox<Hours> prefTimeSelect = defaultComboBox(Hours.values(), "Preferred Time", root, 0, 2, 2, 1);
 		
-		Button submit = new Button("Submit");
-		submit.getStyleClass().add("button-syle");
-		root.add(submit, 0, 2, 1, 1);
-		root.add(close, 1, 2, 1, 1);
+		submit.setOnAction(e -> {
+			Professor prof = new Professor(new Name(firstname.getText(), lastname.getText()), prefTimeSelect.getValue());
+			DataCenter.getInstance().getContainers().getProfessorContainer().addProfessor(prof);
+			closeWindow(root);
+		});
+		submit.setDisable(true);
+		root.add(submit, 0, 3, 1, 1);
+		root.add(close, 1, 3, 1, 1);
+		
+		ChangeListener<Object> listener = new ChangeListener<>() {
+			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
+				if(firstname.getLength() > 0 && lastname.getLength() > 0 && prefTimeSelect.getValue() != null) {
+					submit.setDisable(false);
+				}
+				else {
+					submit.setDisable(true);
+				}
+			}
+		};
+		firstname.textProperty().addListener(listener);
+		lastname.textProperty().addListener(listener);
+		prefTimeSelect.valueProperty().addListener(listener);
 	}
 	public void sectionCreationPage() {
 		//Section(int sectionNum, boolean isOnline, Classroom room, Course course,

@@ -60,7 +60,8 @@ public class ClassroomManager {
 		ProfessorContainer validProfessors = new ProfessorContainer(DataCenter.getInstance().getContainers().getProfessorContainer());
 		validProfessors.trim(new Predicate<Professor>() {
 			public boolean test(Professor prof) {
-				return prof.getSections().checkTimeConflicts(selectedSection);
+				return prof.getSections().checkTimeConflicts(selectedSection) ||
+						!prof.getPrefTime().equals(selectedSection.getTime());
 			}
 		});
 		profs.setItems(FXCollections.observableArrayList(validProfessors.toArray()));
