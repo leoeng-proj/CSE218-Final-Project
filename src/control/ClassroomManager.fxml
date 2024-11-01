@@ -13,9 +13,9 @@
    <children>
       <Pane prefHeight="478.0" prefWidth="410.0">
          <children>
-            <ImageView fitHeight="477.0" fitWidth="420.0">
+            <ImageView fitHeight="701.0" fitWidth="605.0">
                <image>
-                  <Image url="@../../school-map.png" />
+                  <Image url="@../../school%20map.png" />
                </image>
             </ImageView>
             <Button fx:id="clOne" layoutX="31.0" layoutY="75.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL01" userData="0" />
