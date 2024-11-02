@@ -50,8 +50,8 @@ public class Main extends Application {
 		stage.show();
 	}
 	public Pane homepage(CreationPage creator) throws IOException {
-		BorderPane root = new BorderPane();
-//		root.getStyleClass().add("pane-style");
+		GridPane root = new GridPane();
+		root.getStyleClass().add("pane-style");
 		root.setPadding(new Insets(10, 10, 10, 10));
 		root.disableProperty().bind(creator.getIsOpen());
 
@@ -59,10 +59,10 @@ public class Main extends Application {
 		controls.getStyleClass().add("pane-style");
 		controls.add(creationButtons(creator), 0, 0);
 		controls.add(displayContainers(root), 0, 1);
-		root.setLeft(controls);
+		root.add(controls, 0 , 0);
 		
 		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("ClassroomManager.fxml"));
-		root.setRight(classroomManager);
+		root.add(classroomManager, 1, 0);
 		
 		return root;
 	}
