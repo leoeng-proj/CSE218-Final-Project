@@ -7,18 +7,16 @@ import model.Name;
 import model.Professor;
 import model.Section;
 import model.Student;
+import structs.AVLTree;
 import structs.StudentContainer;
 
 public class Test {
 
 	public static void main(String[] args) {
-
-		Student leo = new Student(new Name("Leo", "Eng"), Major.CSE, 4.0);
-		StudentContainer students = new StudentContainer();
+		AVLTree<Integer> tree = new AVLTree<Integer>();
 		for(int i = 0; i < 10; i++) {
-			students.addStudent(Emitter.emitStudent());
+			tree.add(i);
 		}
-		Course dsa = new Course(3, "Data Structures and Algorithms", "", "CSE218", Major.CSE);
-		Professor prof = Emitter.emitProfessor();
+		System.out.println(tree);
 	}
 }

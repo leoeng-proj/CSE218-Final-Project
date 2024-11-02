@@ -4,31 +4,39 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class AVLTree <T extends Comparable<T>> implements Serializable, Collection{
+public class AVLTree <T extends Comparable<T>> implements Serializable, Collection<T>{
 	private Node root;
-	public AVLTree() {
-		this.setRoot(null);
+	private int size;
+	private final Class<T> type;
+	
+	public AVLTree(Class<T> type) {
+		this.type = type;
+		this.root = null;
+		size = 0;
 	}
-	public AVLTree(T item) {
-		this.setRoot(new Node(item));
+	public AVLTree(T item, Class<T> type) {
+		this.type = type;
+		this.root = new Node(item);
+		size = 1;
 	}
-	public void setRoot(Node root) {
-		this.root = root;
-	}
-	public void add(T item) {
-		if(root == null) {
-			setRoot(new Node(item));
-			return;
-		}
-		setRoot(addRecur(item, root));
+	public boolean add(T item) {
+//		if(root == null) {
+//			this.root = new Node(item);
+//		}
+		this.root = addRecur(item, root);
+		size++;
+		return true;
 	}
 	public void addArray(T[] array) {
 		for(T o : array) {
 			add(o);
 		}
-	}
-	public boolean contains(T item) {
-		return (searchRecur(item, root) == null) ? false : true;
+	}	
+	public boolean contains(Object item) {
+		if(!type.isInstance(item)) {
+			return false;
+		}
+		return searchRecur(type.cast(item), root) != null;
 	}
 	public void remove(T item) {
 		Node node = searchRecur(item, root);
@@ -44,6 +52,38 @@ public class AVLTree <T extends Comparable<T>> implements Serializable, Collecti
 		StringBuilder sb = new StringBuilder();
 		toStringRecur(root, sb, 0);		
 		return sb.toString();
+	}
+	public int size() {
+		return size;
+	}
+	public boolean isEmpty() {
+		return size() == 0;
+	}
+	public Iterator iterator() {
+		return null;
+	}
+	public Object[] toArray() {
+		return null;
+	}
+	public Object[] toArray(Object[] a) {
+		return null;
+	}
+	public boolean remove(Object o) {
+		return false;
+	}
+	public boolean containsAll(Collection c) {
+		return false;
+	}
+	public boolean addAll(Collection c) {
+		return false;
+	}
+	public boolean removeAll(Collection c) {
+		return false;
+	}
+	public boolean retainAll(Collection c) {
+		return false;
+	}
+	public void clear() {
 	}
 	private Node addRecur(T item, Node root) {
 		if (root == null) {
@@ -190,69 +230,5 @@ public class AVLTree <T extends Comparable<T>> implements Serializable, Collecti
 		public String toString() {
 			return item.toString();
 		}
-	}
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Object[] toArray() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Object[] toArray(Object[] a) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public boolean add(Object e) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean containsAll(Collection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean addAll(Collection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean removeAll(Collection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public boolean retainAll(Collection c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
 	}
 }
