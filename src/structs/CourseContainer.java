@@ -14,12 +14,11 @@ public class CourseContainer implements Serializable, Removal{
 		courses = new LinkedList<>();
 	}
 	
-	public boolean addCourse(Course course) {
+	public void addCourse(Course course) {
 		if(courses.contains(course)) {
-			return false;
+			return;
 		}
 		courses.add(course);
-		return true;
 	}
 	public Course[] toArray() {
 		return courses.toArray(new Course[0]);

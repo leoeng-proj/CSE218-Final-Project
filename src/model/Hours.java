@@ -19,7 +19,7 @@ public enum Hours {
 	public void setTimeRange(TimeRange timeRange) {
 		this.timeRange = timeRange;
 	}
-	public String toString() {
-		return timeRange.toString();
-	}
+//	public String toString() {
+//		return timeRange.toString();
+//	}
 }

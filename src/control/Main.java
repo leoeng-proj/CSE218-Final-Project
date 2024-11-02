@@ -75,7 +75,7 @@ public class Main extends Application {
 
 		TextArea info = new TextArea("Select An Item To View Information");
 		info.setEditable(false);
-		info.getStyleClass().add("listview-style");
+		info.getStyleClass().add("listview-style"); //same size as other nodes in method
 		root.add(info, 0, 2, 2, 1);
 		
 		ListView<Student> studentView = makeListView(root, info);
@@ -106,6 +106,7 @@ public class Main extends Application {
 			Removal container = (Removal)lv.getUserData();
 			container.remove(obj);
 			refresh(studentView, sectionView, courseView, professorView, remove, views, counter);
+			info.clear();
 		});
 		root.add(remove, 0, 3);
 

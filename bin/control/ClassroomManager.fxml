@@ -18,13 +18,13 @@
                   <Image url="@../../school%20map.png" />
                </image>
             </ImageView>
-            <Button fx:id="clOne" layoutX="31.0" layoutY="75.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL01" userData="0" />
-            <Button fx:id="clTwo" layoutX="31.0" layoutY="238.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL02" userData="1" />
-            <Button fx:id="clThree" layoutX="31.0" layoutY="388.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL03" userData="2" />
-            <Button fx:id="clFour" layoutX="316.0" layoutY="53.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL04" userData="3" />
-            <Button fx:id="clFive" layoutX="316.0" layoutY="190.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL05" userData="4" />
-            <Button fx:id="clSix" layoutX="316.0" layoutY="310.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL06" userData="5" />
-            <Button fx:id="clSeven" layoutX="316.0" layoutY="423.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL07" userData="6" />
+            <Button layoutX="31.0" layoutY="75.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL01" userData="0" />
+            <Button layoutX="31.0" layoutY="238.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL02" userData="1" />
+            <Button layoutX="31.0" layoutY="388.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL03" userData="2" />
+            <Button layoutX="316.0" layoutY="53.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL04" userData="3" />
+            <Button layoutX="316.0" layoutY="190.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL05" userData="4" />
+            <Button layoutX="316.0" layoutY="310.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL06" userData="5" />
+            <Button layoutX="316.0" layoutY="423.0" mnemonicParsing="false" onAction="#showSections" styleClass="button-style" stylesheets="@styles.css" text="CL07" userData="6" />
          </children>
       </Pane>
       <Pane layoutY="498.0" prefHeight="252.0" prefWidth="420.0">
