@@ -15,9 +15,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import model.Course;
 import model.Professor;
@@ -50,20 +51,22 @@ public class Main extends Application {
 		stage.show();
 	}
 	public Pane homepage(CreationPage creator) throws IOException {
-		GridPane root = new GridPane();
+		HBox root = new HBox();
 		root.getStyleClass().add("pane-style");
-		root.setPadding(new Insets(10, 10, 10, 10));
 		root.disableProperty().bind(creator.getIsOpen());
-
+		root.setPadding(new Insets(10, 10, 10, 10));
+		root.setSpacing(10);
+		
 		GridPane controls = new GridPane();
 		controls.getStyleClass().add("pane-style");
 		controls.add(creationButtons(creator), 0, 0);
 		controls.add(displayContainers(root), 0, 1);
-		root.add(controls, 0 , 0);
+		HBox.setHgrow(controls, Priority.ALWAYS);
 		
 		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("ClassroomManager.fxml"));
-		root.add(classroomManager, 1, 0);
-		
+		HBox.setHgrow(classroomManager, Priority.ALWAYS);
+
+		root.getChildren().addAll(controls, classroomManager);
 		return root;
 	}
 	public GridPane displayContainers(Pane parent) {
