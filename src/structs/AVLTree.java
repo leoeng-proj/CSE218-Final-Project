@@ -7,15 +7,12 @@ import java.util.Iterator;
 public class AVLTree <T extends Comparable<T>> implements Serializable, Collection<T>{
 	private Node root;
 	private int size;
-	private final Class<T> type;
 	
-	public AVLTree(Class<T> type) {
-		this.type = type;
+	public AVLTree() {
 		this.root = null;
 		size = 0;
 	}
-	public AVLTree(T item, Class<T> type) {
-		this.type = type;
+	public AVLTree(T item) {
 		this.root = new Node(item);
 		size = 1;
 	}
@@ -33,10 +30,7 @@ public class AVLTree <T extends Comparable<T>> implements Serializable, Collecti
 		}
 	}	
 	public boolean contains(Object item) {
-		if(!type.isInstance(item)) {
-			return false;
-		}
-		return searchRecur(type.cast(item), root) != null;
+		return searchRecur(item, root) != null;
 	}
 	public void remove(T item) {
 		Node node = searchRecur(item, root);
