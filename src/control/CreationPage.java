@@ -32,6 +32,49 @@ public class CreationPage {
 	public CreationPage() {
 		this.isOpen = new SimpleBooleanProperty(false);
 	}
+	public void courseCreationPage() {
+		// Course(double credits, String name, String description, String courseNum, Major[] reqMajors)
+		GridPane root = initPage(300, 400, "Course Creation");
+		Button close = defaultClose(root);
+		Button submit = new Button("Submit");
+		submit.getStyleClass().add("button-style");
+		
+		TextField courseName = defaultTextField("Course Name", root, 0, 0, 2, 1);
+		TextField description = defaultTextField("Description", root, 0, 1, 2, 1);
+		TextField courseNum = defaultTextField("Course Number", root, 0, 2, 2, 1);	
+
+		ComboBox<Double> credits = defaultComboBox(new Double[] {1.0, 2.0, 3.0, 4.0, 5.0}, 
+				"Select Credit Value", root, 0, 3, 2, 1);
+		ComboBox<Major> majors = defaultComboBox(Major.values(), "Select Major", root, 0, 4, 2, 1);
+		
+		ChangeListener<Object> listener = new ChangeListener<>() {
+			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
+				if(courseName.getLength() > 0 && description.getLength() > 0 && courseNum.getLength() > 0 &&
+						credits.getValue() != null && majors.getValue() != null) {
+					submit.setDisable(false);
+				}
+				else { 
+					submit.setDisable(true);
+				}
+			}
+		};
+		courseName.textProperty().addListener(listener);
+		description.textProperty().addListener(listener);
+		courseNum.textProperty().addListener(listener);
+		credits.valueProperty().addListener(listener);
+		majors.valueProperty().addListener(listener);
+		
+		submit.setDisable(true);
+		submit.setOnAction(e -> {
+			Course course = new Course(credits.getValue(), courseName.getText(),
+					description.getText(), courseNum.getText(), majors.getValue());
+			DataCenter.getInstance().getContainers().getCourseContainer().addCourse(course);
+			closeWindow(root);
+		});
+		
+		root.add(submit, 0, 5, 1, 1);
+		root.add(close, 1, 5, 1, 1);
+	}
 	public BooleanProperty getIsOpen() {
 		return isOpen;
 	}
@@ -136,49 +179,6 @@ public class CreationPage {
 		});
 		root.add(close, 1, count, 1, 1);
 	}
-	public void courseCreationPage() {
-		// Course(double credits, String name, String description, String courseNum, Major[] reqMajors)
-		GridPane root = initPage(300, 400, "Course Creation");
-		Button close = defaultClose(root);
-		Button submit = new Button("Submit");
-		submit.getStyleClass().add("button-style");
-		
-		TextField courseName = defaultTextField("Course Name", root, 0, 0, 2, 1);
-		TextField description = defaultTextField("Description", root, 0, 1, 2, 1);
-		TextField courseNum = defaultTextField("Course Number", root, 0, 2, 2, 1);	
-
-		ComboBox<Double> credits = defaultComboBox(new Double[] {1.0, 2.0, 3.0, 4.0, 5.0}, 
-				"Select Credit Value", root, 0, 3, 2, 1);
-		ComboBox<Major> majors = defaultComboBox(Major.values(), "Select Major", root, 0, 4, 2, 1);
-		
-		ChangeListener<Object> listener = new ChangeListener<>() {
-			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
-				if(courseName.getLength() > 0 && description.getLength() > 0 && courseNum.getLength() > 0 &&
-						credits.getValue() != null && majors.getValue() != null) {
-					submit.setDisable(false);
-				}
-				else { 
-					submit.setDisable(true);
-				}
-			}
-		};
-		courseName.textProperty().addListener(listener);
-		description.textProperty().addListener(listener);
-		courseNum.textProperty().addListener(listener);
-		credits.valueProperty().addListener(listener);
-		majors.valueProperty().addListener(listener);
-		
-		submit.setDisable(true);
-		submit.setOnAction(e -> {
-			Course course = new Course(credits.getValue(), courseName.getText(),
-					description.getText(), courseNum.getText(), majors.getValue());
-			DataCenter.getInstance().getContainers().getCourseContainer().addCourse(course);
-			closeWindow(root);
-		});
-		
-		root.add(submit, 0, 5, 1, 1);
-		root.add(close, 1, 5, 1, 1);
-	}
 	public void studentCreationPage() {
 		// Student(Name name, Major major, double gpa)
 		GridPane root = initPage(300, 400, "Student Creation");
@@ -213,25 +213,26 @@ public class CreationPage {
 			closeWindow(root);
 		});
 	}
-	private GridPane initPage(int width, int height, String title) {
-		isOpen.set(true);
-		Stage stage = defaultStage(title);
-		GridPane root = defaultGridPane();
-		Scene scene = defaultScene(root);
-		stage.setResizable(false);
-		stage.setWidth(width);
-		stage.setHeight(height);
-		stage.setScene(scene);
-		stage.show();
-		return root;
+	private void closeWindow(GridPane root) {
+		isOpen.set(false);
+		Stage stage = (Stage)root.getScene().getWindow();
+		stage.close();
 	}
-	private Stage defaultStage(String title) {
-		Stage stage = new Stage();
-		stage.setTitle(title);
-		stage.setOnCloseRequest(e -> {		
-			isOpen.set(false);
+	private Button defaultClose(GridPane root) {
+		Button close = new Button("Close");
+		close.getStyleClass().add("button-style");
+		close.setOnAction(e -> {
+			closeWindow(root);
 		});
-		return stage;
+		return close;
+	}
+	private <T> ComboBox<T> defaultComboBox(T[] col, String promptText, GridPane root, int x, int y, int w, int h){
+		ComboBox<T> cmb = new ComboBox<>();
+		cmb.setPromptText(promptText);
+		cmb.getStyleClass().add("textfield-style");
+		cmb.getItems().addAll(col);
+		root.add(cmb, x, y, w, h);
+		return cmb;
 	}
 	private GridPane defaultGridPane() {
 		GridPane root = new GridPane();
@@ -244,13 +245,13 @@ public class CreationPage {
 		scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 		return scene;
 	}
-	private <T> ComboBox<T> defaultComboBox(T[] col, String promptText, GridPane root, int x, int y, int w, int h){
-		ComboBox<T> cmb = new ComboBox<>();
-		cmb.setPromptText(promptText);
-		cmb.getStyleClass().add("textfield-style");
-		cmb.getItems().addAll(col);
-		root.add(cmb, x, y, w, h);
-		return cmb;
+	private Stage defaultStage(String title) {
+		Stage stage = new Stage();
+		stage.setTitle(title);
+		stage.setOnCloseRequest(e -> {		
+			isOpen.set(false);
+		});
+		return stage;
 	}
 	private TextField defaultTextField(String promptText, GridPane root, int x, int y, int w, int h) {
 		TextField tf = new TextField();
@@ -259,17 +260,16 @@ public class CreationPage {
 		root.add(tf, x, y, w, h);
 		return tf;
 	}
-	private Button defaultClose(GridPane root) {
-		Button close = new Button("Close");
-		close.getStyleClass().add("button-style");
-		close.setOnAction(e -> {
-			closeWindow(root);
-		});
-		return close;
-	}
-	private void closeWindow(GridPane root) {
-		isOpen.set(false);
-		Stage stage = (Stage)root.getScene().getWindow();
-		stage.close();
+	private GridPane initPage(int width, int height, String title) {
+		isOpen.set(true);
+		Stage stage = defaultStage(title);
+		GridPane root = defaultGridPane();
+		Scene scene = defaultScene(root);
+		stage.setResizable(false);
+		stage.setWidth(width);
+		stage.setHeight(height);
+		stage.setScene(scene);
+		stage.show();
+		return root;
 	}
 }

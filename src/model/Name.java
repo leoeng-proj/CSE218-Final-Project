@@ -11,18 +11,6 @@ public class Name implements Serializable{
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 	public int compareTo(Name other) {
 		return this.lastName.compareTo(other.getLastName());
 	}
@@ -36,6 +24,18 @@ public class Name implements Serializable{
 		Name o = (Name)other;
 		return this.firstName.equals(o.getFirstName()) &&
 				this.lastName.equals(o.getLastName());
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	public String toString() {
 		return firstName + " " + lastName;

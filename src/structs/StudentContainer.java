@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.function.Predicate;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Section;
 import model.Student;
 
@@ -22,11 +24,20 @@ public class StudentContainer implements Serializable, Removal{
 	public void addStudent(Student s) {
 		students.add(s);
 	}
-	public Student[] toArray() {
-		return students.toArray(new Student[0]);
+	public void clear() {
+		students.clear();
+	}
+	public ObservableList<Student> getObservableStudentContainer(){
+		return FXCollections.observableArrayList(toArray());
 	}
 	public boolean remove(Object obj) {
 		return students.remove(obj);
+	}
+	public Student[] toArray() {
+		return students.toArray(new Student[0]);
+	}
+	public String toString() {
+		return students.toString();
 	}
 	public void trim(Predicate<Student> pred) {
 		Iterator<Student> iter = students.iterator();
@@ -43,11 +54,5 @@ public class StudentContainer implements Serializable, Removal{
 			Student s = iter.next();
 			s.unenroll(sec);
 		}
-	}
-	public void clear() {
-		students.clear();
-	}
-	public String toString() {
-		return students.toString();
 	}
 }

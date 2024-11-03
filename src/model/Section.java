@@ -30,59 +30,19 @@ public class Section implements Serializable, Information{
 		this.time = time;
 		setStudents(new StudentContainer());
 	}
-	public int getSectionNum() {
-		return sectionNum;
-	}
-	public void setSectionNum(int sectionNum) {
-		this.sectionNum = sectionNum;
-	}
-	public boolean isOnline() {
-		return isOnline;
-	}
-	public void setOnline(boolean isOnline) {
-		this.isOnline = isOnline;
-	}
-	public Professor getInstructor() {
-		return instructor;
-	}
-	public void setInstructor(Professor instructor) {
-		this.instructor = instructor;
-	}
-	public Classroom getRoom() {
-		return room;
-	}
-	public void setRoom(Classroom room) {
-		this.room = room;
+	public void clear() {
+		students.unenrollAll(this);
+		students.clear();
+		if(instructor != null) {
+			instructor.removeSection(this);
+			setInstructor(null);
+		}
 	}
 	public Course getCourse() {
 		return course;
 	}
-	public LinkedList<String> getTextbooks() {
-		return textbooks;
-	}
-	public void setTextbooks(LinkedList<String> textbooks) {
-		this.textbooks = textbooks;
-	}
-	public StudentContainer getStudents() {
-		return students;
-	}
-	public void setStudents(StudentContainer students) {
-		this.students = students;
-	}
 	public Day[] getDaysOffered() {
 		return daysOffered;
-	}
-	public void setDaysOffered(Day[] daysOffered) {
-		this.daysOffered = daysOffered;
-	}
-	public Hours getTime() {
-		return time;
-	}
-	public void setTime(Hours time) {
-		this.time = time;
-	}
-	public String toString() {
-		return course + " | " + sectionNum;
 	}
 	public String getInfo() {
 		return "Course:\t\t" + getCourse() +
@@ -93,10 +53,52 @@ public class Section implements Serializable, Information{
 				"\nTextbook(s):\t" + getTextbooks() +
 				"\nStudents:\t" + students;
 	}
-	public void clear() {
-		students.unenrollAll(this);
-		students.clear();
-		instructor.removeSection(this);
-		setInstructor(null);
+	public Professor getInstructor() {
+		return instructor;
+	}
+	public Classroom getRoom() {
+		return room;
+	}
+	public int getSectionNum() {
+		return sectionNum;
+	}
+	public StudentContainer getStudents() {
+		return students;
+	}
+	public LinkedList<String> getTextbooks() {
+		return textbooks;
+	}
+	public Hours getTime() {
+		return time;
+	}
+	public boolean isOnline() {
+		return isOnline;
+	}
+	public void setDaysOffered(Day[] daysOffered) {
+		this.daysOffered = daysOffered;
+	}
+	public void setInstructor(Professor instructor) {
+		this.instructor = instructor;
+	}
+	public void setOnline(boolean isOnline) {
+		this.isOnline = isOnline;
+	}
+	public void setRoom(Classroom room) {
+		this.room = room;
+	}
+	public void setSectionNum(int sectionNum) {
+		this.sectionNum = sectionNum;
+	}
+	public void setStudents(StudentContainer students) {
+		this.students = students;
+	}
+	public void setTextbooks(LinkedList<String> textbooks) {
+		this.textbooks = textbooks;
+	}
+	public void setTime(Hours time) {
+		this.time = time;
+	}
+	public String toString() {
+		return course + " | " + sectionNum;
 	}
 }

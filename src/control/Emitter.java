@@ -26,10 +26,10 @@ public abstract class Emitter {
 	private static String[] courseNumBank = {
 			"cse118", "cse148", "cse218", "cse222", "cse248", "mat141", "mat142"
 	};
-	public static Student emitStudent() {
-		return new Student(emitName(), 
-				Major.values()[(int)(Math.random()*Major.values().length)],
-				Math.random() * 4);
+	public static Course emitCourse() {
+//		Course(double credits, String name, String description, String courseNum, Major reqMajors) {
+		return new Course(Math.random()*5, "Name", "", courseNumBank[(int)(Math.random()*courseNumBank.length)],
+				Major.values()[(int)(Math.random()*Major.values().length)]);
 	}
 	public static Professor emitProfessor() {
 		return new Professor(emitName(), Hours.values()[(int)(Math.random()*Hours.values().length)]);
@@ -40,10 +40,16 @@ public abstract class Emitter {
 				(Math.random()*10 > 5), room, course,
 				null, emitDays(), emitTime());
 	}
-	public static Course emitCourse() {
-//		Course(double credits, String name, String description, String courseNum, Major reqMajors) {
-		return new Course(Math.random()*5, "Name", "", courseNumBank[(int)(Math.random()*courseNumBank.length)],
-				Major.values()[(int)(Math.random()*Major.values().length)]);
+	public static Student emitStudent() {
+		return new Student(emitName(), 
+				Major.values()[(int)(Math.random()*Major.values().length)],
+				Math.random() * 4);
+	}
+	private static Day[] emitDays() {
+		Day[] mw = {Day.Mon, Day.Wed};
+		Day[] tth = {Day.Tue, Day.Thu};
+		Day[][] combinations = {mw, tth};
+		return combinations[(int)(Math.random()*combinations.length)];
 	}
 	private static Name emitName() {
 		return new Name(firstNameBank[(int)(Math.random()*firstNameBank.length)],
@@ -51,11 +57,5 @@ public abstract class Emitter {
 	}
 	private static Hours emitTime() {
 		return Hours.values()[(int)(Math.random()*Hours.values().length)];
-	}
-	private static Day[] emitDays() {
-		Day[] mw = {Day.Mon, Day.Wed};
-		Day[] tth = {Day.Tue, Day.Thu};
-		Day[][] combinations = {mw, tth};
-		return combinations[(int)(Math.random()*combinations.length)];
 	}
 }

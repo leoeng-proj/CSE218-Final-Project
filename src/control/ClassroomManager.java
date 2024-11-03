@@ -3,7 +3,6 @@ package control;
 
 import java.util.function.Predicate;
 
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -45,41 +44,6 @@ public class ClassroomManager {
 	private Classroom selectedClassroom;
 	private Section selectedSection;
 	
-	public void assignProfessor() {
-		Stage stage = new Stage();
-		stage.setTitle("Select a Professor");
-		stage.setHeight(300);
-		stage.setWidth(240);
-		stage.setResizable(false);
-		GridPane root = new GridPane();
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.show();
-		ListView<Professor> profs = new ListView<>();
-		profs.getStyleClass().add("listview-style");
-		ProfessorContainer validProfessors = new ProfessorContainer(DataCenter.getInstance().getContainers().getProfessorContainer());
-		validProfessors.trim(new Predicate<Professor>() {
-			public boolean test(Professor prof) {
-				return prof.getSections().checkTimeConflicts(selectedSection) ||
-						!prof.getPrefTime().equals(selectedSection.getTime());
-			}
-		});
-		profs.setItems(FXCollections.observableArrayList(validProfessors.toArray()));
-		profs.setOnMouseClicked(e -> {
-			Professor p = profs.getFocusModel().getFocusedItem();
-			if(p == null) {
-				return;
-			}
-			p.getSections().addSection(selectedSection);
-			if(selectedSection.getInstructor() != null) {
-				selectedSection.getInstructor().removeSection(selectedSection);
-			}
-			selectedSection.setInstructor(p);
-			updateSectionInfo();
-			stage.close();
-		});
-		root.add(profs, 0, 0);
-	}
 	public void addSection() {
 		Stage stage = new Stage();
 		stage.setTitle("Select a Section");
@@ -98,7 +62,7 @@ public class ClassroomManager {
 				return sec.getRoom() != null;
 			}
 		});
-		sections.setItems(FXCollections.observableArrayList(validSections.toArray()));
+		sections.setItems(validSections.getObservableSectionContainer());
 		sections.setOnMouseClicked(e -> {
 			Section s = sections.getFocusModel().getFocusedItem();
 			if(s == null) {
@@ -112,32 +76,13 @@ public class ClassroomManager {
 			}
 			s.setRoom(selectedClassroom);
 			selectedClassroom.getSections().addSection(s);
-			listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
+			listOfSections.setItems(selectedClassroom.getSections().getObservableSectionContainer());
 			if(sectionRemove.isDisabled()) {
 				sectionRemove.setDisable(false);
 			}
 			stage.close();
 		});
 		root.add(sections, 0, 0);
-	}
-	public void removeSection() {
-		if(selectedSection == null) {
-			Alert noSections = new Alert(AlertType.WARNING);
-			noSections.setHeaderText("Select a Section");
-			noSections.show();
-			return;
-		}
-		selectedSection.setRoom(null);
-		selectedClassroom.getSections().remove(selectedSection);
-		listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
-		sectionPeople.getItems().clear();
-		sectionInfo.clear();
-		selectedSection.clear();
-		studentAdd.setDisable(true);
-		studentRemove.setDisable(true);
-		if(listOfSections.getItems().isEmpty()) {
-			sectionRemove.setDisable(true);
-		}
 	}
 	public void addStudent() {
 		Stage stage = new Stage();
@@ -158,7 +103,7 @@ public class ClassroomManager {
 						!student.getMajor().equals(selectedSection.getCourse().getReqMajors());
 			}
 		});
-		students.setItems(FXCollections.observableArrayList(validStudents.toArray()));
+		students.setItems(validStudents.getObservableStudentContainer());
 		students.setOnMouseClicked(e -> {
 			Student student = students.getFocusModel().getFocusedItem();
 			if(student == null) {
@@ -175,6 +120,60 @@ public class ClassroomManager {
 		});
 		root.add(students, 0, 0);
 	}
+	public void assignProfessor() {
+		Stage stage = new Stage();
+		stage.setTitle("Select a Professor");
+		stage.setHeight(300);
+		stage.setWidth(240);
+		stage.setResizable(false);
+		GridPane root = new GridPane();
+		Scene scene = new Scene(root);
+		stage.setScene(scene);
+		stage.show();
+		ListView<Professor> profs = new ListView<>();
+		profs.getStyleClass().add("listview-style");
+		ProfessorContainer validProfessors = new ProfessorContainer(DataCenter.getInstance().getContainers().getProfessorContainer());
+		validProfessors.trim(new Predicate<Professor>() {
+			public boolean test(Professor prof) {
+				return prof.getSections().checkTimeConflicts(selectedSection) ||
+						!prof.getPrefTime().equals(selectedSection.getTime());
+			}
+		});
+		profs.setItems(validProfessors.getObservableProfessorContainer());
+		profs.setOnMouseClicked(e -> {
+			Professor p = profs.getFocusModel().getFocusedItem();
+			if(p == null) {
+				return;
+			}
+			p.getSections().addSection(selectedSection);
+			if(selectedSection.getInstructor() != null) {
+				selectedSection.getInstructor().removeSection(selectedSection);
+			}
+			selectedSection.setInstructor(p);
+			updateSectionInfo();
+			stage.close();
+		});
+		root.add(profs, 0, 0);
+	}
+	public void removeSection() {
+		if(selectedSection == null) {
+			Alert noSections = new Alert(AlertType.WARNING);
+			noSections.setHeaderText("Select a Section");
+			noSections.show();
+			return;
+		}
+		selectedSection.setRoom(null);
+		selectedClassroom.getSections().remove(selectedSection);
+		listOfSections.setItems(selectedClassroom.getSections().getObservableSectionContainer());
+		sectionPeople.getItems().clear();
+		sectionInfo.clear();
+		selectedSection.clear();
+		studentAdd.setDisable(true);
+		studentRemove.setDisable(true);
+		if(listOfSections.getItems().isEmpty()) {
+			sectionRemove.setDisable(true);
+		}
+	}
 	public void removeStudent(ActionEvent e) {
 		Student stu = sectionPeople.getFocusModel().getFocusedItem();
 		selectedSection.getStudents().remove(stu);
@@ -184,21 +183,6 @@ public class ClassroomManager {
 		if(sectionPeople.getItems().isEmpty()) {
 			studentRemove.setDisable(true);
 		}
-	}
-	public void showSections(ActionEvent e) {
-		Button b = (Button)e.getSource();
-		int idx = Integer.parseInt((String)b.getUserData());
-		selectedClassroom = DataCenter.getInstance().getContainers().getClassroomContainer().toArray()[idx];
-		sectionAdd.setDisable(false);
-		if(!selectedClassroom.getSections().isEmpty()) {
-			sectionRemove.setDisable(false);
-		}
-		listOfSections.setItems(FXCollections.observableArrayList(selectedClassroom.getSections().toArray()));
-		sectionPeople.getItems().clear();
-		assignProf.setDisable(true);
-		studentAdd.setDisable(true);
-		studentRemove.setDisable(true);
-		sectionInfo.clear();
 	}
 	public void sectionSelected(MouseEvent e) {
 		selectedSection = listOfSections.getFocusModel().getFocusedItem();
@@ -213,11 +197,26 @@ public class ClassroomManager {
 		}
 		updateSectionInfo();
 	}
+	public void showSections(ActionEvent e) {
+		Button b = (Button)e.getSource();
+		int idx = Integer.parseInt((String)b.getUserData());
+		selectedClassroom = DataCenter.getInstance().getContainers().getClassroomContainer().toArray()[idx];
+		sectionAdd.setDisable(false);
+		if(!selectedClassroom.getSections().isEmpty()) {
+			sectionRemove.setDisable(false);
+		}
+		listOfSections.setItems(selectedClassroom.getSections().getObservableSectionContainer());
+		sectionPeople.getItems().clear();
+		assignProf.setDisable(true);
+		studentAdd.setDisable(true);
+		studentRemove.setDisable(true);
+		sectionInfo.clear();
+	}
 	private void updateSectionInfo() {
 		sectionInfo.setText(selectedSection.getInfo() +
 				"\nCapacity:\t\t" + sectionPeople.getItems().size() + "/" + selectedClassroom.getMaxCapacity());
 	}
 	private void updateSectionPeople() {
-		sectionPeople.setItems(FXCollections.observableArrayList(selectedSection.getStudents().toArray()));
+		sectionPeople.setItems(selectedSection.getStudents().getObservableStudentContainer());
 	}
 }

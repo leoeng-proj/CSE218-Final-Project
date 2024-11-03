@@ -16,11 +16,11 @@ public class Classroom implements Serializable{
 		this.maxCapacity = maxCapacity;
 		this.sections = new SectionContainer();
 	}
-	public String getRoomID() {
-		return roomID;
-	}
 	public int getMaxCapacity() {
 		return maxCapacity;
+	}
+	public String getRoomID() {
+		return roomID;
 	}
 	public SectionContainer getSections() {
 		return sections;

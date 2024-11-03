@@ -12,11 +12,7 @@ import structs.MasterContainer;
 
 public class DataCenter implements Serializable{
 	private static final File file = new File("data.dat");
-	private MasterContainer containers;
 	private static DataCenter instance;
-	private DataCenter() {
-		containers = new MasterContainer();
-	}
 	public static DataCenter getInstance() {
 		if(instance == null) {
 			instance = load();
@@ -25,19 +21,6 @@ public class DataCenter implements Serializable{
 			}
 		}
 		return instance;
-	}
-	public MasterContainer getContainers() {
-		return containers;
-	}
-	public boolean save() {
-		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
-			oos.writeObject(instance);
-			return true;
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		return false;
 	}
 	private static DataCenter load() {
 		try(FileInputStream fis = new FileInputStream(file)){
@@ -54,5 +37,22 @@ public class DataCenter implements Serializable{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	private MasterContainer containers;
+	private DataCenter() {
+		containers = new MasterContainer();
+	}
+	public MasterContainer getContainers() {
+		return containers;
+	}
+	public boolean save() {
+		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
+			oos.writeObject(instance);
+			return true;
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

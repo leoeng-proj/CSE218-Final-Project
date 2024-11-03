@@ -11,12 +11,6 @@ public abstract class Person implements Serializable, Information{
 	public Person(Name name) {
 		this.name = name;
 	}
-	public Name getName() {
-		return name;
-	}
-	public void setName(Name name) {
-		this.name = name;
-	}
 	public boolean equals(Object other) {
 		if(this == other) {
 			return true;
@@ -26,6 +20,12 @@ public abstract class Person implements Serializable, Information{
 		}
 		Person o = (Person)other;
 		return name.equals(o.getName());
+	}
+	public Name getName() {
+		return name;
+	}
+	public void setName(Name name) {
+		this.name = name;
 	}
 	public String toString() {
 		return name.toString();

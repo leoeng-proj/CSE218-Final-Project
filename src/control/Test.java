@@ -1,14 +1,6 @@
 package control;
 
-import model.Classroom;
-import model.Course;
-import model.Major;
-import model.Name;
-import model.Professor;
-import model.Section;
-import model.Student;
 import structs.AVLTree;
-import structs.StudentContainer;
 
 public class Test {
 

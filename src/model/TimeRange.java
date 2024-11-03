@@ -8,19 +8,19 @@ public class TimeRange {
 		startTime = LocalTime.of(h1, m1);
 		endTime = LocalTime.of(h2, m2);
 	}
-	public LocalTime getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(LocalTime startTime) {
-		this.startTime = startTime;
-	}
 	public LocalTime getEndTime() {
 		return endTime;
 	}
 
+	public LocalTime getStartTime() {
+		return startTime;
+	}
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
 	}
 	public String toString() {
 		return startTime + "-" + endTime;

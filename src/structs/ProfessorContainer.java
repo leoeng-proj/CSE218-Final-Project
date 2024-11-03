@@ -1,13 +1,13 @@
 package structs;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.function.Predicate;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Professor;
-import model.Section;
 
 public class ProfessorContainer implements Serializable, Removal{
 	private LinkedList<Professor> professors;
@@ -23,14 +23,20 @@ public class ProfessorContainer implements Serializable, Removal{
 	public void addProfessor(Professor professor) {
 		professors.add(professor);
 	}
-	public Professor[] toArray() {
-		return professors.toArray(new Professor[0]);
+	public ObservableList<Professor> getObservableProfessorContainer(){
+		return FXCollections.observableArrayList(toArray());
+	}
+	public boolean isEmpty() {
+		return professors.isEmpty();
 	}
 	public boolean remove(Object obj) {
 		return professors.remove(obj);
 	}
-	public boolean isEmpty() {
-		return professors.isEmpty();
+	public Professor[] toArray() {
+		return professors.toArray(new Professor[0]);
+	}
+	public String toString() {
+		return professors.toString();
 	}
 	public void trim(Predicate<Professor> pred) {
 		Iterator<Professor> iter = professors.iterator();
@@ -40,8 +46,5 @@ public class ProfessorContainer implements Serializable, Removal{
 				iter.remove();
 			}
 		}
-	}
-	public String toString() {
-		return professors.toString();
 	}
 }

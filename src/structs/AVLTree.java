@@ -1,13 +1,26 @@
 package structs;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
 
-public class AVLTree <T extends Comparable<T>> implements Serializable, Collection<T>{
+public class AVLTree <T extends Comparable<T>> implements Serializable{
+	private class Node{
+		T item;
+		int height;
+		Node left;
+		Node right;
+		Node(T item) {
+			this.item = item;
+			this.left = null;
+			this.right = null;
+			height = 0;
+		}
+		public String toString() {
+			return item.toString();
+		}
+	}
 	private Node root;
-	private int size;
 	
+	private int size;
 	public AVLTree() {
 		this.root = null;
 		size = 0;
@@ -23,21 +36,27 @@ public class AVLTree <T extends Comparable<T>> implements Serializable, Collecti
 		this.root = addRecur(item, root);
 		size++;
 		return true;
-	}
+	}	
 	public void addArray(T[] array) {
 		for(T o : array) {
 			add(o);
 		}
-	}	
-	public boolean contains(Object item) {
+	}
+	public boolean balanced() {
+		return isBalanced(root);
+	}
+	public boolean contains(T item) {
 		return searchRecur(item, root) != null;
+	}
+	public boolean isEmpty() {
+		return size() == 0;
 	}
 	public void remove(T item) {
 		Node node = searchRecur(item, root);
 		removeRecur(node);
 	}
-	public boolean balanced() {
-		return isBalanced(root);
+	public int size() {
+		return size;
 	}
 	public String toString() {
 		if(root == null) {
@@ -46,38 +65,6 @@ public class AVLTree <T extends Comparable<T>> implements Serializable, Collecti
 		StringBuilder sb = new StringBuilder();
 		toStringRecur(root, sb, 0);		
 		return sb.toString();
-	}
-	public int size() {
-		return size;
-	}
-	public boolean isEmpty() {
-		return size() == 0;
-	}
-	public Iterator iterator() {
-		return null;
-	}
-	public Object[] toArray() {
-		return null;
-	}
-	public Object[] toArray(Object[] a) {
-		return null;
-	}
-	public boolean remove(Object o) {
-		return false;
-	}
-	public boolean containsAll(Collection c) {
-		return false;
-	}
-	public boolean addAll(Collection c) {
-		return false;
-	}
-	public boolean removeAll(Collection c) {
-		return false;
-	}
-	public boolean retainAll(Collection c) {
-		return false;
-	}
-	public void clear() {
 	}
 	private Node addRecur(T item, Node root) {
 		if (root == null) {
@@ -94,6 +81,52 @@ public class AVLTree <T extends Comparable<T>> implements Serializable, Collecti
 		}
 		root.height = (Math.max(height(root.left), height(root.right)) + 1);
 		return rotate(root);
+	}
+	private Node findPredecessor(Node root) {
+		if(root.right == null) {
+			return root;
+		}
+		return findPredecessor(root.right);
+	}
+	private int height(Node node) {
+		if(node == null) {
+			return -1;
+		}
+		return node.height;
+	}
+	
+	private boolean isBalanced(Node root) {
+		if(root == null) {
+			return true;
+		}
+		return Math.abs(height(root.left) - height(root.right)) <= 1 && 
+				isBalanced(root.left) &&
+				isBalanced(root.right);
+	}
+	private void removeRecur(Node root) {
+		if(root == null) {
+			return;
+		}
+		if(root.left != null && root.right != null) {
+			//both children present
+			//find rightmost node in left tree
+			Node predecessor = findPredecessor(root.left);
+			//set roots value to above nodes value
+			root.item = predecessor.item;
+			return;
+		}
+		if(root.left == null) {
+			if(root.right == null) {
+				//no children
+				root = null;
+				return;
+			}
+			//right child present left child absent
+			root = root.right;
+			return;
+		}
+		//left child present right child absent
+		root = root.left;
 	}
 	private Node rotate(Node root) {
 		if(!isBalanced(root)) {
@@ -137,57 +170,6 @@ public class AVLTree <T extends Comparable<T>> implements Serializable, Collecti
 		
 		return child;
 	}
-	
-	private int height(Node node) {
-		if(node == null) {
-			return -1;
-		}
-		return node.height;
-	}
-	private void toStringRecur(Node root, StringBuilder sb, int count) {
-		if(root == null) {
-			sb.append("");
-			return;
-		}
-		for(int i = 0; i < count; i++) {
-			sb.append("   ");
-		}
-		sb.append(root + "\n");
-		count++;
-		toStringRecur(root.left, sb, count);
-		toStringRecur(root.right, sb, count);
-	}
-	private void removeRecur(Node root) {
-		if(root == null) {
-			return;
-		}
-		if(root.left != null && root.right != null) {
-			//both children present
-			//find rightmost node in left tree
-			Node predecessor = findPredecessor(root.left);
-			//set roots value to above nodes value
-			root.item = predecessor.item;
-			return;
-		}
-		if(root.left == null) {
-			if(root.right == null) {
-				//no children
-				root = null;
-				return;
-			}
-			//right child present left child absent
-			root = root.right;
-			return;
-		}
-		//left child present right child absent
-		root = root.left;
-	}
-	private Node findPredecessor(Node root) {
-		if(root.right == null) {
-			return root;
-		}
-		return findPredecessor(root.right);
-	}
 	private Node searchRecur(T item, Node root) {
 		if(root == null) {
 			return null;
@@ -202,27 +184,17 @@ public class AVLTree <T extends Comparable<T>> implements Serializable, Collecti
 			return searchRecur(item, root.right);
 		}
 	}
-	private boolean isBalanced(Node root) {
+	private void toStringRecur(Node root, StringBuilder sb, int count) {
 		if(root == null) {
-			return true;
+			sb.append("");
+			return;
 		}
-		return Math.abs(height(root.left) - height(root.right)) <= 1 && 
-				isBalanced(root.left) &&
-				isBalanced(root.right);
-	}
-	private class Node{
-		T item;
-		int height;
-		Node left;
-		Node right;
-		Node(T item) {
-			this.item = item;
-			this.left = null;
-			this.right = null;
-			height = 0;
+		for(int i = 0; i < count; i++) {
+			sb.append("   ");
 		}
-		public String toString() {
-			return item.toString();
-		}
+		sb.append(root + "\n");
+		count++;
+		toStringRecur(root.left, sb, count);
+		toStringRecur(root.right, sb, count);
 	}
 }

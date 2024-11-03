@@ -3,7 +3,6 @@ package control;
 import java.io.IOException;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -33,40 +32,52 @@ import structs.StudentContainer;
 
 public class Main extends Application {
 
-	public void start(Stage arg0) throws Exception {
-		Stage stage = new Stage();
-		CreationPage creator = new CreationPage();
-		Scene scene = new Scene(homepage(creator));
-		scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-		stage.setOnCloseRequest(e -> {
-			DataCenter.getInstance().save();
-			System.exit(1);
-		});
-		
-		stage.setResizable(false);
-		stage.setWidth(700);
-		stage.setHeight(800);
-		stage.setScene(scene);
-		stage.setTitle("College Manager");
-		stage.show();
+	private class ClickCounter {
+		int count = 0;
+		void click() {
+			count++;
+		}
+		int getCount() {
+			return count;
+		}
+		void reset() {
+			count = 0;
+		}
 	}
-	public Pane homepage(CreationPage creator) throws IOException {
-		HBox root = new HBox();
+	public static void main(String[] args) {
+		Application.launch(args);
+	}
+	public GridPane creationButtons(CreationPage creator) {
+		GridPane root = new GridPane();
 		root.getStyleClass().add("pane-style");
-		root.disableProperty().bind(creator.getIsOpen());
-		root.setPadding(new Insets(10, 10, 10, 10));
-		root.setSpacing(10);
 		
-		GridPane controls = new GridPane();
-		controls.getStyleClass().add("pane-style");
-		controls.add(creationButtons(creator), 0, 0);
-		controls.add(displayContainers(root), 0, 1);
-		HBox.setHgrow(controls, Priority.ALWAYS);
+		Button createStudent = new Button("Create Student");
+		createStudent.setOnAction(e -> {
+			creator.studentCreationPage();
+		});
+		createStudent.getStyleClass().add("large-button-style");
+		root.add(createStudent, 0, 0);
+		Button createProfessor = new Button("Create Professor");
+		createProfessor.setOnAction(e -> {
+			creator.professorCreationPage();
+		});	
+		createProfessor.getStyleClass().add("large-button-style");
+		root.add(createProfessor, 1, 0);
 		
-		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("ClassroomManager.fxml"));
-		HBox.setHgrow(classroomManager, Priority.ALWAYS);
-
-		root.getChildren().addAll(controls, classroomManager);
+		Button createSection = new Button("Create Section");
+		createSection.setOnAction(e -> {
+			creator.sectionCreationPage();
+		});	
+		createSection.getStyleClass().add("large-button-style");
+		root.add(createSection, 0, 1);
+		
+		Button createCourse = new Button("Create Course");
+		createCourse.setOnAction(e -> {
+			creator.courseCreationPage();
+		});		
+		createCourse.getStyleClass().add("large-button-style");
+		root.add(createCourse, 1, 1);
+		
 		return root;
 	}
 	public GridPane displayContainers(Pane parent) {
@@ -160,12 +171,31 @@ public class Main extends Application {
 		root.add(emit, 1, 3);
 		return root;
 	}
+	public Pane homepage(CreationPage creator) throws IOException {
+		HBox root = new HBox();
+		root.getStyleClass().add("pane-style");
+		root.disableProperty().bind(creator.getIsOpen());
+		root.setPadding(new Insets(10, 10, 10, 10));
+		root.setSpacing(10);
+		
+		GridPane controls = new GridPane();
+		controls.getStyleClass().add("pane-style");
+		controls.add(creationButtons(creator), 0, 0);
+		controls.add(displayContainers(root), 0, 1);
+		HBox.setHgrow(controls, Priority.ALWAYS);
+		
+		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("ClassroomManager.fxml"));
+		HBox.setHgrow(classroomManager, Priority.ALWAYS);
+
+		root.getChildren().addAll(controls, classroomManager);
+		return root;
+	}
 	public void refresh(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView, ListView<Professor> professorView, 
 			Button remove, Node[] views, ClickCounter counter) {
-		studentView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getStudentContainer().toArray()));
-		sectionView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getSectionContainer().toArray()));
-		courseView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getCourseContainer().toArray()));
-		professorView.setItems(FXCollections.observableArrayList(DataCenter.getInstance().getContainers().getProfessorContainer().toArray()));
+		studentView.setItems(DataCenter.getInstance().getContainers().getStudentContainer().getObservableStudentContainer());
+		sectionView.setItems(DataCenter.getInstance().getContainers().getSectionContainer().getObservableSectionContainer());
+		courseView.setItems(DataCenter.getInstance().getContainers().getCourseContainer().getObservableCourseContainer());
+		professorView.setItems(DataCenter.getInstance().getContainers().getProfessorContainer().getObservableProfessorContainer());
 		if(((ListView<?>)(views[counter.getCount()])).getItems().isEmpty()) {
 			remove.setDisable(true);
 		}
@@ -173,41 +203,22 @@ public class Main extends Application {
 			remove.setDisable(false);
 		}
 	}
-	public GridPane creationButtons(CreationPage creator) {
-		GridPane root = new GridPane();
-		root.getStyleClass().add("pane-style");
-		
-		Button createStudent = new Button("Create Student");
-		createStudent.setOnAction(e -> {
-			creator.studentCreationPage();
+	public void start(Stage arg0) throws Exception {
+		Stage stage = new Stage();
+		CreationPage creator = new CreationPage();
+		Scene scene = new Scene(homepage(creator));
+		scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+		stage.setOnCloseRequest(e -> {
+			DataCenter.getInstance().save();
+			System.exit(1);
 		});
-		createStudent.getStyleClass().add("large-button-style");
-		root.add(createStudent, 0, 0);
-		Button createProfessor = new Button("Create Professor");
-		createProfessor.setOnAction(e -> {
-			creator.professorCreationPage();
-		});	
-		createProfessor.getStyleClass().add("large-button-style");
-		root.add(createProfessor, 1, 0);
 		
-		Button createSection = new Button("Create Section");
-		createSection.setOnAction(e -> {
-			creator.sectionCreationPage();
-		});	
-		createSection.getStyleClass().add("large-button-style");
-		root.add(createSection, 0, 1);
-		
-		Button createCourse = new Button("Create Course");
-		createCourse.setOnAction(e -> {
-			creator.courseCreationPage();
-		});		
-		createCourse.getStyleClass().add("large-button-style");
-		root.add(createCourse, 1, 1);
-		
-		return root;
-	}
-	public static void main(String[] args) {
-		Application.launch(args);
+		stage.setResizable(false);
+		stage.setWidth(700);
+		stage.setHeight(800);
+		stage.setScene(scene);
+		stage.setTitle("College Manager");
+		stage.show();
 	}
 	private <T extends Information> ListView<T> makeListView(GridPane root, TextArea info){
 		ListView<T> view = new ListView<>();
@@ -221,17 +232,5 @@ public class Main extends Application {
 		});
 		root.add(view, 0, 1, 2, 1);
 		return view;
-	}
-	private class ClickCounter {
-		int count = 0;
-		void click() {
-			count++;
-		}
-		void reset() {
-			count = 0;
-		}
-		int getCount() {
-			return count;
-		}
 	}
 }
