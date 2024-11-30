@@ -137,6 +137,9 @@ public class CreationPage {
 		Label lbl = new Label("Select the Day(s) For This Section:");
 		lbl.getStyleClass().add("textfield-style");
 		root.add(lbl, 0, 3, 2, 1);
+
+		ComboBox<Hours> prefTimeSelect = defaultComboBox(Hours.values(), "Preferred Time", root, 0, 2, 2, 1);
+		prefTimeSelect.valueProperty().addListener(listener);
 		
 		int count = 4;
 		LinkedList<Day> daysSelected = new LinkedList<>(); 
