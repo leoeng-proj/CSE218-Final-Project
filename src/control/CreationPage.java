@@ -138,14 +138,14 @@ public class CreationPage {
 		lbl.getStyleClass().add("textfield-style");
 		root.add(lbl, 0, 3, 2, 1);
 
-		ComboBox<Hours> prefTimeSelect = defaultComboBox(Hours.values(), "Preferred Time", root, 0, 2, 2, 1);
-		prefTimeSelect.valueProperty().addListener(listener);
+		ComboBox<Hours> prefTime = defaultComboBox(Hours.values(), "Preferred Time", root, 0, 2, 2, 1);
 		
 		int count = 4;
 		LinkedList<Day> daysSelected = new LinkedList<>(); 
 		ChangeListener<Object> listener = new ChangeListener<>() {
 			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
-				if(sectionNum.getLength() == 5 && courses.getValue() != null && !daysSelected.isEmpty()) {
+				if(sectionNum.getLength() == 5 && courses.getValue() != null 
+						&& !daysSelected.isEmpty() && prefTime.getValue() != null) {
 			        submit.setDisable(false);
 			    } 
 				else {
@@ -171,6 +171,8 @@ public class CreationPage {
 		}
 		sectionNum.textProperty().addListener(listener);
 		courses.valueProperty().addListener(listener);
+		prefTime.valueProperty().addListener(listener);
+		
 		
 		root.add(submit, 0, count, 1, 1);
 		submit.setDisable(true);
