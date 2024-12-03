@@ -119,6 +119,7 @@ public class CreationPage {
 		submit.setOnAction(e -> {
 			Professor prof = new Professor(new Name(firstname.getText(), lastname.getText()), 
 					prefTimeSelect.getValue(), daysSelected.toArray(new Day[0]));
+			prof.setSeniority(DataCenter.getInstance().getContainers().getProfessorContainer().getAvailableSeniority());
 			DataCenter.getInstance().getContainers().getProfessorContainer().addProfessor(prof);
 			closeWindow(root);
 		});
