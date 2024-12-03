@@ -88,16 +88,8 @@ public class CreationPage {
 		TextField firstname = defaultTextField("First Name", root, 0, 0, 2, 1);
 		TextField lastname = defaultTextField("Last Name", root, 0, 1, 2, 1);
 		ComboBox<Hours> prefTimeSelect = defaultComboBox(Hours.values(), "Preferred Time", root, 0, 2, 2, 1);
-		
-		submit.setOnAction(e -> {
-			Professor prof = new Professor(new Name(firstname.getText(), lastname.getText()), prefTimeSelect.getValue());
-			DataCenter.getInstance().getContainers().getProfessorContainer().addProfessor(prof);
-			closeWindow(root);
-		});
-		submit.setDisable(true);
-		root.add(submit, 0, 3, 1, 1);
-		root.add(close, 1, 3, 1, 1);
-		
+		int count = 4;
+		LinkedList<Day> daysSelected = new LinkedList<>(); 
 		ChangeListener<Object> listener = new ChangeListener<>() {
 			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
 				if(firstname.getLength() > 0 && lastname.getLength() > 0 && prefTimeSelect.getValue() != null) {
@@ -108,6 +100,32 @@ public class CreationPage {
 				}
 			}
 		};
+		for(Day d : Day.values()) {
+			CheckBox dayCheckBox = new CheckBox(d + "");
+			root.add(dayCheckBox, 0, count++, 1, 1);
+			dayCheckBox.setUserData(d);
+		    dayCheckBox.setOnAction(e -> {
+		        CheckBox cb = (CheckBox) e.getSource();
+		        Day day = (Day) cb.getUserData();  
+		        if(cb.isSelected()) {
+		            daysSelected.add(day);
+		        } 
+		        else {
+		            daysSelected.remove(day);
+		        }
+		        listener.changed(null, null, null);
+		    });
+		}
+		submit.setOnAction(e -> {
+			Professor prof = new Professor(new Name(firstname.getText(), lastname.getText()), 
+					prefTimeSelect.getValue(), daysSelected.toArray(new Day[0]));
+			DataCenter.getInstance().getContainers().getProfessorContainer().addProfessor(prof);
+			closeWindow(root);
+		});
+		submit.setDisable(true);
+		root.add(submit, 0, count, 1, 1);
+		root.add(close, 1, count, 1, 1);
+		
 		firstname.textProperty().addListener(listener);
 		lastname.textProperty().addListener(listener);
 		prefTimeSelect.valueProperty().addListener(listener);

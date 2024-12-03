@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Arrays;
+
 import structs.AVLTree;
 import structs.SectionContainer;
 
@@ -19,10 +21,13 @@ public class Professor extends Person{
 	private SectionContainer sections;
 	
 	private Hours prefTime;
-	public Professor(Name name, Hours prefTime) {
+	private Day[] prefDays;
+	
+	public Professor(Name name, Hours prefTime, Day[] prefDays) {
 		super(name);
 		id = generateUUID();
 		this.prefTime = prefTime;
+		this.prefDays = prefDays;
 		sections = new SectionContainer();
 	}
 	public void addSection(Section section) {
@@ -35,6 +40,7 @@ public class Professor extends Person{
 		return "Name: \t\t" + toString() + 
 				"\nID: \t\t\t" + id +
 				"\nPreferred Hours: " + prefTime +
+				"\nPreferred Days: " + Arrays.toString(prefDays) +
 				"\nClasses:\n" + sections.toString();
 	}
 	public Hours getPrefTime() {
