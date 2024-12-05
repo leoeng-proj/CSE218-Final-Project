@@ -9,6 +9,7 @@ import model.Name;
 import model.Professor;
 import model.Section;
 import model.Student;
+import model.TimeRange;
 
 public abstract class Emitter {
 	private static String[] firstNameBank = {"Alexander", "Benjamin", "Charlotte", "Daniel", "Evelyn", 
@@ -32,7 +33,7 @@ public abstract class Emitter {
 				Major.values()[(int)(Math.random()*Major.values().length)]);
 	}
 	public static Professor emitProfessor() {
-		return new Professor(emitName(), Hours.values()[(int)(Math.random()*Hours.values().length)], emitDays());
+		return new Professor(emitName(), emitHours(), emitDays());
 	}
 	public static Section emitSection(Classroom room, Course course) {
 //	Section(int sectionNum, boolean isOnline, Classroom room, Course course, ListBag<String> textbooks, Day[] daysOffered, Hours time) {
@@ -45,6 +46,11 @@ public abstract class Emitter {
 				Major.values()[(int)(Math.random()*Major.values().length)],
 				Math.random() * 4);
 	}
+	private static TimeRange emitTime() {
+		int hr = (int)(Math.random()*15+7);
+		int min = (int)(Math.random()*45);
+		return new TimeRange(hr, min, hr+1, min+15);
+	}
 	private static Day[] emitDays() {
 		Day[] mw = {Day.Mon, Day.Wed};
 		Day[] tth = {Day.Tue, Day.Thu};
@@ -55,7 +61,7 @@ public abstract class Emitter {
 		return new Name(firstNameBank[(int)(Math.random()*firstNameBank.length)],
 				lastNameBank[(int)(Math.random()*lastNameBank.length)]);
 	}
-	private static Hours emitTime() {
+	private static Hours emitHours() {
 		return Hours.values()[(int)(Math.random()*Hours.values().length)];
 	}
 }

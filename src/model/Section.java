@@ -17,9 +17,9 @@ public class Section implements Serializable, Information{
 	private LinkedList<String> textbooks;
 	private StudentContainer students;
 	private Day[] daysOffered;
-	private Hours time;
+	private TimeRange time;
 	
-	public Section(int sectionNum, boolean isOnline, Classroom room, Course course, LinkedList<String> textbooks, Day[] daysOffered, Hours time) {
+	public Section(int sectionNum, boolean isOnline, Classroom room, Course course, LinkedList<String> textbooks, Day[] daysOffered, TimeRange time) {
 		this.sectionNum = sectionNum;
 		this.isOnline = isOnline;
 		this.instructor = null;
@@ -68,7 +68,7 @@ public class Section implements Serializable, Information{
 	public LinkedList<String> getTextbooks() {
 		return textbooks;
 	}
-	public Hours getTime() {
+	public TimeRange getTime() {
 		return time;
 	}
 	public boolean isOnline() {
@@ -95,7 +95,7 @@ public class Section implements Serializable, Information{
 	public void setTextbooks(LinkedList<String> textbooks) {
 		this.textbooks = textbooks;
 	}
-	public void setTime(Hours time) {
+	public void setTime(TimeRange time) {
 		this.time = time;
 	}
 	public String toString() {

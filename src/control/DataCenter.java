@@ -47,20 +47,6 @@ public class DataCenter implements Serializable{
 	public MasterContainer getContainers() {
 		return containers;
 	}
-	public int autoAssign() {
-		return 0;
-	}
-	public int assign(Professor prof, Section sec) {
-		if(prof == null) {
-			return 1;
-		}
-		prof.getSections().addSection(sec);
-		if(sec.getInstructor() != null) {
-			sec.getInstructor().removeSection(sec);
-		}
-		sec.setInstructor(prof);
-		return 0;
-	}
 	public boolean save() {
 		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
 			oos.writeObject(instance);

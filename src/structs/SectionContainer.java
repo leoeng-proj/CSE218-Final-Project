@@ -29,7 +29,7 @@ public class SectionContainer implements Serializable, Removal{
 		while(iter.hasNext()) {
 			Section s = iter.next();
 			if(Arrays.equals(sec.getDaysOffered(), s.getDaysOffered()) 
-					&& s.getTime().equals(sec.getTime())){
+					&& s.getTime().contains(sec.getTime())){
 				return true;
 			}
 		}

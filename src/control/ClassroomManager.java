@@ -136,13 +136,13 @@ public class ClassroomManager {
 		validProfessors.trim(new Predicate<Professor>() {
 			public boolean test(Professor prof) {
 				return prof.getSections().checkTimeConflicts(selectedSection) ||
-						!prof.getPrefTime().equals(selectedSection.getTime());
+						!prof.getPrefTime().contains(selectedSection.getTime());
 			}
 		});
 		profs.setItems(validProfessors.getObservableProfessorContainer());
 		profs.setOnMouseClicked(e -> {
 			Professor p = profs.getFocusModel().getFocusedItem();
-			int i = DataCenter.getInstance().assign(p, selectedSection);
+			int i = DataCenter.getInstance().getContainers().assign(p, selectedSection);
 			updateSectionInfo();
 			stage.close();
 		});
