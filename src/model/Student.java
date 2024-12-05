@@ -1,11 +1,12 @@
 package model;
 
-import structs.AVLTree;
+import java.util.HashSet;
+
 import structs.SectionContainer;
 
 public class Student extends Person implements Comparable<Student> {
 	
-	private static final AVLTree<Integer> UUIDLIST = new AVLTree<>();
+	private static final HashSet<Integer> UUIDLIST = new HashSet<>();
 	private static int generateUUID() {
 		int id = 0;
 		do{

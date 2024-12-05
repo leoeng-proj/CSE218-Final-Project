@@ -142,14 +142,7 @@ public class ClassroomManager {
 		profs.setItems(validProfessors.getObservableProfessorContainer());
 		profs.setOnMouseClicked(e -> {
 			Professor p = profs.getFocusModel().getFocusedItem();
-			if(p == null) {
-				return;
-			}
-			p.getSections().addSection(selectedSection);
-			if(selectedSection.getInstructor() != null) {
-				selectedSection.getInstructor().removeSection(selectedSection);
-			}
-			selectedSection.setInstructor(p);
+			int i = DataCenter.getInstance().assign(p, selectedSection);
 			updateSectionInfo();
 			stage.close();
 		});

@@ -8,6 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+import model.Professor;
+import model.Section;
 import structs.MasterContainer;
 
 public class DataCenter implements Serializable{
@@ -44,6 +46,20 @@ public class DataCenter implements Serializable{
 	}
 	public MasterContainer getContainers() {
 		return containers;
+	}
+	public int autoAssign() {
+		return 0;
+	}
+	public int assign(Professor prof, Section sec) {
+		if(prof == null) {
+			return 1;
+		}
+		prof.getSections().addSection(sec);
+		if(sec.getInstructor() != null) {
+			sec.getInstructor().removeSection(sec);
+		}
+		sec.setInstructor(prof);
+		return 0;
 	}
 	public boolean save() {
 		try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){

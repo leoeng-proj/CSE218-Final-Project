@@ -16,11 +16,12 @@ public class CourseContainer implements Serializable, Removal{
 		courses = new LinkedList<>();
 	}
 	
-	public void addCourse(Course course) {
+	public boolean addCourse(Course course) {
 		if(courses.contains(course)) {
-			return;
+			return false;
 		}
 		courses.add(course);
+		return true;
 	}
 	public ObservableList<Course> getObservableCourseContainer(){
 		return FXCollections.observableArrayList(toArray());

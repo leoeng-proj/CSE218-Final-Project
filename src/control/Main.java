@@ -160,7 +160,12 @@ public class Main extends Application {
 			} 
 			else if (data instanceof CourseContainer) {
 				CourseContainer courseData = (CourseContainer) data;
-				courseData.addCourse(Emitter.emitCourse());
+				for(int i = 0; i < 3; i++) { //attempt random course 3 times
+					Course c = Emitter.emitCourse();
+					if(courseData.addCourse(c)) {
+						break;
+					}
+				}
 			}
 			else if (data instanceof ProfessorContainer) {
 				ProfessorContainer courseData = (ProfessorContainer) data;
@@ -169,6 +174,13 @@ public class Main extends Application {
 			refresh(studentView, sectionView, courseView, professorView, remove, views, counter);
 		});
 		root.add(emit, 1, 3);
+		
+		Button assign = new Button("Auto Assign");
+		assign.getStyleClass().add("large-button-style");
+		assign.setOnAction(e -> {
+			int i = DataCenter.getInstance().autoAssign();
+		});
+		
 		return root;
 	}
 	public Pane homepage(CreationPage creator) throws IOException {
