@@ -1,32 +1,29 @@
 package model;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 
 import structs.SectionContainer;
 
-public class Professor extends Person{
+public class Professor extends Person implements Comparable<Professor>{
 
 	private static final HashSet<Integer> UUIDLIST = new HashSet<>();
 	private int id;
-//	private int seniority;
+	private GregorianCalendar dateOfHire;
 	private SectionContainer sections;
 	private Hours prefTime;
 	private Day[] prefDays;
 	
-	public Professor(Name name, Hours prefTime, Day[] prefDays) {
+	public Professor(Name name, Hours prefTime, Day[] prefDays, GregorianCalendar dateOfHire) {
 		super(name);
 		id = generateUUID();
 		this.prefTime = prefTime;
 		this.prefDays = prefDays;
+		this.dateOfHire = dateOfHire;
 		sections = new SectionContainer();
 	}
-//	public int getSeniority() {
-//		return seniority;
-//	}
-//	public void setSeniority(int seniority) {
-//		this.seniority = seniority;
-//	}
 	public void addSection(Section section) {
 		sections.addSection(section);
 	}
@@ -35,7 +32,7 @@ public class Professor extends Person{
 	}
 	public String getInfo() {
 		return "Name: \t\t" + toString() + 
-//				"\nSeniority: " + seniority +
+				"\nDate of Hire: " + dateOfHire.toString() +
 				"\nID: \t\t\t" + id +
 				"\nPreferred Hours: " + prefTime +
 				"\nPreferred Days: " + Arrays.toString(prefDays) +
@@ -43,6 +40,9 @@ public class Professor extends Person{
 	}
 	public Hours getPrefTime() {
 		return prefTime;
+	}
+	public GregorianCalendar getDateOfHire() {
+		return dateOfHire;
 	}
 	public SectionContainer getSections() {
 		return sections;
@@ -60,5 +60,8 @@ public class Professor extends Person{
 		}while(UUIDLIST.contains(id));
 		UUIDLIST.add(id);
 		return id;
+	}
+	public int compareTo(Professor p) {
+		return dateOfHire.compareTo(p.getDateOfHire());
 	}
 }

@@ -1,5 +1,7 @@
 package control;
 
+import java.util.GregorianCalendar;
+
 import model.Classroom;
 import model.Course;
 import model.Day;
@@ -33,7 +35,7 @@ public abstract class Emitter {
 				Major.values()[(int)(Math.random()*Major.values().length)]);
 	}
 	public static Professor emitProfessor() {
-		return new Professor(emitName(), emitHours(), emitDays());
+		return new Professor(emitName(), emitHours(), emitDays(), emitDate());
 	}
 	public static Section emitSection(Classroom room, Course course) {
 //	Section(int sectionNum, boolean isOnline, Classroom room, Course course, ListBag<String> textbooks, Day[] daysOffered, Hours time) {
@@ -63,5 +65,10 @@ public abstract class Emitter {
 	}
 	private static Hours emitHours() {
 		return Hours.values()[(int)(Math.random()*Hours.values().length)];
+	}
+	private static GregorianCalendar emitDate() {
+		return new GregorianCalendar((int)(Math.random()*24)+2000,
+				(int)(Math.random()*13),
+				(int)(Math.random()*30));
 	}
 }

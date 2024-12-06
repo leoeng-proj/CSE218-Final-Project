@@ -2,11 +2,13 @@ package control;
 
 
 import java.util.LinkedList;
+import java.util.TimeZone;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import java.util.GregorianCalendar;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -118,7 +120,7 @@ public class CreationPage {
 		}
 		submit.setOnAction(e -> {
 			Professor prof = new Professor(new Name(firstname.getText(), lastname.getText()), 
-					prefTimeSelect.getValue(), daysSelected.toArray(new Day[0]));
+					prefTimeSelect.getValue(), daysSelected.toArray(new Day[0]), new GregorianCalendar(TimeZone.getTimeZone("EST")));
 			DataCenter.getInstance().getContainers().getProfessorContainer().addProfessor(prof);
 			closeWindow(root);
 		});

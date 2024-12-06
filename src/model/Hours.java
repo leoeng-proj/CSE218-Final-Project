@@ -1,7 +1,6 @@
 package model;
 
 public enum Hours {
-	EARLY_MORNING(new TimeRange(7, 0, 7, 59)),
 	MORNING(new TimeRange(8, 0, 11, 59)),
 	AFTERNOON(new TimeRange(12, 0, 16, 59)),
 	EVENING(new TimeRange(17, 0, 21, 59));
