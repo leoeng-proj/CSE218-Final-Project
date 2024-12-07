@@ -3,6 +3,8 @@ package structs;
 import java.io.Serializable;
 import java.util.PriorityQueue;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import model.Professor;
 import model.Section;
 
@@ -45,11 +47,19 @@ public class MasterContainer implements Serializable{
 				SectionContainer potentialSections = getPotentialSections(p);
 				Section best = potentialSections.getBestSection(p);
 				if(best == null) {
+					Alert noCourses = new Alert(AlertType.WARNING);
+					noCourses.setHeaderText("Not Enough " + p.getMajor()  + " " + p.getPrefTime() + " Sections");
+					noCourses.show();
 					break;
 				}
 				assign(p, best);
 			}
-			}
+		}
+		if(!sections.allHaveProfessors()) {
+			Alert noCourses = new Alert(AlertType.WARNING);
+			noCourses.setHeaderText("Not Enough Professors");
+			noCourses.show();
+		}
 		return 0;
 	}
 	private SectionContainer getPotentialSections(Professor p) {

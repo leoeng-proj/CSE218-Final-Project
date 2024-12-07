@@ -45,8 +45,12 @@ public class SectionContainer implements Serializable, Removal<Section>{
 	public int size() {
 		return sections.size();
 	}
-	public boolean remove(Section obj) {
-		return sections.remove(obj);
+	public boolean remove(Section sec) {
+		sec.clear();
+		return sections.remove(sec);
+	}
+	public boolean delete(Section sec) {
+		return sections.remove(sec);		
 	}
 	public Section[] toArray() {
 		return sections.toArray(new Section[0]);
@@ -80,5 +84,13 @@ public class SectionContainer implements Serializable, Removal<Section>{
 			}
 		}
 		return best;
+	}
+	public boolean allHaveProfessors() {
+		for(Section s : sections) {
+			if(s.getInstructor() == null) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

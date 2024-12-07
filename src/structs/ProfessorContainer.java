@@ -11,8 +11,9 @@ import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Professor;
+import model.Section;
 
-public class ProfessorContainer implements Serializable, Removal{
+public class ProfessorContainer implements Serializable, Removal<Professor>{
 	private LinkedList<Professor> professors;
 //	private ArrayList<LinkedList<Professor>> professors;
 	public ProfessorContainer() {
@@ -32,8 +33,11 @@ public class ProfessorContainer implements Serializable, Removal{
 	public boolean isEmpty() {
 		return professors.isEmpty();
 	}
-	public boolean remove(Object obj) {
-		return professors.remove(obj);
+	public boolean remove(Professor prof) {
+		for(Section s : prof.getSections()) {
+			s.setInstructor(null);
+		}
+		return professors.remove(prof);
 	}
 	public Professor[] toArray() {
 		return professors.toArray(new Professor[0]);

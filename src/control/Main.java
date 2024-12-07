@@ -101,11 +101,6 @@ public class Main extends Application {
 		Node[] views = {sectionView, studentView, courseView, professorView};
 		ClickCounter counter = new ClickCounter();
 		
-		String[] titles = {"Sections", "Students", "Courses", "Professors"};
-		Label titleOfView = new Label(titles[counter.getCount()]);
-		titleOfView.getStyleClass().add("label-style");
-		root.add(titleOfView, 0, 0);
-		
 		Button remove = new Button("Remove");
 		remove.getStyleClass().add("large-button-style");
 		remove.setOnAction(e -> {
@@ -125,6 +120,11 @@ public class Main extends Application {
 		parent.disableProperty().addListener(e -> {
 			refresh(studentView, sectionView, courseView, professorView, remove, views, counter);
 		});
+		
+		String[] titles = {"Sections", "Students", "Courses", "Professors"};
+		Label titleOfView = new Label(titles[counter.getCount()]);
+		titleOfView.getStyleClass().add("label-style");
+		root.add(titleOfView, 0, 0);
 		
 		Button cycle = new Button("Cycle Views");
 		cycle.getStyleClass().add("large-button-style");
@@ -196,10 +196,10 @@ public class Main extends Application {
 		controls.add(displayContainers(root), 0, 1);
 		HBox.setHgrow(controls, Priority.ALWAYS);
 		
-		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("ClassroomManager.fxml"));
-		HBox.setHgrow(classroomManager, Priority.ALWAYS);
+//		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("ClassroomManager.fxml"));
+//		HBox.setHgrow(classroomManager, Priority.ALWAYS);
 
-		root.getChildren().addAll(controls, classroomManager);
+		root.getChildren().addAll(controls);
 		return root;
 	}
 	public void refresh(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView, ListView<Professor> professorView, 
@@ -226,7 +226,7 @@ public class Main extends Application {
 		});
 		
 		stage.setResizable(false);
-		stage.setWidth(700);
+		stage.setWidth(400);
 		stage.setHeight(800);
 		stage.setScene(scene);
 		stage.setTitle("College Manager");

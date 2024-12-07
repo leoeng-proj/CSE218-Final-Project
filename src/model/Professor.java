@@ -67,7 +67,7 @@ public class Professor extends Person implements Comparable<Professor>{
 	}
 	public void removeSection(Section section) {
 		credits -= section.getCourse().getCredits();
-		sections.remove(section);
+		sections.delete(section);
 	}
 	public void setPrefTime(Hours prefTime) {
 		this.prefTime = prefTime;
