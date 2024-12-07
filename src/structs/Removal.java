@@ -1,5 +1,5 @@
 package structs;
 
-public interface Removal {
-	public boolean remove(Object obj);
+public interface Removal<T> {
+	public boolean remove(T obj);
 }

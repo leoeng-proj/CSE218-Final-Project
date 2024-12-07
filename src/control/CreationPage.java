@@ -1,6 +1,9 @@
 package control;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.TimeZone;
 
@@ -8,7 +11,6 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import java.util.GregorianCalendar;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -90,11 +92,13 @@ public class CreationPage {
 		TextField firstname = defaultTextField("First Name", root, 0, 0, 2, 1);
 		TextField lastname = defaultTextField("Last Name", root, 0, 1, 2, 1);
 		ComboBox<Hours> prefTimeSelect = defaultComboBox(Hours.values(), "Preferred Time", root, 0, 2, 2, 1);
+		ComboBox<Major> majors = defaultComboBox(Major.values(), "Select Major", root, 0, 3, 2, 1);
+		
 		int count = 4;
-		LinkedList<Day> daysSelected = new LinkedList<>(); 
+		ArrayList<Day> daysSelected = new ArrayList<>(); 
 		ChangeListener<Object> listener = new ChangeListener<>() {
 			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
-				if(firstname.getLength() > 0 && lastname.getLength() > 0 && prefTimeSelect.getValue() != null) {
+				if(firstname.getLength() > 0 && lastname.getLength() > 0 && prefTimeSelect.getValue() != null && majors.getValue() != null) {
 					submit.setDisable(false);
 				}
 				else {
@@ -120,14 +124,15 @@ public class CreationPage {
 		}
 		submit.setOnAction(e -> {
 			Professor prof = new Professor(new Name(firstname.getText(), lastname.getText()), 
-					prefTimeSelect.getValue(), daysSelected.toArray(new Day[0]), new GregorianCalendar(TimeZone.getTimeZone("EST")));
+					prefTimeSelect.getValue(), daysSelected, null, new GregorianCalendar(TimeZone.getTimeZone("EST")));
 			DataCenter.getInstance().getContainers().getProfessorContainer().addProfessor(prof);
 			closeWindow(root);
 		});
 		submit.setDisable(true);
 		root.add(submit, 0, count, 1, 1);
 		root.add(close, 1, count, 1, 1);
-		
+
+		majors.valueProperty().addListener(listener);
 		firstname.textProperty().addListener(listener);
 		lastname.textProperty().addListener(listener);
 		prefTimeSelect.valueProperty().addListener(listener);
@@ -161,7 +166,7 @@ public class CreationPage {
 		ComboBox<Hours> prefTime = defaultComboBox(Hours.values(), "Preferred Time", root, 0, 2, 2, 1);
 		
 		int count = 4;
-		LinkedList<Day> daysSelected = new LinkedList<>(); 
+		ArrayList<Day> daysSelected = new ArrayList<>(); 
 		ChangeListener<Object> listener = new ChangeListener<>() {
 			public void changed(ObservableValue<? extends Object> arg0, Object arg1, Object arg2) {
 				if(sectionNum.getLength() == 5 && courses.getValue() != null 
@@ -198,7 +203,7 @@ public class CreationPage {
 		submit.setDisable(true);
 		submit.setOnAction(e -> {
 			Section section = new Section(Integer.parseInt(sectionNum.getText()), isOnline.isSelected(), null, 
-					courses.getValue(), null, daysSelected.toArray(new Day[0]), null);
+					courses.getValue(), null, daysSelected, null);
 			DataCenter.getInstance().getContainers().getSectionContainer().addSection(section);
 			closeWindow(root);
 		});

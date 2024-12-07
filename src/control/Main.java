@@ -87,7 +87,7 @@ public class Main extends Application {
 		TextArea info = new TextArea("Select An Item To View Information");
 		info.setEditable(false);
 		info.getStyleClass().add("listview-style"); //same size as other nodes in method
-		root.add(info, 0, 2, 2, 1);
+		root.add(info, 0, 2, 3, 1);
 		
 		ListView<Student> studentView = makeListView(root, info);
 		studentView.setUserData(DataCenter.getInstance().getContainers().getStudentContainer());
@@ -104,7 +104,7 @@ public class Main extends Application {
 		String[] titles = {"Sections", "Students", "Courses", "Professors"};
 		Label titleOfView = new Label(titles[counter.getCount()]);
 		titleOfView.getStyleClass().add("label-style");
-		root.add(titleOfView, 0, 0, 1, 1);
+		root.add(titleOfView, 0, 0);
 		
 		Button remove = new Button("Remove");
 		remove.getStyleClass().add("large-button-style");
@@ -138,7 +138,7 @@ public class Main extends Application {
 			refresh(studentView, sectionView, courseView, professorView, remove, views, counter);
 			titleOfView.setText(titles[counter.getCount()]);
 		});
-		root.add(cycle, 1, 0, 1, 1);
+		root.add(cycle, 1, 0, 2, 1);
 		
 		Button emit = new Button("Emit");
 		emit.getStyleClass().add("large-button-style");
@@ -180,7 +180,7 @@ public class Main extends Application {
 		assign.setOnAction(e -> {
 			int i = DataCenter.getInstance().getContainers().autoAssign();
 		});
-		
+		root.add(assign, 2, 3);
 		return root;
 	}
 	public Pane homepage(CreationPage creator) throws IOException {
@@ -242,7 +242,7 @@ public class Main extends Application {
 			}
 			info.setText(i.getInfo());
 		});
-		root.add(view, 0, 1, 2, 1);
+		root.add(view, 0, 1, 3, 1);
 		return view;
 	}
 }

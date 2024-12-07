@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.function.Predicate;
 
@@ -37,6 +38,9 @@ public class ProfessorContainer implements Serializable, Removal{
 	public Professor[] toArray() {
 		return professors.toArray(new Professor[0]);
 	}
+	public int size() {
+		return professors.size();
+	}
 	public String toString() {
 		return professors.toString();
 	}
@@ -48,5 +52,8 @@ public class ProfessorContainer implements Serializable, Removal{
 				iter.remove();
 			}
 		}
+	}
+	protected LinkedList<Professor> getProfessors(){
+		return professors;
 	}
 }

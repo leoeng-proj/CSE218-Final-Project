@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -16,10 +17,10 @@ public class Section implements Serializable, Information{
 	private Course course;
 	private LinkedList<String> textbooks;
 	private StudentContainer students;
-	private Day[] daysOffered;
+	private ArrayList<Day> daysOffered;
 	private TimeRange time;
 	
-	public Section(int sectionNum, boolean isOnline, Classroom room, Course course, LinkedList<String> textbooks, Day[] daysOffered, TimeRange time) {
+	public Section(int sectionNum, boolean isOnline, Classroom room, Course course, LinkedList<String> textbooks, ArrayList<Day> daysOffered, TimeRange time) {
 		this.sectionNum = sectionNum;
 		this.isOnline = isOnline;
 		this.instructor = null;
@@ -41,13 +42,13 @@ public class Section implements Serializable, Information{
 	public Course getCourse() {
 		return course;
 	}
-	public Day[] getDaysOffered() {
+	public ArrayList<Day> getDaysOffered() {
 		return daysOffered;
 	}
 	public String getInfo() {
 		return "Course:\t\t" + getCourse() +
 				"\nInstructor:\t" + getInstructor() + 
-				"\nDays Offered:\t" + Arrays.toString(getDaysOffered()) +
+				"\nDays Offered:\t" + daysOffered +
 				"\nTime:\t\t" + getTime() + 
 				"\nClassroom:\t" + room + 
 				"\nTextbook(s):\t" + getTextbooks() +
@@ -73,9 +74,6 @@ public class Section implements Serializable, Information{
 	}
 	public boolean isOnline() {
 		return isOnline;
-	}
-	public void setDaysOffered(Day[] daysOffered) {
-		this.daysOffered = daysOffered;
 	}
 	public void setInstructor(Professor instructor) {
 		this.instructor = instructor;

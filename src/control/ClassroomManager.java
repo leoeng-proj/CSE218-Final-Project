@@ -100,7 +100,7 @@ public class ClassroomManager {
 		validStudents.trim(new Predicate<Student>() {
 			public boolean test(Student student) {
 				return student.getSections().checkTimeConflicts(selectedSection) ||
-						!student.getMajor().equals(selectedSection.getCourse().getReqMajors());
+						!student.getMajor().equals(selectedSection.getCourse().getMajor());
 			}
 		});
 		students.setItems(validStudents.getObservableStudentContainer());

@@ -1,5 +1,7 @@
 package control;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 import model.Classroom;
@@ -27,15 +29,15 @@ public abstract class Emitter {
 		    "Underwood", "Vance", "Walker", "Xavier", "Young", 
 		    "Zimmerman", "Coleman", "Daniels", "Ellis", "Foster"};
 	private static String[] courseNumBank = {
-			"cse118", "cse148", "cse218", "cse222", "cse248", "mat141", "mat142"
+			"118", "148", "218", "222", "248"
 	};
 	public static Course emitCourse() {
 //		Course(double credits, String name, String description, String courseNum, Major reqMajors) {
-		return new Course(Math.random()*5, "Name", "", courseNumBank[(int)(Math.random()*courseNumBank.length)],
-				Major.values()[(int)(Math.random()*Major.values().length)]);
+		Major mjr = emitMajor();
+		return new Course(Math.random()*5, "Name", "", mjr +courseNumBank[(int)(Math.random()*courseNumBank.length)], mjr);
 	}
 	public static Professor emitProfessor() {
-		return new Professor(emitName(), emitHours(), emitDays(), emitDate());
+		return new Professor(emitName(), emitHours(), emitDays(), emitMajor(), emitDate());
 	}
 	public static Section emitSection(Classroom room, Course course) {
 //	Section(int sectionNum, boolean isOnline, Classroom room, Course course, ListBag<String> textbooks, Day[] daysOffered, Hours time) {
@@ -45,23 +47,27 @@ public abstract class Emitter {
 	}
 	public static Student emitStudent() {
 		return new Student(emitName(), 
-				Major.values()[(int)(Math.random()*Major.values().length)],
+				emitMajor(),
 				Math.random() * 4);
 	}
 	private static TimeRange emitTime() {
-		int hr = (int)(Math.random()*15+7);
+		int hr = (int)(Math.random()*12+8);
 		int min = (int)(Math.random()*45);
 		return new TimeRange(hr, min, hr+1, min+15);
 	}
-	private static Day[] emitDays() {
-		Day[] mw = {Day.Mon, Day.Wed};
-		Day[] tth = {Day.Tue, Day.Thu};
-		Day[][] combinations = {mw, tth};
-		return combinations[(int)(Math.random()*combinations.length)];
+	private static ArrayList<Day> emitDays() {
+//		ArrayList<Day> mw = new ArrayList<>(Arrays.asList(Day.Mon, Day.Wed));
+//        ArrayList<Day> tth = new ArrayList<>(Arrays.asList(Day.Tue, Day.Thu));
+//        ArrayList<Day>[] combinations = new ArrayList[]{mw, tth};
+//	    return combinations[(int) (Math.random() * combinations.length)];
+		return new ArrayList<>(Arrays.asList(Day.Mon, Day.Tue, Day.Wed, Day.Thu));
 	}
 	private static Name emitName() {
 		return new Name(firstNameBank[(int)(Math.random()*firstNameBank.length)],
 				lastNameBank[(int)(Math.random()*lastNameBank.length)]);
+	}
+	private static Major emitMajor() {
+		return Major.values()[(int)(Math.random()*Major.values().length)];
 	}
 	private static Hours emitHours() {
 		return Hours.values()[(int)(Math.random()*Hours.values().length)];

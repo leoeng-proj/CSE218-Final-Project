@@ -1,16 +1,17 @@
 package structs;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Professor;
 import model.Section;
 
-public class SectionContainer implements Serializable, Removal{
+public class SectionContainer implements Serializable, Removal<Section>{
 	private LinkedList<Section> sections;
 	
 	public SectionContainer() {
@@ -28,7 +29,7 @@ public class SectionContainer implements Serializable, Removal{
 		Iterator<Section> iter = sections.iterator();
 		while(iter.hasNext()) {
 			Section s = iter.next();
-			if(Arrays.equals(sec.getDaysOffered(), s.getDaysOffered()) 
+			if(sec.getDaysOffered().equals(s.getDaysOffered()) 
 					&& s.getTime().contains(sec.getTime())){
 				return true;
 			}
@@ -41,7 +42,10 @@ public class SectionContainer implements Serializable, Removal{
 	public boolean isEmpty() {
 		return sections.isEmpty();
 	}
-	public boolean remove(Object obj) {
+	public int size() {
+		return sections.size();
+	}
+	public boolean remove(Section obj) {
 		return sections.remove(obj);
 	}
 	public Section[] toArray() {
@@ -58,5 +62,23 @@ public class SectionContainer implements Serializable, Removal{
 				iter.remove();
 			}
 		}
+	}
+	public Section getBestSection(Professor p) {
+		Section best = null;
+		for(Section s : sections) {
+			if(p.getPrefTime().contains(s.getTime()) && s.getDaysOffered().equals(p.getPrefDays())) {
+				best = s;
+				break;
+			}
+			else if(p.getPrefDays().containsAll(s.getDaysOffered())) {
+				int prefStartHr = p.getPrefTime().getTimeRange().getStartTime().getHour();
+				int startHr = s.getTime().getStartTime().getHour();
+				if(Math.abs(prefStartHr - startHr) == 3) {
+					best = s;
+					break;
+				}
+			}
+		}
+		return best;
 	}
 }

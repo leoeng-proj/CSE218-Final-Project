@@ -1,6 +1,7 @@
 package structs;
 
 import java.io.Serializable;
+import java.util.PriorityQueue;
 
 import model.Professor;
 import model.Section;
@@ -34,14 +35,36 @@ public class MasterContainer implements Serializable{
 		return students;
 	}
 	public int autoAssign() {
-		
+		PriorityQueue<Professor> q = new PriorityQueue<Professor>(professors.size(), ((Professor p1, Professor p2) -> {
+			return p1.compareTo(p2);
+		}));
+		q.addAll(professors.getProfessors());
+		while(!q.isEmpty()) {
+			Professor p = q.poll();
+			while(p.getCredits() < Professor.MIN_CREDITS) {
+				SectionContainer potentialSections = getPotentialSections(p);
+				Section best = potentialSections.getBestSection(p);
+				if(best == null) {
+					break;
+				}
+				assign(p, best);
+			}
+			}
 		return 0;
+	}
+	private SectionContainer getPotentialSections(Professor p) {
+		SectionContainer sects = new SectionContainer(sections);
+		sects.trim(s -> {
+			return !s.getCourse().getMajor().equals(p.getMajor())  ||
+					s.getInstructor() != null;
+		});
+		return sects;
 	}
 	public int assign(Professor prof, Section sec) {
 		if(prof == null) {
 			return 1;
 		}
-		prof.getSections().addSection(sec);
+		prof.addSection(sec);
 		if(sec.getInstructor() != null) {
 			sec.getInstructor().removeSection(sec);
 		}
