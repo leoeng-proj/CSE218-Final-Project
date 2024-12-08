@@ -52,6 +52,11 @@ public class SectionContainer implements Serializable, Removal<Section>{
 	public boolean delete(Section sec) {
 		return sections.remove(sec);		
 	}
+	public void unassignProfessor(Professor prof) {
+		for(Section s : sections) {
+			s.setInstructor(null);
+		}
+	}
 	public Section[] toArray() {
 		return sections.toArray(new Section[0]);
 	}

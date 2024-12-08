@@ -178,7 +178,7 @@ public class Main extends Application {
 		Button assign = new Button("Auto Assign");
 		assign.getStyleClass().add("large-button-style");
 		assign.setOnAction(e -> {
-			int i = DataCenter.getInstance().getContainers().autoAssign();
+			DataCenter.getInstance().getContainers().autoAssign();
 		});
 		root.add(assign, 2, 3);
 		return root;

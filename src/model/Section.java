@@ -36,7 +36,7 @@ public class Section implements Serializable, Information{
 		students.clear();
 		if(instructor != null) {
 			instructor.removeSection(this);
-			setInstructor(null);
+			instructor = null;
 		}
 	}
 	public Course getCourse() {
@@ -46,12 +46,12 @@ public class Section implements Serializable, Information{
 		return daysOffered;
 	}
 	public String getInfo() {
-		return "Course:\t\t" + getCourse() +
-				"\nInstructor:\t" + getInstructor() + 
+		return "Course:\t\t" + course +
+				"\nInstructor:\t" + instructor + 
 				"\nDays Offered:\t" + daysOffered +
-				"\nTime:\t\t" + getTime() + 
+				"\nTime:\t\t" + time + 
 				"\nClassroom:\t" + room + 
-				"\nTextbook(s):\t" + getTextbooks() +
+				"\nTextbook(s):\t" + textbooks +
 				"\nStudents:\t" + students;
 	}
 	public Professor getInstructor() {

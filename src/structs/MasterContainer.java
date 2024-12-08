@@ -36,31 +36,31 @@ public class MasterContainer implements Serializable{
 	public StudentContainer getStudentContainer() {
 		return students;
 	}
-	public int autoAssign() {
-		PriorityQueue<Professor> q = new PriorityQueue<Professor>(professors.size(), ((Professor p1, Professor p2) -> {
-			return p1.compareTo(p2);
-		}));
+	public void autoAssign() {
+		if(professors.isEmpty()) {
+			return;
+		}
+		PriorityQueue<Professor> q = new PriorityQueue<Professor>(professors.size());
 		q.addAll(professors.getProfessors());
+		StringBuilder sb = new StringBuilder();
 		while(!q.isEmpty()) {
 			Professor p = q.poll();
 			while(p.getCredits() < Professor.MIN_CREDITS) {
-				SectionContainer potentialSections = getPotentialSections(p);
-				Section best = potentialSections.getBestSection(p);
+				Section best = getBestSection(p);
 				if(best == null) {
-					Alert noCourses = new Alert(AlertType.WARNING);
-					noCourses.setHeaderText("Not Enough " + p.getMajor()  + " " + p.getPrefTime() + " Sections");
-					noCourses.show();
+					sb.append("Not Enough " + p.getMajor()  + " " + p.getPrefTime() + " Sections\n");
 					break;
 				}
 				assign(p, best);
 			}
 		}
-		if(!sections.allHaveProfessors()) {
-			Alert noCourses = new Alert(AlertType.WARNING);
-			noCourses.setHeaderText("Not Enough Professors");
-			noCourses.show();
-		}
-		return 0;
+		Alert noCourses = new Alert(AlertType.WARNING);
+		noCourses.setHeaderText("Check Sections");
+		noCourses.setContentText(sb.toString());
+		noCourses.show();
+	}
+	private Section getBestSection(Professor p) {
+		return getPotentialSections(p).getBestSection(p);
 	}
 	private SectionContainer getPotentialSections(Professor p) {
 		SectionContainer sects = new SectionContainer(sections);
@@ -70,15 +70,14 @@ public class MasterContainer implements Serializable{
 		});
 		return sects;
 	}
-	public int assign(Professor prof, Section sec) {
+	public void assign(Professor prof, Section sec) {
 		if(prof == null) {
-			return 1;
+			return;
 		}
 		prof.addSection(sec);
 		if(sec.getInstructor() != null) {
 			sec.getInstructor().removeSection(sec);
 		}
 		sec.setInstructor(prof);
-		return 0;
 	}
 }
