@@ -2,7 +2,9 @@ package model;
 
 import java.io.Serializable;
 
+import control.DataCenter;
 import structs.Information;
+import structs.SectionContainer;
 
 public class Course implements Comparable<Course>, Serializable, Information{
 
@@ -11,6 +13,7 @@ public class Course implements Comparable<Course>, Serializable, Information{
 	private String description;
 	private String courseNum;
 	private Major major;
+	private SectionContainer sections;
 	
 	public Course(double credits, String name, String description, String courseNum, Major major) {
 		this.credits = credits;
@@ -18,6 +21,7 @@ public class Course implements Comparable<Course>, Serializable, Information{
 		this.description = description;
 		this.courseNum = courseNum;
 		this.major = major;
+		this.sections = new SectionContainer();
 	}
 	public int compareTo(Course o) {
 		return this.getCourseNum().compareTo(o.getCourseNum());
@@ -31,6 +35,18 @@ public class Course implements Comparable<Course>, Serializable, Information{
 		}
 		Course c = (Course)o;
 		return this.getCourseNum().equals(c.getCourseNum());
+	}
+	public void addSection(Section sec) {
+		sections.addSection(sec);
+	}
+	public void removeSection(Section sec) {
+		sections.delete(sec);
+	}
+	public void clearSections() {
+		sections.clear();
+	}
+	public SectionContainer getSections() {
+		return sections;
 	}
 	public String getCourseNum() {
 		return courseNum;

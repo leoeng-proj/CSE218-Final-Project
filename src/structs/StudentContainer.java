@@ -1,15 +1,11 @@
 package structs;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import model.Section;
 import model.Student;
 
@@ -31,8 +27,7 @@ public class StudentContainer implements Serializable, Removal<Student>{
 		students.clear();
 	}
 	public ObservableList<Student> getObservableStudentContainer(){
-		Collection<Student> col = students.values();
-		return FXCollections.observableArrayList(col.toArray(new Student[0]));
+		return FXCollections.observableArrayList(students.values().toArray(new Student[0]));
 	}
 	public boolean remove(Student stu) {
 		return students.remove(stu.getId()) != null;

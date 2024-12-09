@@ -34,16 +34,19 @@ public abstract class Emitter {
 	public static Course emitCourse() {
 //		Course(double credits, String name, String description, String courseNum, Major reqMajors) {
 		Major mjr = emitMajor();
-		return new Course(Math.random()*5, "Name", "", mjr +courseNumBank[(int)(Math.random()*courseNumBank.length)], mjr);
+		double[] creditValues = {1.0, 2.0, 3.0, 4.0, 5.0};
+		return new Course(creditValues[(int)(Math.random()*creditValues.length)], "Name", "", mjr +courseNumBank[(int)(Math.random()*courseNumBank.length)], mjr);
 	}
 	public static Professor emitProfessor() {
 		return new Professor(emitName(), emitHours(), emitDays(), emitMajor(), emitDate());
 	}
 	public static Section emitSection(Classroom room, Course course) {
 //	Section(int sectionNum, boolean isOnline, Classroom room, Course course, ListBag<String> textbooks, Day[] daysOffered, Hours time) {
-		return new Section((int)(Math.random() * 90000) + 10000, 
+		Section s = new Section((int)(Math.random() * 90000) + 10000, 
 				(Math.random()*10 > 5), room, course,
 				emitDays(), emitTime());
+		course.addSection(s);
+		return s;
 	}
 	public static Student emitStudent() {
 		return new Student(emitName(), 
@@ -54,7 +57,7 @@ public abstract class Emitter {
 		int hr = (int)(Math.random()*12+8);
 		int[] mins = {0, 15, 30, 45};
 		int min = mins[(int)(Math.random()*mins.length)];
-		return new TimeRange(hr, min, hr+1, min+15);
+		return new TimeRange(hr, min, hr+1, min+14);
 	}
 	private static ArrayList<Day> emitDays() {
 //		ArrayList<Day> mw = new ArrayList<>(Arrays.asList(Day.Mon, Day.Wed));

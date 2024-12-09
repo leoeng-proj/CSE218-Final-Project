@@ -1,26 +1,29 @@
 package structs;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import control.DataCenter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Professor;
 import model.Section;
 
 public class SectionContainer implements Serializable, Removal<Section>{
-	private LinkedList<Section> sections;
+	private HashSet<Section> sections;
 	
 	public SectionContainer() {
+		this(0);
+	}
+	public SectionContainer(int size) {
 		super();
-		sections = new LinkedList<>();
+		sections = new HashSet<>();
 	}
 	public SectionContainer(SectionContainer other) {
 		super();
-		sections = (LinkedList<Section>)other.sections.clone();
+		sections = (HashSet<Section>)other.sections.clone();
 	}
 	public void addSection(Section section) {
 		sections.add(section);
@@ -51,6 +54,10 @@ public class SectionContainer implements Serializable, Removal<Section>{
 	}
 	public boolean delete(Section sec) {
 		return sections.remove(sec);		
+	}
+	public void clear() {
+		DataCenter.getInstance().getContainers().getSectionContainer().sections.removeAll(sections); //Set A - Set B
+		sections.clear();
 	}
 	public void unassignProfessor(Professor prof) {
 		for(Section s : sections) {

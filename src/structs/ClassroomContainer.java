@@ -26,6 +26,9 @@ public class ClassroomContainer implements Serializable, Removal{
 			classrooms.add(c);
 		}
 	}
+	public int size() {
+		return classrooms.size();
+	}
 	public boolean remove(Object obj) {	
 		return classrooms.remove(obj);
 	}

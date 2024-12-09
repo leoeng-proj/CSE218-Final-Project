@@ -208,6 +208,7 @@ public class CreationPage {
 			TimeRange time = new TimeRange(startHr, min, startHr+1, min+15);
 			Section section = new Section(Integer.parseInt(sectionNum.getText()), isOnline.isSelected(), null, 
 					courses.getValue(), daysSelected, time);
+			courses.getValue().addSection(section);
 			DataCenter.getInstance().getContainers().getSectionContainer().addSection(section);
 			closeWindow(root);
 		});

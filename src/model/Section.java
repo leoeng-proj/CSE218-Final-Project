@@ -32,6 +32,7 @@ public class Section implements Serializable, Information{
 	public void clear() {
 		students.unenrollAll(this);
 		students.clear();
+		course.removeSection(this);
 		if(instructor != null) {
 			instructor.removeSection(this);
 			instructor = null;

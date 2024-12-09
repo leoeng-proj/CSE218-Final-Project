@@ -138,7 +138,7 @@ public class Main extends Application {
 			refresh(studentView, sectionView, courseView, professorView, remove, views, counter);
 			titleOfView.setText(titles[counter.getCount()]);
 		});
-		root.add(cycle, 1, 0, 2, 1);
+		root.add(cycle, 1, 0);
 		
 		Button emit = new Button("Emit");
 		emit.getStyleClass().add("large-button-style");

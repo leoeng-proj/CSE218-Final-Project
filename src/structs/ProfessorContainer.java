@@ -1,43 +1,41 @@
 package structs;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.TreeMap;
 import java.util.function.Predicate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Professor;
-import model.Section;
+import model.Student;
 
 public class ProfessorContainer implements Serializable, Removal<Professor>{
-	private LinkedList<Professor> professors;
+	private TreeMap<Integer, Professor> professors;
 	public ProfessorContainer() {
 		super();
-		professors = new LinkedList<Professor>();
+		professors = new TreeMap<Integer, Professor>();
 	}
 	public ProfessorContainer(ProfessorContainer other) {
 		super();
-		professors = (LinkedList<Professor>)other.professors.clone();
+		professors = (TreeMap<Integer, Professor>)other.professors.clone();
 	}
 	public void addProfessor(Professor professor) {
-		professors.add(professor);
+		professors.put(professor.getId(), professor);
 	}
 	public ObservableList<Professor> getObservableProfessorContainer(){
-		return FXCollections.observableArrayList(toArray());
+		Collection<Professor> col = professors.values();
+		return FXCollections.observableArrayList(col.toArray(new Professor[0]));
 	}
 	public boolean isEmpty() {
 		return professors.isEmpty();
 	}
 	public boolean remove(Professor prof) {
-		prof.getSections().unassignProfessor(prof);
-		return professors.remove(prof);
+		return professors.remove(prof.getId()) != null;
 	}
 	public Professor[] toArray() {
-		return professors.toArray(new Professor[0]);
+		return professors.values().toArray(new Professor[0]);
 	}
 	public int size() {
 		return professors.size();
@@ -45,16 +43,16 @@ public class ProfessorContainer implements Serializable, Removal<Professor>{
 	public String toString() {
 		return professors.toString();
 	}
-	public void trim(Predicate<Professor> pred) {
-		Iterator<Professor> iter = professors.iterator();
-		while(iter.hasNext()) {
-			Professor s = iter.next();
-			if(pred.test(s)) {
-				iter.remove();
+	public ProfessorContainer trim(Predicate<Professor> pred) {
+		ProfessorContainer trimmed = new ProfessorContainer();
+		professors.forEach((id, prof) -> {
+			if(!pred.test(prof)) {
+				trimmed.addProfessor(prof);
 			}
-		}
+		});
+		return trimmed;
 	}
-	protected LinkedList<Professor> getProfessors(){
+	protected TreeMap<Integer, Professor> getProfessors(){
 		return professors;
 	}
 }

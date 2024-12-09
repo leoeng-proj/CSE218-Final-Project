@@ -3,8 +3,10 @@ package structs;
 import java.io.Serializable;
 import java.util.PriorityQueue;
 
+import control.DataCenter;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import model.Course;
 import model.Professor;
 import model.Section;
 
@@ -17,8 +19,8 @@ public class MasterContainer implements Serializable{
 	public MasterContainer() {
 		courses = new CourseContainer();
 		students = new StudentContainer();
-		sections = new SectionContainer();
 		classrooms = new ClassroomContainer();
+		sections = new SectionContainer(classrooms.size()*12*7); //each classroom can hold a MAXIMUM of 12 sections a day 7 days a week
 		professors = new ProfessorContainer();
 	}
 	public ClassroomContainer getClassroomContainer() {
@@ -38,10 +40,13 @@ public class MasterContainer implements Serializable{
 	}
 	public void autoAssign() {
 		if(professors.isEmpty()) {
+			Alert noCourses = new Alert(AlertType.WARNING);
+			noCourses.setHeaderText("No Professors To Assign");
+			noCourses.show();
 			return;
 		}
 		PriorityQueue<Professor> q = new PriorityQueue<Professor>(professors.size());
-		q.addAll(professors.getProfessors());
+		q.addAll(professors.getProfessors().values());
 		StringBuilder sb = new StringBuilder();
 		while(!q.isEmpty()) {
 			Professor p = q.poll();
