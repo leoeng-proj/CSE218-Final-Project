@@ -2,9 +2,7 @@ package control;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
 import java.util.TimeZone;
 
 import javafx.beans.property.BooleanProperty;
@@ -28,6 +26,7 @@ import model.Name;
 import model.Professor;
 import model.Section;
 import model.Student;
+import model.TimeRange;
 
 public class CreationPage {
 	
@@ -202,8 +201,13 @@ public class CreationPage {
 		root.add(submit, 0, count, 1, 1);
 		submit.setDisable(true);
 		submit.setOnAction(e -> {
+			int startHr = prefTime.getValue().getTimeRange().getStartTime().getHour();
+			startHr +=((int)(Math.random()*4));
+			int[] mins = {0, 15, 30, 45};
+			int min = mins[(int)(Math.random()*mins.length)];
+			TimeRange time = new TimeRange(startHr, min, startHr+1, min+15);
 			Section section = new Section(Integer.parseInt(sectionNum.getText()), isOnline.isSelected(), null, 
-					courses.getValue(), null, daysSelected, null);
+					courses.getValue(), daysSelected, time);
 			DataCenter.getInstance().getContainers().getSectionContainer().addSection(section);
 			closeWindow(root);
 		});

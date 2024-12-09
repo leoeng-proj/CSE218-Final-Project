@@ -43,7 +43,7 @@ public abstract class Emitter {
 //	Section(int sectionNum, boolean isOnline, Classroom room, Course course, ListBag<String> textbooks, Day[] daysOffered, Hours time) {
 		return new Section((int)(Math.random() * 90000) + 10000, 
 				(Math.random()*10 > 5), room, course,
-				null, emitDays(), emitTime());
+				emitDays(), emitTime());
 	}
 	public static Student emitStudent() {
 		return new Student(emitName(), 
@@ -52,7 +52,8 @@ public abstract class Emitter {
 	}
 	private static TimeRange emitTime() {
 		int hr = (int)(Math.random()*12+8);
-		int min = (int)(Math.random()*45);
+		int[] mins = {0, 15, 30, 45};
+		int min = mins[(int)(Math.random()*mins.length)];
 		return new TimeRange(hr, min, hr+1, min+15);
 	}
 	private static ArrayList<Day> emitDays() {

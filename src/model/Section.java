@@ -15,18 +15,16 @@ public class Section implements Serializable, Information{
 	private Professor instructor;
 	private Classroom room;
 	private Course course;
-	private LinkedList<String> textbooks;
 	private StudentContainer students;
 	private ArrayList<Day> daysOffered;
 	private TimeRange time;
 	
-	public Section(int sectionNum, boolean isOnline, Classroom room, Course course, LinkedList<String> textbooks, ArrayList<Day> daysOffered, TimeRange time) {
+	public Section(int sectionNum, boolean isOnline, Classroom room, Course course, ArrayList<Day> daysOffered, TimeRange time) {
 		this.sectionNum = sectionNum;
 		this.isOnline = isOnline;
 		this.instructor = null;
 		this.room = room;
 		this.course = course;
-		this.textbooks = textbooks;
 		this.daysOffered = daysOffered;
 		this.time = time;
 		setStudents(new StudentContainer());
@@ -51,7 +49,6 @@ public class Section implements Serializable, Information{
 				"\nDays Offered:\t" + daysOffered +
 				"\nTime:\t\t" + time + 
 				"\nClassroom:\t" + room + 
-				"\nTextbook(s):\t" + textbooks +
 				"\nStudents:\t" + students;
 	}
 	public Professor getInstructor() {
@@ -65,9 +62,6 @@ public class Section implements Serializable, Information{
 	}
 	public StudentContainer getStudents() {
 		return students;
-	}
-	public LinkedList<String> getTextbooks() {
-		return textbooks;
 	}
 	public TimeRange getTime() {
 		return time;
@@ -89,9 +83,6 @@ public class Section implements Serializable, Information{
 	}
 	public void setStudents(StudentContainer students) {
 		this.students = students;
-	}
-	public void setTextbooks(LinkedList<String> textbooks) {
-		this.textbooks = textbooks;
 	}
 	public void setTime(TimeRange time) {
 		this.time = time;
