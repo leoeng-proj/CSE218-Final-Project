@@ -44,10 +44,7 @@ public class Student extends Person implements Comparable<Student> {
 		Student o = (Student)other;
 		return super.equals(o) && 
 				this.major.equals(o.getMajor()) &&
-				this.gpa == o.getGpa();
-	}
-	public double getGpa() {
-		return gpa;
+				this.gpa == o.getGPA();
 	}
 	public String getInfo() {
 		return "Name: \t\t" + toString() + 
@@ -62,11 +59,11 @@ public class Student extends Person implements Comparable<Student> {
 	public SectionContainer getSections() {
 		return sections;
 	}
-	public void setGpa(double gpa) {
-		this.gpa = gpa;
+	public int getId() {
+		return id;
 	}
-	public void setMajor(Major major) {
-		this.major = major;
+	public double getGPA() {
+		return gpa;
 	}
 	public String toString() {
 		return super.toString();

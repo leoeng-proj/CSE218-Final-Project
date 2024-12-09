@@ -196,10 +196,10 @@ public class Main extends Application {
 		controls.add(displayContainers(root), 0, 1);
 		HBox.setHgrow(controls, Priority.ALWAYS);
 		
-//		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("ClassroomManager.fxml"));
-//		HBox.setHgrow(classroomManager, Priority.ALWAYS);
+		AnchorPane classroomManager = FXMLLoader.load(getClass().getResource("ClassroomManager.fxml"));
+		HBox.setHgrow(classroomManager, Priority.ALWAYS);
 
-		root.getChildren().addAll(controls);
+		root.getChildren().addAll(controls, classroomManager);
 		return root;
 	}
 	public void refresh(ListView<Student> studentView, ListView<Section> sectionView, ListView<Course> courseView, ListView<Professor> professorView, 
@@ -226,7 +226,7 @@ public class Main extends Application {
 		});
 		
 		stage.setResizable(false);
-		stage.setWidth(400);
+		stage.setWidth(800);
 		stage.setHeight(800);
 		stage.setScene(scene);
 		stage.setTitle("College Manager");

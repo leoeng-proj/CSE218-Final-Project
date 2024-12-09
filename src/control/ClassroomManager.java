@@ -97,7 +97,7 @@ public class ClassroomManager {
 		ListView<Student> students = new ListView<>();
 		students.getStyleClass().add("listview-style");
 		StudentContainer validStudents = new StudentContainer(DataCenter.getInstance().getContainers().getStudentContainer());
-		validStudents.trim(new Predicate<Student>() {
+		validStudents = validStudents.trim(new Predicate<Student>() {
 			public boolean test(Student student) {
 				return student.getSections().checkTimeConflicts(selectedSection) ||
 						!student.getMajor().equals(selectedSection.getCourse().getMajor());

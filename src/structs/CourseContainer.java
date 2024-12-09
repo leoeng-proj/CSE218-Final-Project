@@ -7,7 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Course;
 
-public class CourseContainer implements Serializable, Removal{
+public class CourseContainer implements Serializable, Removal<Course>{
 
 	private LinkedList<Course> courses;
 	
@@ -24,7 +24,7 @@ public class CourseContainer implements Serializable, Removal{
 		return true;
 	}
 	public ObservableList<Course> getObservableCourseContainer(){
-		return FXCollections.observableArrayList(toArray());
+		return FXCollections.observableList(courses);
 	}
 	public Course getRandomCourse() {
 		return courses.get((int)(Math.random()*courses.size()));
@@ -32,7 +32,7 @@ public class CourseContainer implements Serializable, Removal{
 	public boolean isEmpty() {
 		return courses.isEmpty();
 	}
-	public boolean remove(Object obj) {
+	public boolean remove(Course obj) {
 		return courses.remove(obj);
 	}
 	public Course[] toArray() {

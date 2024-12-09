@@ -15,7 +15,6 @@ import model.Section;
 
 public class ProfessorContainer implements Serializable, Removal<Professor>{
 	private LinkedList<Professor> professors;
-//	private ArrayList<LinkedList<Professor>> professors;
 	public ProfessorContainer() {
 		super();
 		professors = new LinkedList<Professor>();

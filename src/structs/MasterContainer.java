@@ -48,7 +48,7 @@ public class MasterContainer implements Serializable{
 			while(p.getCredits() < Professor.MIN_CREDITS) {
 				Section best = getBestSection(p);
 				if(best == null) {
-					sb.append("Not Enough " + p.getMajor()  + " " + p.getPrefTime() + " Sections\n");
+					sb.append("Not Enough " + p.getMajor()  + " " + p.getPrefTime() + " Sections for " + p + "\n");
 					break;
 				}
 				assign(p, best);

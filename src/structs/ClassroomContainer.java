@@ -1,7 +1,7 @@
 package structs;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.HashSet;
 
 import model.Classroom;
 
@@ -17,24 +17,14 @@ public class ClassroomContainer implements Serializable, Removal{
 		new Classroom("CL06", 30),
 		new Classroom("CL07", 5),
 	};
-	private LinkedList<Classroom> classrooms;
+	private HashSet<Classroom> classrooms;
 	
 	public ClassroomContainer() {
 		super();
-		classrooms = new LinkedList<>();
+		classrooms = new HashSet<>();
 		for(Classroom c : rooms) {
 			classrooms.add(c);
 		}
-	}
-	public boolean addCourse(Classroom course) {
-		if(classrooms.contains(course)) {
-			return false;
-		}
-		classrooms.add(course);
-		return true;
-	}
-	public Classroom getRandomCourse() {
-		return classrooms.get((int)(Math.random()*classrooms.size()));
 	}
 	public boolean remove(Object obj) {	
 		return classrooms.remove(obj);
