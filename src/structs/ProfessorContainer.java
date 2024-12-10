@@ -12,6 +12,7 @@ import model.Professor;
 import model.Student;
 
 public class ProfessorContainer implements Serializable, Removal<Professor>{
+	
 	private TreeMap<Integer, Professor> professors;
 	public ProfessorContainer() {
 		super();

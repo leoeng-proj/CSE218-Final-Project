@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import model.Classroom;
 
-public class ClassroomContainer implements Serializable, Removal{
+public class ClassroomContainer implements Serializable, Removal<Classroom>{
 
 	private static final Classroom[] rooms = {
 		//Classroom(String roomID, boolean hasProjector, int maxCapacity) {
@@ -29,7 +29,7 @@ public class ClassroomContainer implements Serializable, Removal{
 	public int size() {
 		return classrooms.size();
 	}
-	public boolean remove(Object obj) {	
+	public boolean remove(Classroom obj) {	
 		return classrooms.remove(obj);
 	}
 	public Classroom[] toArray() {
