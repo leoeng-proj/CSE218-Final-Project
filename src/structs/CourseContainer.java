@@ -32,9 +32,9 @@ public class CourseContainer implements Serializable, Removal<Course>{
 	public boolean isEmpty() {
 		return courses.isEmpty();
 	}
-	public boolean remove(Course obj) {
-		obj.clearSections();
-		return courses.remove(obj);
+	public boolean remove(Course cour) {
+		cour.clearSections();
+		return courses.remove(cour);
 	}
 	public Course[] toArray() {
 		return courses.toArray(new Course[0]);

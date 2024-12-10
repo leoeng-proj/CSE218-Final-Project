@@ -136,7 +136,8 @@ public class ClassroomManager {
 		validProfessors.trim(new Predicate<Professor>() {
 			public boolean test(Professor prof) {
 				return prof.getSections().checkTimeConflicts(selectedSection) ||
-						!prof.getPrefTime().contains(selectedSection.getTime());
+						!prof.getPrefTime().contains(selectedSection.getTime()) ||
+						prof.getCredits() + selectedSection.getCourse().getCredits() > Professor.MAX_CREDITS;
 			}
 		});
 		profs.setItems(validProfessors.getObservableProfessorContainer());

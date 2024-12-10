@@ -50,8 +50,9 @@ public class MasterContainer implements Serializable{
 		StringBuilder sb = new StringBuilder();
 		while(!q.isEmpty()) {
 			Professor p = q.poll();
+			SectionContainer potentialSections = getPotentialSections(p);
 			while(p.getCredits() < Professor.MIN_CREDITS) {
-				Section best = getBestSection(p);
+				Section best = getBestSection(p, potentialSections);
 				if(best == null) {
 					sb.append("Not Enough " + p.getMajor()  + " " + p.getPrefTime() + " Sections for " + p + "\n");
 					break;
@@ -59,13 +60,15 @@ public class MasterContainer implements Serializable{
 				assign(p, best);
 			}
 		}
-		Alert noCourses = new Alert(AlertType.WARNING);
-		noCourses.setHeaderText("Check Sections");
-		noCourses.setContentText(sb.toString());
-		noCourses.show();
+		if(!sb.isEmpty()) {
+			Alert noCourses = new Alert(AlertType.WARNING);
+			noCourses.setHeaderText("Check Sections");
+			noCourses.setContentText(sb.toString());
+			noCourses.show();
+		}
 	}
-	private Section getBestSection(Professor p) {
-		return getPotentialSections(p).getBestSection(p);
+	private Section getBestSection(Professor p, SectionContainer section) {
+		return section.getBestSection(p);
 	}
 	private SectionContainer getPotentialSections(Professor p) {
 		SectionContainer sects = new SectionContainer(sections);

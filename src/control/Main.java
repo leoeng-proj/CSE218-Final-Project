@@ -34,14 +34,20 @@ public class Main extends Application {
 
 	private class ClickCounter {
 		int count = 0;
-		void click() {
+		void increase() {
 			count++;
+		}
+		void decrease() {
+			count--;
 		}
 		int getCount() {
 			return count;
 		}
 		void reset() {
 			count = 0;
+		}
+		void set(int i) {
+			count = i;
 		}
 	}
 	public static void main(String[] args) {
@@ -126,19 +132,37 @@ public class Main extends Application {
 		titleOfView.getStyleClass().add("label-style");
 		root.add(titleOfView, 0, 0);
 		
-		Button cycle = new Button("Cycle Views");
-		cycle.getStyleClass().add("large-button-style");
+		Button prev = new Button("Previous View");
+		prev.getStyleClass().add("large-button-style");
 		views[counter.getCount()].toFront();
-		cycle.setOnAction(e -> {
-			counter.click();
+		prev.setOnAction(e -> {
+			counter.decrease();
 			if(counter.getCount() == views.length) {
+				counter.reset();
+			}
+			else if(counter.getCount() < 0) {
+				counter.set(views.length-1);
+			}
+			views[counter.getCount()].toFront();
+			refresh(studentView, sectionView, courseView, professorView, remove, views, counter);
+			titleOfView.setText(titles[counter.getCount()]);
+		});
+		root.add(prev, 1, 0);
+		
+		
+		Button next = new Button("Next View");
+		next.getStyleClass().add("large-button-style");
+		views[counter.getCount()].toFront();
+		next.setOnAction(e -> {
+			counter.increase();
+			if(counter.getCount() == views.length || counter.getCount() < 0) {
 				counter.reset();
 			}
 			views[counter.getCount()].toFront();
 			refresh(studentView, sectionView, courseView, professorView, remove, views, counter);
 			titleOfView.setText(titles[counter.getCount()]);
 		});
-		root.add(cycle, 1, 0);
+		root.add(next, 2, 0);
 		
 		Button emit = new Button("Emit");
 		emit.getStyleClass().add("large-button-style");

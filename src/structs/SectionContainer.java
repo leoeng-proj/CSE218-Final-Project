@@ -82,6 +82,9 @@ public class SectionContainer implements Serializable, Removal<Section>{
 	public Section getBestSection(Professor p) {
 		Section best = null;
 		for(Section s : sections) {
+			if(s.getInstructor() != null) {
+				continue; //reusing same section container from previous iterations
+			}
 			if(p.getPrefTime().contains(s.getTime()) && s.getDaysOffered().equals(p.getPrefDays())) {
 				best = s;
 				break;

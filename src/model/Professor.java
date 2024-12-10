@@ -48,6 +48,7 @@ public class Professor extends Person implements Comparable<Professor>{
 				"\nPreferred Hours: " + prefTime +
 				"\nPreferred Days: " + prefDays +
 				"\nMajor:\t\t" + major +
+				"\nCredits\t\t" + credits +
 				"\nClasses:\n" + sections.toString();
 	}
 	public Hours getPrefTime() {

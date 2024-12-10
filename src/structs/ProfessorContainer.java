@@ -33,6 +33,7 @@ public class ProfessorContainer implements Serializable, Removal<Professor>{
 		return professors.isEmpty();
 	}
 	public boolean remove(Professor prof) {
+		prof.getSections().unassignProfessor(prof);
 		return professors.remove(prof.getId()) != null;
 	}
 	public Professor[] toArray() {
